@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Hoz Retro Games</title>
+    <style>
+        /* Paleta de colores e Identidad Visual (Cyberpunk / Arcade) */
+        :root {
+            --bg-dark: #07070a;
+            --panel-bg: #111118;
+            --neon-cyan: #00f0ff;
+            --neon-gold: #ffcc00;
+            --neon-red: #ff0055;
+            --text-main: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* HEADER PREMIUM CON LOGO MEJORADO Y ANIMADO */
+        header {
+            background: linear-gradient(180deg, #09090d 0%, var(--panel-bg) 100%);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Contenedor del Logo (Hoz + Control Retro) */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        /* Animación de la Hoz: Balanceo sutil y brillo */
+        .logo-scythe {
+            width: 45px;
+            height: 45px;
+            fill: url(#scythe-gradient);
+            filter: drop-shadow(0 0 5px var(--neon-cyan));
+            animation: scytheMove 3s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+        }
+
+        @keyframes scytheMove {
+            0% { transform: rotate(-8deg); filter: drop-shadow(0 0 4px var(--neon-cyan)); }
+            100% { transform: rotate(8deg); filter: drop-shadow(0 0 12px var(--neon-cyan)); }
+        }
+
+        /* Texto del Título con Efecto de Parpadeo Arcade */
+        .logo-text {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+        }
+
+        .logo-text span {
+            color: var(--neon-red);
+            animation: neonBlink 2.5s infinite alternate;
+        }
+
+        @keyframes neonBlink {
+            0%, 100% { text-shadow: 0 0 8px var(--neon-red), 0 0 15px var(--neon-red); }
+            45%, 55% { text-shadow: 0 0 8px var(--neon-red); }
+            50% { text-shadow: none; color: #500; }
+        }
+
+        /* ESTRUCTURA PRINCIPAL DE LA PÁGINA */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            position: relative;
+            height: calc(100vh - 70px);
+        }
+
+        /* PANEL LATERAL: SELECCIÓN DE JUEGOS */
+        .sidebar {
+            width: 280px;
+            background-color: var(--panel-bg);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 5;
+        }
+
+        .sidebar h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #71719a;
+            margin-bottom: 5px;
+        }
+
+        .game-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .game-item {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .game-item:hover, .game-item.active {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: var(--neon-cyan);
+            color: #fff;
+            transform: translateX(6px);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+        }
+
+        .game-icon {
+            font-size: 18px;
+        }
+
+        /* ÁREA CENTRAL DEL JUEGO (MÁXIMO CONFORT) */
+        .game-viewport {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            background: radial-gradient(circle, #151522 0%, #07070a 100%);
+            position: relative;
+        }
+
+        /* Marco Adaptable 4:3 para Consolas Retro */
+        .game-frame {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 4 / 3;
+            background-color: #000;
+            border-radius: 12px;
+            border: 3px solid #252538;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 240, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Contenido de carga/emulador */
+        .emulator-container {
+            text-align: center;
+            color: #626285;
+            z-index: 2;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, var(--neon-cyan), #00a5ff);
+            color: #000;
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 18px;
+            box-shadow: 0 0 20px var(--neon-cyan);
+            transition: all 0.2s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+        /* PUBLICIDAD BLINDADA EN LA ESQUINA INFERIOR DERECHA */
+        .ad-corner-container {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            width: 300px;
+            height: 250px;
+            background-color: #0b0b10;
+            border: 2px dashed rgba(255, 0, 85, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .ad-corner-container:hover {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.25);
+        }
+
+        .ad-tag {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--neon-red);
+            font-weight: bold;
+        }
+
+        .ad-box {
+            color: #4e4e6a;
+            font-size: 13px;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado con Identidad de Marca Mejorada -->
+    <header>
+        <div class="logo-container">
+            <!-- SVG Dinámico: Hoza pixelada cruzada con Pad Retro -->
+            <svg class="logo-scythe" viewBox="0 0 100 100">
+                <defs>
+                    <linearGradient id="scythe-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00f0ff" />
+                        <stop offset="100%" stop-color="#7000ff" />
+                    </linearGradient>
+                </defs>
+                <!-- Silueta de la Hoz de Estilo Retro/Geométrico -->
+                <path d="M20,80 C20,40 50,15 85,15 C70,30 60,50 65,70 C55,55 40,50 30,65 L22,82 Z" />
+                <!-- Detalle del mango / Control de videojuego integrado -->
+                <rect x="18" y="78" width="6" height="12" rx="2" fill="#ffcc00" transform="rotate(-15 18 78)" />
+                <circle cx="70" cy="35" r="4" fill="#ff0055" />
+                <circle cx="78" cy="43" r="4" fill="#ffcc00" />
+            </svg>
+            <div class="logo-text">La Hoz <span>Retro Games</span></div>
+        </div>
+        <div style="color: #626285; font-size: 13px; letter-spacing: 1px;">🎮 Zona de Confort del Jugador</div>
+    </header>
+
+    <div class="main-layout">
+        
+        <!-- Lista de Juegos basada en tu código anterior -->
+        <aside class="sidebar">
+            <h3>Selecciona un juego:</h3>
+            <ul class="game-list">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'GBA', '🍄')">
+                    <span class="game-icon">🍄</span>
+                    <span>Super Mario Adv.</span>
+                </li>
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'GBA', '🔥')">
+                    <span class="game-icon">🔥</span>
+                    <span>Pokémon Rojo F.</span>
+                </li>
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'GBA', '🦔')">
+                    <span class="game-icon">🦔</span>
+                    <span>Sonic Advance</span>
+                </li>
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'GBA', '🛡')">
+                    <span class="game-icon">🛡</span>
+                    <span>Zelda: Minish C.</span>
+                </li>
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'GBA', '🏎')">
+                    <span class="game-icon">🏎</span>
+                    <span>Mario Kart C.</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Pantalla Central del Juego -->
+        <main class="game-viewport">
+            <div class="game-frame">
+                <div class="emulator-container" id="game-screen">
+                    <p style="font-size: 22px; color: #fff; margin-bottom: 6px;" id="game-title">Super Mario Advance</p>
+                    <p style="font-size: 14px;" id="game-console">Consola: GBA Online</p>
+                    <button class="play-button" onclick="loadEmulator()">EMPEZAR PARTIDA</button>
+                </div>
+            </div>
+
+            <!-- ANUNCIO DE ESQUINA INTEGRADO (No interrumpe al jugador) -->
+            <div class="ad-corner-container">
+                <span class="ad-tag">Publicidad</span>
+                <div class="ad-box">
+                    <p style="font-weight: bold; margin-bottom: 5px; color: #8a8ab0;">Espacio Estático Protegido</p>
+                    <p style="font-size: 11px; color: #44445c;">Tus anuncios no interrumpen el juego. Banner Estándar (300x250)</p>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        // Lógica interactiva para cambiar la info del menú central
+        function changeGame(title, consoleName, icon) {
+            document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('game-title').innerText = title;
+            document.getElementById('game-console').innerText = "Consola: " + consoleName + " Online";
+        }
+
+        function loadEmulator() {
+            alert("¡Ejecutando emulador de GBA en pantalla central de forma cómoda!");
+        }
+    </script>
+</body>
+</html>
