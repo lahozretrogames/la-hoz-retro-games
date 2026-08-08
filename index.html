@@ -85,38 +85,7 @@
             50% { opacity: 0.8; text-shadow: 0 0 4px var(--neon-magenta); }
         }
 
-        /* ANUNCIO UBICADO EN LA ESQUINA SUPERIOR DERECHA */
-        .ad-top-right {
-            width: 300px;
-            height: 50px;
-            background-color: #0b0b12;
-            border: 1px dashed rgba(255, 0, 85, 0.4);
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        .ad-tag {
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            font-size: 8px;
-            text-transform: uppercase;
-            color: var(--neon-magenta);
-            font-weight: bold;
-        }
-
-        .ad-text {
-            color: #3f3f5a;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* DISEÑO DE LA PLATAFORMA */
+        /* DISEÑO DE LA PLATAFORMA EN TRES COLUMNAS */
         .main-layout {
             display: flex;
             flex: 1;
@@ -124,7 +93,7 @@
             height: calc(100vh - 71px);
         }
 
-        /* MENÚ LATERAL: JUEGOS GBA */
+        /* MENÚ LATERAL IZQUIERDO: JUEGOS GBA */
         .sidebar {
             width: 290px;
             background-color: var(--panel-bg);
@@ -174,13 +143,13 @@
 
         .game-icon { font-size: 18px; }
 
-        /* SALÓN DE JUEGO CENTRAL (CON CENTRADO LIMPIO) */
+        /* SALÓN DE JUEGO CENTRAL */
         .game-zone {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding: 20px;
             background: radial-gradient(circle, #111122 0%, #06060a 100%);
             position: relative;
         }
@@ -234,6 +203,56 @@
             transform: scale(1.05);
             box-shadow: 0 0 25px var(--neon-cyan);
         }
+
+        /* BARRA LATERAL DERECHA: PUBLICIDAD RASCACIELOS (300X600) */
+        .ad-sidebar {
+            width: 340px;
+            background-color: var(--panel-bg);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 15;
+        }
+
+        .ad-banner-skyscraper {
+            width: 300px;
+            height: 600px;
+            background-color: #0b0b12;
+            border: 1px dashed rgba(255, 0, 85, 0.4);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: border-color 0.3s;
+        }
+
+        .ad-banner-skyscraper:hover {
+            border-color: var(--neon-magenta);
+        }
+
+        .ad-tag {
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            font-size: 9px;
+            text-transform: uppercase;
+            color: var(--neon-magenta);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .ad-text {
+            color: #3f3f5a;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -248,15 +267,12 @@
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        
-        <div class="ad-top-right">
-            <span class="ad-tag">Anuncio</span>
-            <div class="ad-text">Espacio AdSense / Setupad (300x50)</div>
-        </div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 500;">Espacio Jugador Confort v1.2 🕹️</div>
     </header>
 
     <div class="main-layout">
         
+        <!-- SIDEBAR IZQUIERDA -->
         <aside class="sidebar">
             <h3>Tus Clásicos GBA</h3>
             <ul class="game-list">
@@ -283,6 +299,7 @@
             </ul>
         </aside>
 
+        <!-- ZONA DE EMULACIÓN CENTRAL -->
         <main class="game-zone">
             <div class="emulator-frame">
                 <div id="game-holder">
@@ -294,6 +311,17 @@
                 </div>
             </div>
         </main>
+
+        <!-- BARRA LATERAL DERECHA (PUBLICIDAD) -->
+        <aside class="ad-sidebar">
+            <div class="ad-banner-skyscraper">
+                <span class="ad-tag">Anuncio</span>
+                <div class="ad-text">
+                    <p style="margin-bottom: 5px;">Espacio Monetizado</p>
+                    <p style="font-size: 11px; color: #2a2a3a;">Google AdSense / Setupad<br>(300x600)</p>
+                </div>
+            </div>
+        </aside>
 
     </div>
 
@@ -312,8 +340,8 @@
 
             document.getElementById('game-holder').innerHTML = `
                 <div class="start-screen" id="launcher-layer">
-                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">\${title}</h2>
-                    <p style="color: #64748b; font-size: 14px;">Consola: \${core.toUpperCase()}</p>
+                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">${title}</h2>
+                    <p style="color: #64748b; font-size: 14px;">Consola: ${core.toUpperCase()}</p>
                     <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
                 </div>
             `;
