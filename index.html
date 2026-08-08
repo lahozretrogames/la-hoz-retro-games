@@ -229,7 +229,6 @@
             text-align: center;
         }
     </style>
-    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 </head>
 <body>
 
@@ -277,7 +276,7 @@
         <main class="game-zone">
             <div class="emulator-frame">
                 <div id="game-holder">
-                    <div class="start-screen">
+                    <div class="start-screen" id="launcher-layer">
                         <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
                         <p style="color: #64748b; font-size: 14px;">Consola: Game Boy Advance</p>
                         <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
@@ -302,35 +301,46 @@
         let currentRom = "mario_advance.gba"; 
 
         function changeGame(title, core, romName) {
-            document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            // Eliminar clases activas del menu lateral
+            const items = document.querySelectorAll('.game-item');
+            items.forEach(function(item) {
+                item.classList.remove('active');
+            });
+            
+            // Buscar y marcar el elemento seleccionado de forma segura
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
 
             currentTitle = title;
             currentCore = core;
             currentRom = romName;
 
-            document.getElementById('game-holder').innerHTML = `
-                <div class="start-screen">
-                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">\${title}</h2>
-                    <p style="color: #64748b; font-size: 14px;">Consola: \${core.toUpperCase()}</p>
-                    <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
-                </div>
-            `;
+            // Renderizar la pantalla de inicio limpia usando strings tradicionales para evitar fallos de interpretacion
+            document.getElementById('game-holder').innerHTML = 
+                '<div class="start-screen" id="launcher-layer">' +
+                    '<h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">' + title + '</h2>' +
+                    '<p style="color: #64748b; font-size: 14px;">Consola: ' + core.toUpperCase() + '</p>' +
+                    '<button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>' +
+                '</div>';
         }
 
         function startEmulator() {
-            document.getElementById('game-holder').innerHTML = `<div id="canvas-emulator" style="width:100%; height:100%;"></div>`;
+            // Crear el lienzo limpio para recibir los elementos graficos de la consola
+            document.getElementById('game-holder').innerHTML = '<div id="canvas-emulator" style="width:100%; height:100%;"></div>';
             
+            // Parametros estructurales de inicializacion requeridos por el nucleo de EmulatorJS
             window.EJS_player = '#canvas-emulator';
             window.EJS_core = currentCore; 
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
             window.EJS_gameUrl = 'roms/' + currentRom; 
             window.EJS_volume = 0.8;
-            window.EJS_startOnLoaded = true; 
+            window.EJS_startOnLoaded = true; // Fuerza la descarga previa para blindar contra errores de red
 
-            if (typeof loadEmulator === 'function') {
-                loadEmulator();
-            }
+            // Inyeccion dinamica y limpia de las librerias oficiales de ejecucion en tiempo real
+            const loaderScript = document.createElement('script');
+            loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+            document.body.appendChild(loaderScript);
         }
     </script>
 </body>
