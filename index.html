@@ -29,7 +29,6 @@
             overflow: hidden;
         }
 
-        /* BARRA SUPERIOR RETRO NEÓN */
         header {
             background: linear-gradient(180deg, #09090f 0%, var(--panel-bg) 100%);
             padding: 12px 30px;
@@ -47,7 +46,6 @@
             gap: 15px;
         }
 
-        /* LOGO SVG ANIMADO DE LA HOZ */
         .hoz-logo-svg {
             width: 45px;
             height: 45px;
@@ -61,9 +59,7 @@
             filter: drop-shadow(0 0 12px var(--neon-magenta));
         }
 
-        .hoz-logo-svg path {
-            transition: fill 0.3s;
-        }
+        .hoz-logo-svg path { transition: fill 0.3s; }
         .hoz-logo-svg:hover .hoz-blade { fill: var(--neon-magenta); }
 
         .logo-text {
@@ -85,7 +81,6 @@
             50% { opacity: 0.8; text-shadow: 0 0 4px var(--neon-magenta); }
         }
 
-        /* DISEÑO DE LA PLATAFORMA EN TRES COLUMNAS */
         .main-layout {
             display: flex;
             flex: 1;
@@ -93,7 +88,6 @@
             height: calc(100vh - 71px);
         }
 
-        /* MENÚ LATERAL IZQUIERDO: JUEGOS GBA */
         .sidebar {
             width: 290px;
             background-color: var(--panel-bg);
@@ -143,18 +137,16 @@
 
         .game-icon { font-size: 18px; }
 
-        /* SALÓN DE JUEGO CENTRAL */
         .game-zone {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 30px;
             background: radial-gradient(circle, #111122 0%, #06060a 100%);
             position: relative;
         }
 
-        /* MARCO DEL EMULADOR */
         .emulator-frame {
             width: 100%;
             max-width: 800px;
@@ -204,38 +196,23 @@
             box-shadow: 0 0 25px var(--neon-cyan);
         }
 
-        /* BARRA LATERAL DERECHA: PUBLICIDAD RASCACIELOS (300X600) */
-        .ad-sidebar {
-            width: 340px;
-            background-color: var(--panel-bg);
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 15;
-        }
-
-        .ad-banner-skyscraper {
+        .ad-skyscraper {
             width: 300px;
             height: 600px;
             background-color: #0b0b12;
             border: 1px dashed rgba(255, 0, 85, 0.4);
-            border-radius: 6px;
+            border-radius: 8px;
+            margin-left: 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             transition: border-color 0.3s;
         }
 
-        .ad-banner-skyscraper:hover {
-            border-color: var(--neon-magenta);
-        }
-
+        .ad-skyscraper:hover { border-color: var(--neon-magenta); }
         .ad-tag {
             position: absolute;
             top: 6px;
@@ -244,9 +221,7 @@
             text-transform: uppercase;
             color: var(--neon-magenta);
             font-weight: bold;
-            letter-spacing: 0.5px;
         }
-
         .ad-text {
             color: #3f3f5a;
             font-size: 13px;
@@ -254,6 +229,7 @@
             text-align: center;
         }
     </style>
+    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 </head>
 <body>
 
@@ -272,7 +248,6 @@
 
     <div class="main-layout">
         
-        <!-- SIDEBAR IZQUIERDA -->
         <aside class="sidebar">
             <h3>Tus Clásicos GBA</h3>
             <ul class="game-list">
@@ -299,29 +274,25 @@
             </ul>
         </aside>
 
-        <!-- ZONA DE EMULACIÓN CENTRAL -->
         <main class="game-zone">
             <div class="emulator-frame">
                 <div id="game-holder">
-                    <div class="start-screen" id="launcher-layer">
+                    <div class="start-screen">
                         <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
                         <p style="color: #64748b; font-size: 14px;">Consola: Game Boy Advance</p>
                         <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
                     </div>
                 </div>
             </div>
-        </main>
 
-        <!-- BARRA LATERAL DERECHA (PUBLICIDAD) -->
-        <aside class="ad-sidebar">
-            <div class="ad-banner-skyscraper">
+            <div class="ad-skyscraper">
                 <span class="ad-tag">Anuncio</span>
                 <div class="ad-text">
-                    <p style="margin-bottom: 5px;">Espacio Monetizado</p>
-                    <p style="font-size: 11px; color: #2a2a3a;">Google AdSense / Setupad<br>(300x600)</p>
+                    <p>Espacio Publicitario</p>
+                    <p style="font-size: 11px; margin-top: 5px; color: #232334;">Google AdSense / Setupad (300x600)</p>
                 </div>
             </div>
-        </aside>
+        </main>
 
     </div>
 
@@ -339,9 +310,9 @@
             currentRom = romName;
 
             document.getElementById('game-holder').innerHTML = `
-                <div class="start-screen" id="launcher-layer">
-                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">${title}</h2>
-                    <p style="color: #64748b; font-size: 14px;">Consola: ${core.toUpperCase()}</p>
+                <div class="start-screen">
+                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">\${title}</h2>
+                    <p style="color: #64748b; font-size: 14px;">Consola: \${core.toUpperCase()}</p>
                     <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
                 </div>
             `;
@@ -355,10 +326,11 @@
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
             window.EJS_gameUrl = 'roms/' + currentRom; 
             window.EJS_volume = 0.8;
+            window.EJS_startOnLoaded = true; 
 
-            const loaderScript = document.createElement('script');
-            loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-            document.body.appendChild(loaderScript);
+            if (typeof loadEmulator === 'function') {
+                loadEmulator();
+            }
         }
     </script>
 </body>
