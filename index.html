@@ -152,9 +152,10 @@
             width: 44px;
             height: 44px;
             border-radius: 8px;
-            object-fit: cover;
+            object-fit: contain;
             border: 1px solid rgba(0, 240, 255, 0.3);
             background: #11121d;
+            padding: 4px;
         }
 
         .game-info {
@@ -225,10 +226,11 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.25;
-            filter: blur(4px) scale(1.05);
+            object-fit: contain;
+            opacity: 0.15;
+            filter: blur(2px) scale(1.05);
             transition: all 0.5s ease;
+            padding: 40px;
         }
 
         .start-screen-content {
@@ -246,14 +248,15 @@
         }
 
         .game-poster-preview {
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             border-radius: 16px;
-            object-fit: cover;
+            object-fit: contain;
             margin-bottom: 20px;
             border: 2px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
             background: #11121d;
+            padding: 10px;
         }
 
         .loading-screen {
@@ -313,12 +316,13 @@
             margin-top: 15px;
             background: rgba(0, 240, 255, 0.08);
             border: 1px solid rgba(0, 240, 255, 0.3);
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 30px;
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
 
         .mb-text {
@@ -328,6 +332,14 @@
             letter-spacing: 1px;
             font-family: monospace;
             text-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        .size-label {
+            font-size: 12px;
+            color: var(--neon-cyan);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .play-btn {
@@ -404,39 +416,39 @@
         <aside class="sidebar">
             <h3>Selecciona tu ROM</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'https://upload.wikimedia.org/wikipedia/en/2/21/Super_Mario_Advance.png', this)">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/2/21/Super_Mario_Advance.png" onerror="fallbackImage(this)" class="game-thumb-mini" alt="Mario">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario', '4.00 MB', this)">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>" class="game-thumb-mini" alt="Mario">
                     <div class="game-info">
                         <span class="game-title">Super Mario Advance</span>
-                        <span class="game-subtitle">Game Boy Advance</span>
+                        <span class="game-subtitle">GBA • 4.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'https://upload.wikimedia.org/wikipedia/en/7/7e/Pok%C3%A9mon_FireRed_box.jpg', this)">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7e/Pok%C3%A9mon_FireRed_box.jpg" onerror="fallbackImage(this)" class="game-thumb-mini" alt="Pokemon">
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e53e3e'/><path d='M10,50 A40,40 0 0,0 90,50 Z' fill='%23ffffff'/><line x1='10' y1='50' x2='90' y2='50' stroke='%232d3748' stroke-width='8'/><circle cx='50' cy='50' r='12' fill='%23ffffff' stroke='%232d3748' stroke-width='6'/></svg>" class="game-thumb-mini" alt="Pokemon">
                     <div class="game-info">
                         <span class="game-title">Pokémon Rojo Fuego</span>
-                        <span class="game-subtitle">Game Boy Advance</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'https://upload.wikimedia.org/wikipedia/en/c/c8/Sonic_Advance_Box_Art.png', this)">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/c/c8/Sonic_Advance_Box_Art.png" onerror="fallbackImage(this)" class="game-thumb-mini" alt="Sonic">
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic', '8.00 MB', this)">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10,80 Q20,20 60,20 Q85,20 80,45 Q70,40 60,50 Q85,55 75,70 Q60,60 50,80 Z' fill='%233182ce'/><circle cx='45' cy='45' r='8' fill='%23fff'/><circle cx='47' cy='45' r='4' fill='%23000'/><path d='M30,65 Q50,85 70,75' fill='none' stroke='%23f6ad55' stroke-width='6'/></svg>" class="game-thumb-mini" alt="Sonic">
                     <div class="game-info">
                         <span class="game-title">Sonic Advance</span>
-                        <span class="game-subtitle">Game Boy Advance</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'https://upload.wikimedia.org/wikipedia/en/a/a5/The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG', this)">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/a/a5/The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG" onerror="fallbackImage(this)" class="game-thumb-mini" alt="Zelda">
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23ecc94b'/><polygon points='30,50 10,85 50,85' fill='%23ecc94b'/><polygon points='70,50 50,85 90,85' fill='%23ecc94b'/></svg>" class="game-thumb-mini" alt="Zelda">
                     <div class="game-info">
                         <span class="game-title">Zelda: Minish Cap</span>
-                        <span class="game-subtitle">Game Boy Advance</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'https://upload.wikimedia.org/wikipedia/en/b/b5/Mario_Kart_Super_Circuit_box_art.png', this)">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/b/b5/Mario_Kart_Super_Circuit_box_art.png" onerror="fallbackImage(this)" class="game-thumb-mini" alt="Mario Kart">
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mariokart', '4.00 MB', this)">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23ecc94b' stroke-width='10'/><circle cx='50' cy='50' r='18' fill='%23e53e3e'/><path d='M50,12 L50,88 M12,50 L88,50' stroke='%23ecc94b' stroke-width='8'/></svg>" class="game-thumb-mini" alt="Mario Kart">
                     <div class="game-info">
                         <span class="game-title">Mario Kart Circuit</span>
-                        <span class="game-subtitle">Game Boy Advance</span>
+                        <span class="game-subtitle">GBA • 4.00 MB</span>
                     </div>
                 </li>
             </ul>
@@ -446,11 +458,11 @@
             <div class="emulator-frame">
                 <div id="game-holder">
                     <div class="start-screen">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/2/21/Super_Mario_Advance.png" onerror="fallbackImage(this)" class="bg-poster">
+                        <img id="poster-bg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>" class="bg-poster">
                         <div class="start-screen-content">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/2/21/Super_Mario_Advance.png" onerror="fallbackImage(this)" class="game-poster-preview">
+                            <img id="poster-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>" class="game-poster-preview">
                             <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
-                            <p style="color: #64748b; font-size: 13px;">Consola: GBA</p>
+                            <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
                             <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
                         </div>
                     </div>
@@ -468,16 +480,20 @@
     </div>
 
     <script>
+        const gameIcons = {
+            mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>",
+            pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e53e3e'/><path d='M10,50 A40,40 0 0,0 90,50 Z' fill='%23ffffff'/><line x1='10' y1='50' x2='90' y2='50' stroke='%232d3748' stroke-width='8'/><circle cx='50' cy='50' r='12' fill='%23ffffff' stroke='%232d3748' stroke-width='6'/></svg>",
+            sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10,80 Q20,20 60,20 Q85,20 80,45 Q70,40 60,50 Q85,55 75,70 Q60,60 50,80 Z' fill='%233182ce'/><circle cx='45' cy='45' r='8' fill='%23fff'/><circle cx='47' cy='45' r='4' fill='%23000'/><path d='M30,65 Q50,85 70,75' fill='none' stroke='%23f6ad55' stroke-width='6'/></svg>",
+            zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23ecc94b'/><polygon points='30,50 10,85 50,85' fill='%23ecc94b'/><polygon points='70,50 50,85 90,85' fill='%23ecc94b'/></svg>",
+            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23ecc94b' stroke-width='10'/><circle cx='50' cy='50' r='18' fill='%23e53e3e'/><path d='M50,12 L50,88 M12,50 L88,50' stroke='%23ecc94b' stroke-width='8'/></svg>"
+        };
+
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
         let currentRom = "mario_advance.gba";
-        let currentImg = "https://upload.wikimedia.org/wikipedia/en/2/21/Super_Mario_Advance.png";
+        let currentIconKey = "mario";
+        let currentSize = "4.00 MB";
         let currentXHR = null;
-
-        function fallbackImage(img) {
-            img.onerror = null;
-            img.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2312131f'/%3E%3Cpath d='M30 40h40v20H30z' fill='%2300f0ff' opacity='0.3'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='28' fill='%2300f0ff'%3E🎮%3C/text%3E%3C/svg%3E";
-        }
 
         function stopAndCleanupEmulator() {
             if (currentXHR) {
@@ -491,7 +507,7 @@
             }
         }
 
-        function changeGame(title, core, romName, imgUrl, element) {
+        function changeGame(title, core, romName, iconKey, size, element) {
             stopAndCleanupEmulator();
 
             document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
@@ -500,16 +516,19 @@
             currentTitle = title;
             currentCore = core;
             currentRom = romName;
-            currentImg = imgUrl;
+            currentIconKey = iconKey;
+            currentSize = size;
+
+            const iconSvg = gameIcons[currentIconKey];
 
             const container = document.getElementById('game-holder');
             container.innerHTML = `
                 <div class="start-screen">
-                    <img src="${currentImg}" onerror="fallbackImage(this)" class="bg-poster">
+                    <img src="${iconSvg}" class="bg-poster">
                     <div class="start-screen-content">
-                        <img src="${currentImg}" onerror="fallbackImage(this)" class="game-poster-preview">
+                        <img src="${iconSvg}" class="game-poster-preview">
                         <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
-                        <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()}</p>
+                        <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
                         <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
                     </div>
                 </div>
@@ -519,10 +538,12 @@
         function startEmulator() {
             stopAndCleanupEmulator();
 
+            const iconSvg = gameIcons[currentIconKey];
+
             const container = document.getElementById('game-holder');
             container.innerHTML = `
                 <div class="loading-screen">
-                    <img src="${currentImg}" onerror="fallbackImage(this)" class="bg-poster">
+                    <img src="${iconSvg}" class="bg-poster">
                     
                     <div class="logo-glow-wrapper">
                         <div class="spinner-ring"></div>
@@ -535,7 +556,8 @@
                     </div>
 
                     <div class="mb-counter-box">
-                        <span class="mb-text" id="mb-counter">0.00 MB / 0.00 MB</span>
+                        <span class="size-label">Tamaño de la ROM: ${currentSize}</span>
+                        <span class="mb-text" id="mb-counter">Descargado: 0.00 MB / ${currentSize}</span>
                     </div>
                 </div>
             `;
@@ -554,12 +576,12 @@
                     const totalMB = (event.total / (1024 * 1024)).toFixed(2);
 
                     if (mbCounter) {
-                        mbCounter.textContent = `${loadedMB} MB / ${totalMB} MB`;
+                        mbCounter.textContent = `Descargado: ${loadedMB} MB / ${totalMB} MB`;
                     }
                 } else if (event.loaded) {
                     const loadedMB = (event.loaded / (1024 * 1024)).toFixed(2);
                     if (mbCounter) {
-                        mbCounter.textContent = `${loadedMB} MB / ...`;
+                        mbCounter.textContent = `Descargado: ${loadedMB} MB / ${currentSize}`;
                     }
                 }
             };
@@ -569,7 +591,7 @@
                     const mbCounter = document.getElementById('mb-counter');
                     if (mbCounter && currentXHR.response) {
                         const totalSizeMB = (currentXHR.response.size / (1024 * 1024)).toFixed(2);
-                        mbCounter.textContent = `${totalSizeMB} MB / ${totalSizeMB} MB`;
+                        mbCounter.textContent = `Descargado: ${totalSizeMB} MB / ${totalSizeMB} MB`;
                     }
 
                     const blobUrl = URL.createObjectURL(currentXHR.response);
