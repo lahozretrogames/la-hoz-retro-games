@@ -162,6 +162,7 @@
         #game-holder {
             width: 100%;
             height: 100%;
+            position: relative;
         }
 
         .start-screen {
@@ -173,6 +174,56 @@
             align-items: center;
             text-align: center;
             background: linear-gradient(135deg, #090911 0%, #151525 100%);
+        }
+
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #090911;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .loading-bg-image {
+            position: absolute;
+            max-width: 60%;
+            max-height: 60%;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .loading-hoz-animation {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 15px var(--neon-cyan));
+            animation: spinHoz 2s infinite linear, pulseHoz 1.5s infinite alternate;
+            z-index: 2;
+        }
+
+        @keyframes spinHoz {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseHoz {
+            0% { filter: drop-shadow(0 0 10px var(--neon-cyan)); }
+            100% { filter: drop-shadow(0 0 25px var(--neon-magenta)); }
+        }
+
+        .loading-text-percentage {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 25px;
+            text-shadow: 0 0 10px var(--neon-cyan);
+            z-index: 2;
         }
 
         .play-btn {
@@ -229,6 +280,7 @@
             text-align: center;
         }
     </style>
+    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 </head>
 <body>
 
@@ -242,7 +294,7 @@
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 500;">Espacio Jugador Confort v1.2 🕹️</div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 500;">Espacio Jugador Confort v2.0 🕹️</div>
     </header>
 
     <div class="main-layout">
@@ -250,23 +302,23 @@
         <aside class="sidebar">
             <h3>Tus Clásicos GBA</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba')">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario_advance.png')">
                     <span class="game-icon">🍄</span>
                     <span>Super Mario Advance</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba')">
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon_rojo_fuego.png')">
                     <span class="game-icon">🔥</span>
                     <span>Pokémon Rojo Fuego</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba')">
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic_advance.png')">
                     <span class="game-icon">🦔</span>
                     <span>Sonic Advance</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba')">
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda_minish_cap.png')">
                     <span class="game-icon">🛡️</span>
                     <span>Zelda: Minish Cap</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba')">
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario_kart.png')">
                     <span class="game-icon">🏎️</span>
                     <span>Mario Kart Circuit</span>
                 </li>
@@ -276,7 +328,7 @@
         <main class="game-zone">
             <div class="emulator-frame">
                 <div id="game-holder">
-                    <div class="start-screen" id="launcher-layer">
+                    <div class="start-screen">
                         <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
                         <p style="color: #64748b; font-size: 14px;">Consola: Game Boy Advance</p>
                         <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
@@ -299,48 +351,65 @@
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
         let currentRom = "mario_advance.gba"; 
+        let currentImg = "mario_advance.png";
 
-        function changeGame(title, core, romName) {
-            // Eliminar clases activas del menu lateral
-            const items = document.querySelectorAll('.game-item');
-            items.forEach(function(item) {
-                item.classList.remove('active');
-            });
-            
-            // Buscar y marcar el elemento seleccionado de forma segura
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
-            }
+        function changeGame(title, core, romName, imgName) {
+            document.getElementById('game-holder').innerHTML = '';
+
+            document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
 
             currentTitle = title;
             currentCore = core;
             currentRom = romName;
+            currentImg = imgName;
 
-            // Renderizar la pantalla de inicio limpia usando strings tradicionales para evitar fallos de interpretacion
-            document.getElementById('game-holder').innerHTML = 
-                '<div class="start-screen" id="launcher-layer">' +
-                    '<h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;" id="display-title">' + title + '</h2>' +
-                    '<p style="color: #64748b; font-size: 14px;">Consola: ' + core.toUpperCase() + '</p>' +
-                    '<button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>' +
-                '</div>';
+            document.getElementById('game-holder').innerHTML = `
+                <div class="start-screen">
+                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">${title}</h2>
+                    <p style="color: #64748b; font-size: 14px;">Consola: ${core.toUpperCase()}</p>
+                    <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
+                </div>
+            `;
         }
 
         function startEmulator() {
-            // Crear el lienzo limpio para recibir los elementos graficos de la consola
-            document.getElementById('game-holder').innerHTML = '<div id="canvas-emulator" style="width:100%; height:100%;"></div>';
+            document.getElementById('game-holder').innerHTML = `
+                <div class="loading-screen">
+                    <img src="${currentImg}" class="loading-bg-image" onerror="this.style.display='none'">
+                    <svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>
+                        <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
+                    </svg>
+                    <div class="loading-text-percentage" id="load-pct">Cargando: 1%</div>
+                </div>
+            `;
             
-            // Parametros estructurales de inicializacion requeridos por el nucleo de EmulatorJS
-            window.EJS_player = '#canvas-emulator';
+            let currentPct = 1;
+            const pctInterval = setInterval(() => {
+                if (currentPct < 99) {
+                    currentPct += Math.floor(Math.random() * 5) + 1;
+                    if (currentPct > 99) currentPct = 99;
+                    document.getElementById('load-pct').innerText = `Cargando: ${currentPct}%`;
+                }
+            }, 150);
+
+            window.EJS_player = '#game-holder';
             window.EJS_core = currentCore; 
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
             window.EJS_gameUrl = 'roms/' + currentRom; 
             window.EJS_volume = 0.8;
-            window.EJS_startOnLoaded = true; // Fuerza la descarga previa para blindar contra errores de red
+            window.EJS_startOnLoaded = true; 
 
-            // Inyeccion dinamica y limpia de las librerias oficiales de ejecucion en tiempo real
-            const loaderScript = document.createElement('script');
-            loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-            document.body.appendChild(loaderScript);
+            window.EJS_onGameStart = () => {
+                clearInterval(pctInterval);
+                const pctLabel = document.getElementById('load-pct');
+                if (pctLabel) pctLabel.innerText = "Cargando: 100%";
+            };
+
+            if (typeof loadEmulator === 'function') {
+                loadEmulator();
+            }
         }
     </script>
 </body>
