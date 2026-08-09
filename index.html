@@ -11,7 +11,6 @@
             --card-bg: #12131f;
             --neon-cyan: #00f0ff;
             --neon-magenta: #ff0055;
-            --neon-glow: rgba(0, 240, 255, 0.4);
             --text-main: #f1f5f9;
         }
 
@@ -30,11 +29,11 @@
             flex-direction: column;
             overflow: hidden;
             background-image: 
-                radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 85% 80%, rgba(255, 0, 85, 0.05) 0%, transparent 40%);
+                radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(255, 0, 85, 0.08) 0%, transparent 45%);
         }
 
-        /* HEADER & LOGO CORREGIDO */
+        /* HEADER & LOGO LA HOZ */
         header {
             background: rgba(12, 13, 20, 0.95);
             backdrop-filter: blur(10px);
@@ -42,8 +41,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid rgba(0, 240, 255, 0.25);
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9);
             z-index: 20;
         }
 
@@ -56,14 +55,14 @@
         .hoz-logo-svg {
             width: 48px;
             height: 48px;
-            filter: drop-shadow(0 0 8px var(--neon-cyan));
+            filter: drop-shadow(0 0 10px var(--neon-cyan));
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
 
         .hoz-logo-svg:hover {
             transform: rotate(-15deg) scale(1.1);
-            filter: drop-shadow(0 0 14px var(--neon-magenta));
+            filter: drop-shadow(0 0 16px var(--neon-magenta));
         }
 
         .logo-text {
@@ -71,7 +70,7 @@
             font-weight: 900;
             letter-spacing: 2px;
             color: #fff;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
         }
 
         .logo-text span {
@@ -94,39 +93,40 @@
 
         /* SIDEBAR DE JUEGOS */
         .sidebar {
-            width: 300px;
+            width: 310px;
             background-color: var(--panel-bg);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(0, 240, 255, 0.15);
             padding: 24px 18px;
             display: flex;
             flex-direction: column;
             gap: 15px;
             z-index: 15;
-            box-shadow: 5px 0 25px rgba(0,0,0,0.5);
+            box-shadow: 5px 0 25px rgba(0,0,0,0.6);
         }
 
         .sidebar h3 {
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #00f0ff;
+            color: var(--neon-cyan);
             margin-bottom: 5px;
             font-weight: 700;
+            text-shadow: 0 0 8px rgba(0,240,255,0.4);
         }
 
         .game-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             overflow-y: auto;
         }
 
         .game-item {
-            padding: 14px 16px;
+            padding: 12px 14px;
             background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
@@ -136,22 +136,47 @@
         }
 
         .game-item:hover {
-            background: rgba(0, 240, 255, 0.08);
-            border-color: rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.1);
+            border-color: rgba(0, 240, 255, 0.5);
             transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
         }
 
         .game-item.active {
-            background: linear-gradient(90deg, rgba(0, 240, 255, 0.15) 0%, rgba(255, 0, 85, 0.05) 100%);
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.2) 0%, rgba(255, 0, 85, 0.08) 100%);
             border-color: var(--neon-cyan);
             color: #fff;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);
             transform: translateX(6px);
         }
 
-        .game-icon { font-size: 20px; }
+        .game-thumb-mini {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: #000;
+        }
 
-        /* ZONA PRINCIPAL DE EMULACIÓN */
+        .game-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .game-subtitle {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* ZONA PRINCIPAL Y MARCO DE EMULACIÓN */
         .game-zone {
             flex: 1;
             display: flex;
@@ -167,8 +192,8 @@
             aspect-ratio: 4 / 3;
             background-color: #000;
             border-radius: 16px;
-            border: 2px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 240, 255, 0.1);
+            border: 2px solid rgba(0, 240, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 240, 255, 0.15);
             position: relative;
             overflow: hidden;
         }
@@ -186,6 +211,7 @@
             display: block;
         }
 
+        /* PANTALLA INICIAL DE SELECCIÓN CON IMAGEN DE FONDO */
         .start-screen {
             width: 100%;
             height: 100%;
@@ -194,11 +220,46 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #090912 0%, #121324 100%);
-            padding: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* PANTALLA DE CARGA Y ANIMACIÓN MEJORADA */
+        .bg-poster {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.25;
+            filter: blur(4px) scale(1.05);
+            transition: all 0.5s ease;
+        }
+
+        .start-screen-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(7, 7, 14, 0.75);
+            backdrop-filter: blur(12px);
+            padding: 30px 45px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        .game-poster-preview {
+            width: 140px;
+            height: 140px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+        }
+
+        /* PANTALLA DE CARGA CON DESCARGA MB/MB Y ANIMACIÓN CIRCULAR */
         .loading-screen {
             position: absolute;
             top: 0; left: 0;
@@ -216,30 +277,30 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        .logo-glow-wrapper::before {
-            content: '';
+        .spinner-ring {
             position: absolute;
             width: 140px;
             height: 140px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,240,255,0.35) 0%, rgba(255,0,85,0) 70%);
-            animation: pulseAura 1.8s infinite ease-in-out alternate;
-            z-index: 1;
+            border: 3px solid transparent;
+            border-top-color: var(--neon-cyan);
+            border-right-color: var(--neon-magenta);
+            animation: spin 1.2s linear infinite;
         }
 
-        @keyframes pulseAura {
-            0% { transform: scale(0.85); opacity: 0.3; }
-            100% { transform: scale(1.35); opacity: 0.8; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .loading-hoz-animation {
-            width: 110px;
-            height: 110px;
+            width: 90px;
+            height: 90px;
             filter: drop-shadow(0 0 20px var(--neon-cyan));
-            animation: scytheSlash 2.5s infinite ease-in-out;
+            animation: scytheSlash 2.2s infinite ease-in-out;
             z-index: 2;
         }
 
@@ -251,36 +312,38 @@
             100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
         }
 
-        .progress-bar-container {
-            width: 60%;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
+        .mb-counter-box {
             z-index: 2;
+            margin-top: 15px;
+            background: rgba(0, 240, 255, 0.08);
             border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 0 15px rgba(0,0,0,0.8) inset;
+            padding: 10px 24px;
+            border-radius: 30px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .progress-bar-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--neon-cyan) 0%, #00bcff 60%, var(--neon-magenta) 100%);
-            border-radius: 20px;
-            box-shadow: 0 0 15px var(--neon-cyan);
-            transition: width 0.1s linear;
+        .mb-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            font-family: monospace;
+            text-shadow: 0 0 8px var(--neon-cyan);
         }
 
         .play-btn {
             background: linear-gradient(135deg, var(--neon-cyan), #00a2ff);
             color: #000;
             border: none;
-            padding: 15px 40px;
+            padding: 14px 38px;
             font-size: 16px;
             font-weight: 800;
             border-radius: 30px;
             cursor: pointer;
-            margin-top: 25px;
+            margin-top: 15px;
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
             transition: all 0.25s;
             text-transform: uppercase;
@@ -331,43 +394,55 @@
 
     <header>
         <div class="brand-container">
-            <!-- LOGO LA HOZ SVG PULIDO Y CORREGIDO -->
             <svg class="hoz-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <!-- Mango de Madera Retro -->
                 <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
                 <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
-                <!-- Hoja Neón Limpia -->
                 <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
                 <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.0 🕹️</div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.5 🕹️</div>
     </header>
 
     <div class="main-layout">
         <aside class="sidebar">
             <h3>Selecciona tu ROM</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', this)">
-                    <span class="game-icon">🍄</span>
-                    <span>Super Mario Advance</span>
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg', this)">
+                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg" class="game-thumb-mini">
+                    <div class="game-info">
+                        <span class="game-title">Super Mario Advance</span>
+                        <span class="game-subtitle">Game Boy Advance</span>
+                    </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', this)">
-                    <span class="game-icon">🔥</span>
-                    <span>Pokémon Rojo Fuego</span>
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co3pkw.jpg', this)">
+                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co3pkw.jpg" class="game-thumb-mini">
+                    <div class="game-info">
+                        <span class="game-title">Pokémon Rojo Fuego</span>
+                        <span class="game-subtitle">Game Boy Advance</span>
+                    </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', this)">
-                    <span class="game-icon">🦔</span>
-                    <span>Sonic Advance</span>
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co249x.jpg', this)">
+                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co249x.jpg" class="game-thumb-mini">
+                    <div class="game-info">
+                        <span class="game-title">Sonic Advance</span>
+                        <span class="game-subtitle">Game Boy Advance</span>
+                    </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', this)">
-                    <span class="game-icon">🛡️</span>
-                    <span>Zelda: Minish Cap</span>
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1x3t.jpg', this)">
+                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1x3t.jpg" class="game-thumb-mini">
+                    <div class="game-info">
+                        <span class="game-title">Zelda: Minish Cap</span>
+                        <span class="game-subtitle">Game Boy Advance</span>
+                    </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', this)">
-                    <span class="game-icon">🏎️</span>
-                    <span>Mario Kart Circuit</span>
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co259m.jpg', this)">
+                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co259m.jpg" class="game-thumb-mini">
+                    <div class="game-info">
+                        <span class="game-title">Mario Kart Circuit</span>
+                        <span class="game-subtitle">Game Boy Advance</span>
+                    </div>
                 </li>
             </ul>
         </aside>
@@ -376,9 +451,13 @@
             <div class="emulator-frame">
                 <div id="game-holder">
                     <div class="start-screen">
-                        <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 6px;" id="display-title">Super Mario Advance</h2>
-                        <p style="color: #64748b; font-size: 14px;">Game Boy Advance Edition</p>
-                        <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
+                        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg" class="bg-poster">
+                        <div class="start-screen-content">
+                            <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg" class="game-poster-preview">
+                            <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
+                            <p style="color: #64748b; font-size: 13px;">Consola: GBA</p>
+                            <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -396,7 +475,8 @@
     <script>
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
-        let currentRom = "mario_advance.gba"; 
+        let currentRom = "mario_advance.gba";
+        let currentImg = "https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg";
         let currentXHR = null;
 
         function stopAndCleanupEmulator() {
@@ -407,12 +487,11 @@
 
             const holder = document.getElementById('game-holder');
             if (holder) {
-                // Al destruir los iframes destruimos el contexto de sonido por completo
                 holder.innerHTML = '';
             }
         }
 
-        function changeGame(title, core, romName, element) {
+        function changeGame(title, core, romName, imgUrl, element) {
             stopAndCleanupEmulator();
 
             document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
@@ -421,13 +500,18 @@
             currentTitle = title;
             currentCore = core;
             currentRom = romName;
+            currentImg = imgUrl;
 
             const container = document.getElementById('game-holder');
             container.innerHTML = `
                 <div class="start-screen">
-                    <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 6px;">${currentTitle}</h2>
-                    <p style="color: #64748b; font-size: 14px;">Consola: ${currentCore.toUpperCase()}</p>
-                    <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
+                    <img src="${currentImg}" class="bg-poster">
+                    <div class="start-screen-content">
+                        <img src="${currentImg}" class="game-poster-preview">
+                        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
+                        <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()}</p>
+                        <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
+                    </div>
                 </div>
             `;
         }
@@ -438,7 +522,10 @@
             const container = document.getElementById('game-holder');
             container.innerHTML = `
                 <div class="loading-screen">
+                    <img src="${currentImg}" class="bg-poster">
+                    
                     <div class="logo-glow-wrapper">
+                        <div class="spinner-ring"></div>
                         <svg class="loading-hoz-animation" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                             <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
                             <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
@@ -446,8 +533,9 @@
                             <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
                         </svg>
                     </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" id="load-bar"></div>
+
+                    <div class="mb-counter-box">
+                        <span class="mb-text" id="mb-counter">0.00 MB / 0.00 MB</span>
                     </div>
                 </div>
             `;
@@ -459,17 +547,30 @@
             currentXHR.responseType = 'blob';
 
             currentXHR.onprogress = function(event) {
-                const barFill = document.getElementById('load-bar');
+                const mbCounter = document.getElementById('mb-counter');
+
                 if (event.lengthComputable && event.total > 0) {
-                    const percent = (event.loaded / event.total) * 100;
-                    if (barFill) barFill.style.width = percent + '%';
+                    const loadedMB = (event.loaded / (1024 * 1024)).toFixed(2);
+                    const totalMB = (event.total / (1024 * 1024)).toFixed(2);
+
+                    if (mbCounter) {
+                        mbCounter.textContent = `${loadedMB} MB / ${totalMB} MB`;
+                    }
+                } else if (event.loaded) {
+                    const loadedMB = (event.loaded / (1024 * 1024)).toFixed(2);
+                    if (mbCounter) {
+                        mbCounter.textContent = `${loadedMB} MB / ...`;
+                    }
                 }
             };
 
             currentXHR.onload = function() {
                 if (currentXHR.status === 200 || currentXHR.status === 0) {
-                    const barFill = document.getElementById('load-bar');
-                    if (barFill) barFill.style.width = '100%';
+                    const mbCounter = document.getElementById('mb-counter');
+                    if (mbCounter && currentXHR.response) {
+                        const totalSizeMB = (currentXHR.response.size / (1024 * 1024)).toFixed(2);
+                        mbCounter.textContent = `${totalSizeMB} MB / ${totalSizeMB} MB`;
+                    }
 
                     const blobUrl = URL.createObjectURL(currentXHR.response);
 
@@ -506,7 +607,7 @@
                             </html>
                         `);
                         iframeDoc.close();
-                    }, 200);
+                    }, 300);
                 }
             };
 
