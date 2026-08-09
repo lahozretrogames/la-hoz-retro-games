@@ -82,6 +82,7 @@
             filter: drop-shadow(0 0 10px var(--neon-cyan));
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
+            will-change: transform;
         }
 
         .hoz-logo-svg:hover {
@@ -101,6 +102,7 @@
             color: var(--neon-magenta);
             text-shadow: 0 0 12px var(--neon-magenta);
             animation: neonPulse 2s infinite alternate;
+            will-change: opacity, text-shadow;
         }
 
         @keyframes neonPulse {
@@ -153,11 +155,12 @@
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
             display: flex;
             align-items: center;
             gap: 14px;
             user-select: none;
+            will-change: transform;
         }
 
         .game-item:hover {
@@ -229,6 +232,7 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 240, 255, 0.15);
             position: relative;
             overflow: hidden;
+            transform: translateZ(0); /* Aceleración por GPU */
         }
 
         #game-holder {
@@ -244,7 +248,7 @@
             width: 100%;
             padding: 12px 16px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             z-index: 100;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
@@ -268,9 +272,10 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease, background 0.2s ease;
             box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
             backdrop-filter: blur(4px);
+            will-change: transform;
         }
 
         .exit-game-btn:hover {
@@ -279,36 +284,13 @@
             transform: scale(1.05);
         }
 
-        .fullscreen-btn-inner {
-            background: rgba(0, 240, 255, 0.2);
-            border: 1px solid var(--neon-cyan);
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
-            backdrop-filter: blur(4px);
-        }
-
-        .fullscreen-btn-inner:hover {
-            background: var(--neon-cyan);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-cyan);
-            transform: scale(1.05);
-        }
-
         .emulator-iframe {
             width: 100%;
             height: 100%;
             border: none;
             display: block;
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
         .start-screen {
@@ -331,7 +313,7 @@
             object-fit: contain;
             opacity: 0.15;
             filter: blur(2px) scale(1.05);
-            transition: all 0.5s ease;
+            transition: opacity 0.3s ease;
             padding: 40px;
         }
 
@@ -390,6 +372,7 @@
             border-top-color: var(--neon-cyan);
             border-right-color: var(--neon-magenta);
             animation: spin 1.2s linear infinite;
+            will-change: transform;
         }
 
         @keyframes spin {
@@ -403,6 +386,7 @@
             filter: drop-shadow(0 0 20px var(--neon-cyan));
             animation: scytheSlash 2.2s infinite ease-in-out;
             z-index: 2;
+            will-change: transform;
         }
 
         @keyframes scytheSlash {
@@ -424,9 +408,10 @@
             cursor: pointer;
             margin-top: 15px;
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-            transition: all 0.25s;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            will-change: transform;
         }
 
         .play-btn:hover {
@@ -568,9 +553,6 @@
                         <button class="exit-game-btn" onclick="exitGame()">
                             ✖ Salir del Juego
                         </button>
-                        <button class="fullscreen-btn-inner" onclick="toggleFullScreen()">
-                            ⛶ Pantalla Completa
-                        </button>
                     </div>
 
                     <div id="game-holder">
@@ -618,8 +600,8 @@
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
-        // Evita que presionar la tecla Enter active comportamientos predeterminados o botones enfocado
-        document.addEventListener('keydown', function(e) {
+        // Intercepta de raíz la tecla Enter para que NO altere la pantalla completa
+        window.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.code === 'Enter') {
                 e.preventDefault();
                 e.stopPropagation();
@@ -646,16 +628,6 @@
             toast.innerText = msg;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
-        }
-
-        function toggleFullScreen() {
-            const elem = document.getElementById('emulator-frame');
-            if (!document.fullscreenElement) {
-                if (elem.requestFullscreen) elem.requestFullscreen();
-                else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
         }
 
         function stopAndCleanupEmulator() {
@@ -805,7 +777,7 @@
                             
                             ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
 
-                            // Evitar la activación accidental de pantalla completa al pulsar Enter
+                            // Interceptar Enter dentro del emulador para evitar pantalla completa por atajo
                             window.addEventListener('keydown', function(e) {
                                 if (e.key === 'Enter' || e.code === 'Enter') {
                                     e.stopPropagation();
@@ -831,16 +803,16 @@
 
                 container.appendChild(iframe);
 
-                // Quitar foco de los botones HTML para evitar disparar acciones por defecto
+                // Desenfocar elementos HTML
                 if (document.activeElement) {
                     document.activeElement.blur();
                 }
 
-                // Dar foco directamente al emulador
+                // Enfocar automáticamente el iframe del juego
                 iframe.onload = () => {
                     iframe.contentWindow.focus();
                 };
-            }, 400); 
+            }, 300); 
         }
     </script>
 </body>
