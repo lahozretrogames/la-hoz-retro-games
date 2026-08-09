@@ -97,6 +97,8 @@
             flex-direction: column;
             gap: 15px;
             z-index: 15;
+            overflow-x: hidden;
+            box-sizing: border-box;
         }
 
         .sidebar h3 {
@@ -113,6 +115,8 @@
             flex-direction: column;
             gap: 8px;
             overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
         }
 
         .game-item {
@@ -125,6 +129,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            user-select: none;
         }
 
         .game-item:hover, .game-item.active {
@@ -174,6 +179,7 @@
             align-items: center;
             text-align: center;
             background: linear-gradient(135deg, #090911 0%, #151525 100%);
+            padding: 20px;
         }
 
         .loading-screen {
@@ -192,16 +198,17 @@
 
         .loading-bg-image {
             position: absolute;
-            max-width: 60%;
-            max-height: 60%;
-            opacity: 0.15;
+            max-width: 50%;
+            max-height: 50%;
+            opacity: 0.12;
             pointer-events: none;
             z-index: 1;
+            object-fit: contain;
         }
 
         .loading-hoz-animation {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             filter: drop-shadow(0 0 15px var(--neon-cyan));
             animation: spinHoz 2s infinite linear, pulseHoz 1.5s infinite alternate;
             z-index: 2;
@@ -218,12 +225,31 @@
         }
 
         .loading-text-percentage {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             color: #fff;
-            margin-top: 25px;
+            margin-top: 20px;
             text-shadow: 0 0 10px var(--neon-cyan);
             z-index: 2;
+        }
+
+        .progress-bar-container {
+            width: 60%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+            z-index: 2;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
 
         .play-btn {
@@ -301,23 +327,23 @@
         <aside class="sidebar">
             <h3>Tus Clásicos GBA</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario_advance.png')">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario_advance.png', this)">
                     <span class="game-icon">🍄</span>
                     <span>Super Mario Advance</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon_rojo_fuego.png')">
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon_rojo_fuego.png', this)">
                     <span class="game-icon">🔥</span>
                     <span>Pokémon Rojo Fuego</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic_advance.png')">
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic_advance.png', this)">
                     <span class="game-icon">🦔</span>
                     <span>Sonic Advance</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda_minish_cap.png')">
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda_minish_cap.png', this)">
                     <span class="game-icon">🛡️</span>
                     <span>Zelda: Minish Cap</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario_kart.png')">
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario_kart.png', this)">
                     <span class="game-icon">🏎️</span>
                     <span>Mario Kart Circuit</span>
                 </li>
@@ -351,17 +377,35 @@
         let currentCore = "gba";
         let currentRom = "mario_advance.gba"; 
         let currentImg = "mario_advance.png";
+        let currentXHR = null;
 
-        function changeGame(title, core, romName, imgName) {
-            // Detener por completo cualquier emulador activo destruyendo su frame
-            document.getElementById('game-holder').innerHTML = '';
+        function stopAndCleanupEmulator() {
+            if (currentXHR) {
+                currentXHR.abort();
+                currentXHR = null;
+            }
 
-            // Quitar clase activa de los botones
+            if (window.EJS_emulator) {
+                try {
+                    if (typeof window.EJS_emulator.destroy === 'function') {
+                        window.EJS_emulator.destroy();
+                    }
+                } catch (e) {}
+                window.EJS_emulator = null;
+            }
+
+            const holder = document.getElementById('game-holder');
+            if (holder) {
+                holder.innerHTML = '';
+            }
+        }
+
+        function changeGame(title, core, romName, imgName, element) {
+            stopAndCleanupEmulator();
+
             document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
-            
-            // Buscar y activar el botón correcto
-            if(event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
+            if (element) {
+                element.classList.add('active');
             }
 
             currentTitle = title;
@@ -369,61 +413,99 @@
             currentRom = romName;
             currentImg = imgName;
 
-            // Inyectar el menú limpio usando JavaScript plano tradicional para evitar errores de comillas
-            var container = document.getElementById('game-holder');
-            container.innerHTML = '<div class="start-screen">' +
-                '<h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">' + title + '</h2>' +
-                '<p style="color: #64748b; font-size: 14px;">Consola: ' + core.toUpperCase() + '</p>' +
-                '<button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>' +
-            '</div>';
+            const container = document.getElementById('game-holder');
+            
+            const startDiv = document.createElement('div');
+            startDiv.className = 'start-screen';
+            
+            const h2 = document.createElement('h2');
+            h2.style.cssText = 'font-size: 24px; font-weight: 700; margin-bottom: 4px;';
+            h2.textContent = currentTitle;
+
+            const p = document.createElement('p');
+            p.style.cssText = 'color: #64748b; font-size: 14px;';
+            p.textContent = 'Consola: ' + currentCore.toUpperCase();
+
+            const btn = document.createElement('button');
+            btn.className = 'play-btn';
+            btn.textContent = 'Iniciar Juego';
+            btn.onclick = startEmulator;
+
+            startDiv.appendChild(h2);
+            startDiv.appendChild(p);
+            startDiv.appendChild(btn);
+
+            container.appendChild(startDiv);
         }
 
         function startEmulator() {
-            // Inyectar la pantalla de carga con tu logo y la imagen transparente de fondo
-            var container = document.getElementById('game-holder');
-            container.innerHTML = '<div class="loading-screen">' +
-                '<img src="' + currentImg + '" class="loading-bg-image" onerror="this.style.display=\'none\\'">' +
-                '<svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">' +
-                    '<path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>' +
-                    '<path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>' +
-                '</svg>' +
-                '<div class="loading-text-percentage" id="load-pct">Cargando: 1%</div>' +
-            '</div>';
+            stopAndCleanupEmulator();
+
+            const container = document.getElementById('game-holder');
             
-            // Simular un contador de porcentaje progresivo fluido (1% al 100%) ocultando megabytes reales
-            let currentPct = 1;
-            const pctInterval = setInterval(function() {
-                if (currentPct < 99) {
-                    currentPct += Math.floor(Math.random() * 4) + 1;
-                    if (currentPct > 99) currentPct = 99;
-                    var label = document.getElementById('load-pct');
-                    if (label) {
-                        label.innerText = "Cargando: " + currentPct + "%";
-                    }
-                }
-            }, 100);
+            container.innerHTML = `
+                <div class="loading-screen">
+                    <img src="${currentImg}" class="loading-bg-image" onerror="this.style.display='none'">
+                    <svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>
+                        <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
+                    </svg>
+                    <div class="loading-text-percentage" id="load-pct">Cargando: 0%</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="load-bar"></div>
+                    </div>
+                </div>
+            `;
 
-            // Ajustar configuraciones del emulador
-            window.EJS_player = '#game-holder';
-            window.EJS_core = currentCore; 
-            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-            window.EJS_gameUrl = 'roms/' + currentRom; 
-            window.EJS_volume = 0.8;
-            window.EJS_startOnLoaded = true; // Asegura que descargue completo e inicie de golpe
+            const romUrl = 'roms/' + currentRom;
 
-            // Detener el intervalo y forzar el 100% de éxito de carga cuando el juego arranca de verdad
-            window.EJS_onGameStart = function() {
-                clearInterval(pctInterval);
-                var label = document.getElementById('load-pct');
-                if (label) {
-                    label.innerText = "Cargando: 100%";
+            currentXHR = new XMLHttpRequest();
+            currentXHR.open('GET', romUrl, true);
+            currentXHR.responseType = 'arraybuffer';
+
+            currentXHR.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.floor((event.loaded / event.total) * 100);
+                    const pctLabel = document.getElementById('load-pct');
+                    const barFill = document.getElementById('load-bar');
+                    if (pctLabel) pctLabel.textContent = 'Cargando: ' + percentComplete + '%';
+                    if (barFill) barFill.style.width = percentComplete + '%';
                 }
             };
 
-            // Inyectar el script del cargador limpio del emulador en el cuerpo de la web
-            const loaderScript = document.createElement('script');
-            loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-            document.body.appendChild(loaderScript);
+            currentXHR.onload = function() {
+                if (currentXHR.status === 200 || currentXHR.status === 0) {
+                    const pctLabel = document.getElementById('load-pct');
+                    const barFill = document.getElementById('load-bar');
+                    if (pctLabel) pctLabel.textContent = 'Cargando: 100%';
+                    if (barFill) barFill.style.width = '100%';
+
+                    const blob = new Blob([currentXHR.response]);
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    window.EJS_player = '#game-holder';
+                    window.EJS_core = currentCore; 
+                    window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+                    window.EJS_gameUrl = blobUrl; 
+                    window.EJS_volume = 0.8;
+                    window.EJS_startOnLoaded = true;
+
+                    const existingScript = document.getElementById('ejs-loader-script');
+                    if (existingScript) existingScript.remove();
+
+                    const loaderScript = document.createElement('script');
+                    loaderScript.id = 'ejs-loader-script';
+                    loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+                    document.body.appendChild(loaderScript);
+                }
+            };
+
+            currentXHR.onerror = function() {
+                const pctLabel = document.getElementById('load-pct');
+                if (pctLabel) pctLabel.textContent = 'Error al cargar la ROM';
+            };
+
+            currentXHR.send();
         }
     </script>
 </body>
