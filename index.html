@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Hoz Retro Games - v3.6</title>
+    <title>La Hoz Retro Games - v3.7</title>
     <style>
         :root {
             --bg-dark: #050508;
@@ -209,7 +209,6 @@
             position: relative;
         }
 
-        /* Controles integrados en el marco del juego */
         .overlay-controls {
             position: absolute;
             top: 0;
@@ -386,37 +385,6 @@
             100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
         }
 
-        .mb-counter-box {
-            z-index: 2;
-            margin-top: 15px;
-            background: rgba(0, 240, 255, 0.08);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            padding: 12px 28px;
-            border-radius: 30px;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .mb-text {
-            font-size: 18px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 1px;
-            font-family: monospace;
-            text-shadow: 0 0 8px var(--neon-cyan);
-        }
-
-        .size-label {
-            font-size: 12px;
-            color: var(--neon-cyan);
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
         .play-btn {
             background: linear-gradient(135deg, var(--neon-cyan), #00a2ff);
             color: #000;
@@ -520,7 +488,7 @@
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.6 🕹️</div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.7 🕹️</div>
     </header>
 
     <div class="main-layout">
@@ -745,8 +713,9 @@
             stopAndCleanupEmulator();
 
             const iconSvg = gameIcons[currentIconKey];
-
             const container = document.getElementById('game-holder');
+
+            // Mostramos una pantalla de carga simplificada mientras el motor de EmulatorJS arranca
             container.innerHTML = `
                 <div class="loading-screen">
                     <img src="${iconSvg}" class="bg-poster">
@@ -760,110 +729,72 @@
                             <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
                         </svg>
                     </div>
-
-                    <div class="mb-counter-box">
-                        <span class="size-label">Tamaño de la ROM: ${currentSize}</span>
-                        <span class="mb-text" id="mb-counter">Descargado: 0.00 MB / ${currentSize}</span>
-                    </div>
+                    <p style="color: white; font-weight: bold;">Cargando motor de juego...</p>
                 </div>
             `;
 
-            const romUrl = 'roms/' + currentRom + '?t=' + new Date().getTime();
+            // URL directa a la ROM, sin "cache buster" para carga rápida.
+            const romUrl = 'roms/' + currentRom;
 
-            currentXHR = new XMLHttpRequest();
-            currentXHR.open('GET', romUrl, true);
-            currentXHR.responseType = 'blob';
+            // Pequeño delay para que se vea la animación de carga y el DOM se limpie
+            setTimeout(() => {
+                container.innerHTML = '';
+                const iframe = document.createElement('iframe');
+                iframe.className = 'emulator-iframe';
+                iframe.allow = 'autoplay; gamepad; fullscreen';
+                container.appendChild(iframe);
 
-            currentXHR.onprogress = function(event) {
-                const mbCounter = document.getElementById('mb-counter');
-
-                if (event.lengthComputable && event.total > 0) {
-                    const loadedMB = (event.loaded / (1024 * 1024)).toFixed(2);
-                    const totalMB = (event.total / (1024 * 1024)).toFixed(2);
-
-                    if (mbCounter) {
-                        mbCounter.textContent = `Descargado: ${loadedMB} MB / ${totalMB} MB`;
-                    }
-                } else if (event.loaded) {
-                    const loadedMB = (event.loaded / (1024 * 1024)).toFixed(2);
-                    if (mbCounter) {
-                        mbCounter.textContent = `Descargado: ${loadedMB} MB / ${currentSize}`;
-                    }
+                // Mostrar barra de controles overlay sobre el frame
+                const overlayControls = document.getElementById('overlay-controls');
+                if (overlayControls) {
+                    overlayControls.style.display = 'flex';
                 }
-            };
 
-            currentXHR.onload = function() {
-                if (currentXHR.status === 200 || currentXHR.status === 0) {
-                    const mbCounter = document.getElementById('mb-counter');
-                    if (mbCounter && currentXHR.response) {
-                        const totalSizeMB = (currentXHR.response.size / (1024 * 1024)).toFixed(2);
-                        mbCounter.textContent = `Descargado: ${totalSizeMB} MB / ${totalSizeMB} MB`;
-                    }
+                const iframeDoc = iframe.contentWindow.document;
+                const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
 
-                    const blobUrl = URL.createObjectURL(currentXHR.response);
+                iframeDoc.open();
+                iframeDoc.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }
+                            #emulator { width:100%; height:100%; }
+                        </style>
+                    </head>
+                    <body>
+                        <div id="emulator"></div>
+                        <script>
+                            window.EJS_player = '#emulator';
+                            window.EJS_core = '${currentCore}';
+                            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+                            // Apuntamos directamente a la URL de la ROM
+                            window.EJS_gameUrl = '../${romUrl}'; 
+                            window.EJS_gameName = '${currentRom}';
+                            window.EJS_startOnLoaded = true;
+                            window.EJS_volume = 0.8;
+                            
+                            ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
 
-                    setTimeout(() => {
-                        container.innerHTML = '';
-                        const iframe = document.createElement('iframe');
-                        iframe.className = 'emulator-iframe';
-                        iframe.allow = 'autoplay; gamepad; fullscreen';
-                        container.appendChild(iframe);
-
-                        // Mostrar barra de controles overlay sobre el frame
-                        const overlayControls = document.getElementById('overlay-controls');
-                        if (overlayControls) {
-                            overlayControls.style.display = 'flex';
-                        }
-
-                        const iframeDoc = iframe.contentWindow.document;
-
-                        const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
-
-                        iframeDoc.open();
-                        iframeDoc.write(`
-                            <!DOCTYPE html>
-                            <html>
-                            <head>
-                                <style>
-                                    html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }
-                                    #emulator { width:100%; height:100%; }
-                                </style>
-                            </head>
-                            <body>
-                                <div id="emulator"></div>
-                                <script>
-                                    window.EJS_player = '#emulator';
-                                    window.EJS_core = '${currentCore}';
-                                    window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-                                    window.EJS_gameUrl = '${blobUrl}';
-                                    window.EJS_gameName = '${currentRom}';
-                                    window.EJS_startOnLoaded = true;
-                                    window.EJS_volume = 0.8;
-                                    
-                                    ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
-
-                                    window.EJS_onSave = function(data) {
-                                        if (data && data.save) {
-                                            const reader = new FileReader();
-                                            reader.readAsDataURL(new Blob([data.save]));
-                                            reader.onloadend = function() {
-                                                const base64data = reader.result;
-                                                window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
-                                                window.parent.showToast('💾 Progreso guardado automáticamente');
-                                            };
-                                        }
+                            window.EJS_onSave = function(data) {
+                                if (data && data.save) {
+                                    const reader = new FileReader();
+                                    reader.readAsDataURL(new Blob([data.save]));
+                                    reader.onloadend = function() {
+                                        const base64data = reader.result;
+                                        window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
+                                        window.parent.showToast('💾 Progreso guardado automáticamente');
                                     };
-                                <\/script>
-                                <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
-                            </body>
-                            </html>
-                        `);
-                        iframeDoc.close();
-                    }, 300);
-                }
-            };
-
-            currentXHR.send();
+                                }
+                            };
+                        </script>
+                        <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+                    </body>
+                    </html>
+                `);
+                iframeDoc.close();
+            }, 500); 
         }
     </script>
 </body>
