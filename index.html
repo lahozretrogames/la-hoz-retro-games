@@ -417,35 +417,35 @@
             <h3>Selecciona tu ROM</h3>
             <ul class="game-list">
                 <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario', '4.00 MB', this)">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>" class="game-thumb-mini" alt="Mario">
+                    <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
                     <div class="game-info">
                         <span class="game-title">Super Mario Advance</span>
                         <span class="game-subtitle">GBA • 4.00 MB</span>
                     </div>
                 </li>
                 <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e53e3e'/><path d='M10,50 A40,40 0 0,0 90,50 Z' fill='%23ffffff'/><line x1='10' y1='50' x2='90' y2='50' stroke='%232d3748' stroke-width='8'/><circle cx='50' cy='50' r='12' fill='%23ffffff' stroke='%232d3748' stroke-width='6'/></svg>" class="game-thumb-mini" alt="Pokemon">
+                    <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
                     <div class="game-info">
                         <span class="game-title">Pokémon Rojo Fuego</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
                 <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic', '8.00 MB', this)">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10,80 Q20,20 60,20 Q85,20 80,45 Q70,40 60,50 Q85,55 75,70 Q60,60 50,80 Z' fill='%233182ce'/><circle cx='45' cy='45' r='8' fill='%23fff'/><circle cx='47' cy='45' r='4' fill='%23000'/><path d='M30,65 Q50,85 70,75' fill='none' stroke='%23f6ad55' stroke-width='6'/></svg>" class="game-thumb-mini" alt="Sonic">
+                    <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
                     <div class="game-info">
                         <span class="game-title">Sonic Advance</span>
                         <span class="game-subtitle">GBA • 8.00 MB</span>
                     </div>
                 </li>
                 <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23ecc94b'/><polygon points='30,50 10,85 50,85' fill='%23ecc94b'/><polygon points='70,50 50,85 90,85' fill='%23ecc94b'/></svg>" class="game-thumb-mini" alt="Zelda">
+                    <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
                     <div class="game-info">
                         <span class="game-title">Zelda: Minish Cap</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
                 <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mariokart', '4.00 MB', this)">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23ecc94b' stroke-width='10'/><circle cx='50' cy='50' r='18' fill='%23e53e3e'/><path d='M50,12 L50,88 M12,50 L88,50' stroke='%23ecc94b' stroke-width='8'/></svg>" class="game-thumb-mini" alt="Mario Kart">
+                    <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
                     <div class="game-info">
                         <span class="game-title">Mario Kart Circuit</span>
                         <span class="game-subtitle">GBA • 4.00 MB</span>
@@ -458,9 +458,9 @@
             <div class="emulator-frame">
                 <div id="game-holder">
                     <div class="start-screen">
-                        <img id="poster-bg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>" class="bg-poster">
+                        <img id="poster-bg" class="bg-poster">
                         <div class="start-screen-content">
-                            <img id="poster-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>" class="game-poster-preview">
+                            <img id="poster-preview" class="game-poster-preview">
                             <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
                             <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
                             <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
@@ -481,11 +481,11 @@
 
     <script>
         const gameIcons = {
-            mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20,60 Q50,10 80,60' fill='%23e53e3e'/><rect x='30' y='60' width='40' height='10' fill='%23fff'/><text x='50' y='68' font-size='10' font-weight='bold' text-anchor='middle' fill='%23e53e3e'>M</text><circle cx='35' cy='75' r='6' fill='%23f6ad55'/><circle cx='65' cy='75' r='6' fill='%23f6ad55'/><rect x='30' y='80' width='40' height='12' fill='%23e53e3e'/></svg>",
-            pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e53e3e'/><path d='M10,50 A40,40 0 0,0 90,50 Z' fill='%23ffffff'/><line x1='10' y1='50' x2='90' y2='50' stroke='%232d3748' stroke-width='8'/><circle cx='50' cy='50' r='12' fill='%23ffffff' stroke='%232d3748' stroke-width='6'/></svg>",
-            sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10,80 Q20,20 60,20 Q85,20 80,45 Q70,40 60,50 Q85,55 75,70 Q60,60 50,80 Z' fill='%233182ce'/><circle cx='45' cy='45' r='8' fill='%23fff'/><circle cx='47' cy='45' r='4' fill='%23000'/><path d='M30,65 Q50,85 70,75' fill='none' stroke='%23f6ad55' stroke-width='6'/></svg>",
-            zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23ecc94b'/><polygon points='30,50 10,85 50,85' fill='%23ecc94b'/><polygon points='70,50 50,85 90,85' fill='%23ecc94b'/></svg>",
-            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23ecc94b' stroke-width='10'/><circle cx='50' cy='50' r='18' fill='%23e53e3e'/><path d='M50,12 L50,88 M12,50 L88,50' stroke='%23ecc94b' stroke-width='8'/></svg>"
+            mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 52 C10 25 30 18 50 18 C70 18 90 25 90 52 C90 60 10 60 10 52 Z' fill='%23e53e3e'/><path d='M 12 52 Q 50 42 88 52 C 92 68 8 68 12 52 Z' fill='%23c53030'/><circle cx='50' cy='36' r='14' fill='%23ffffff'/><text x='50' y='42' font-size='17' font-weight='900' text-anchor='middle' fill='%23e53e3e' font-family='Arial'>M</text></svg>",
+            pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e53e3e'/><path d='M 8 50 A 42 42 0 0 0 92 50 Z' fill='%23ffffff'/><line x1='8' y1='50' x2='92' y2='50' stroke='%231a202c' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%23ffffff' stroke='%231a202c' stroke-width='7'/><circle cx='50' cy='50' r='6' fill='%231a202c'/></svg>",
+            sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 75 Q15 45 35 35 Q30 20 50 20 Q50 35 60 30 Q65 15 85 25 Q70 45 80 50 Q85 52 80 65 C65 80 35 85 20 75 Z' fill='%233182ce'/><circle cx='55' cy='42' r='7' fill='%23ffffff'/><circle cx='57' cy='42' r='3.5' fill='%23000000'/></svg>",
+            zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23f6e05e'/><polygon points='30,50 10,85 50,85' fill='%23f6e05e'/><polygon points='70,50 50,85 90,85' fill='%23f6e05e'/><polygon points='50,50 30,85 70,85' fill='%231a202c'/></svg>",
+            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='36' fill='none' stroke='%23e53e3e' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%231a202c'/><path d='M 20 50 L 38 50 M 62 50 L 80 50 M 50 62 L 50 80' stroke='%23cbd5e0' stroke-width='8' stroke-linecap='round'/></svg>"
         };
 
         let currentTitle = "Super Mario Advance";
@@ -494,6 +494,18 @@
         let currentIconKey = "mario";
         let currentSize = "4.00 MB";
         let currentXHR = null;
+
+        // Inicializar imágenes miniaturas dinámicamente
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('thumb-mario').src = gameIcons.mario;
+            document.getElementById('thumb-pokemon').src = gameIcons.pokemon;
+            document.getElementById('thumb-sonic').src = gameIcons.sonic;
+            document.getElementById('thumb-zelda').src = gameIcons.zelda;
+            document.getElementById('thumb-mariokart').src = gameIcons.mariokart;
+
+            document.getElementById('poster-bg').src = gameIcons.mario;
+            document.getElementById('poster-preview').src = gameIcons.mario;
+        });
 
         function stopAndCleanupEmulator() {
             if (currentXHR) {
