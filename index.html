@@ -232,56 +232,13 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 240, 255, 0.15);
             position: relative;
             overflow: hidden;
-            transform: translateZ(0); /* Aceleración por GPU */
+            transform: translateZ(0);
         }
 
         #game-holder {
             width: 100%;
             height: 100%;
             position: relative;
-        }
-
-        .overlay-controls {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 12px 16px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            z-index: 100;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
-            pointer-events: none;
-        }
-
-        .overlay-controls button {
-            pointer-events: auto;
-        }
-
-        .exit-game-btn {
-            background: rgba(255, 0, 85, 0.25);
-            border: 1px solid var(--neon-magenta);
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: transform 0.2s ease, background 0.2s ease;
-            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
-            backdrop-filter: blur(4px);
-            will-change: transform;
-        }
-
-        .exit-game-btn:hover {
-            background: var(--neon-magenta);
-            box-shadow: 0 0 20px var(--neon-magenta);
-            transform: scale(1.05);
         }
 
         .emulator-iframe {
@@ -447,21 +404,6 @@
         }
 
         .ad-skyscraper:hover { border-color: var(--neon-cyan); }
-        .ad-tag {
-            position: absolute;
-            top: 8px;
-            left: 12px;
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #64748b;
-            font-weight: 700;
-        }
-        .ad-text {
-            color: #3f3f5a;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-        }
 
         #toast-container {
             position: fixed;
@@ -501,7 +443,7 @@
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.7 🕹️</div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.8 🕹️</div>
     </header>
 
     <div class="main-layout">
@@ -549,12 +491,6 @@
         <main class="game-zone">
             <div class="emulator-container-wrapper">
                 <div class="emulator-frame" id="emulator-frame">
-                    <div class="overlay-controls" id="overlay-controls" style="display: none;">
-                        <button class="exit-game-btn" onclick="exitGame()">
-                            ✖ Salir del Juego
-                        </button>
-                    </div>
-
                     <div id="game-holder">
                         <div class="start-screen">
                             <img id="poster-bg" class="bg-poster">
@@ -573,10 +509,8 @@
             </div>
 
             <div class="ad-skyscraper">
-                <span class="ad-tag">Anuncio</span>
-                <div class="ad-text">
+                <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
                     <p>Espacio Publicitario</p>
-                    <p style="font-size: 11px; margin-top: 5px; color: #232334;">Google AdSense / Setupad (300x600)</p>
                 </div>
             </div>
         </main>
@@ -600,11 +534,12 @@
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
-        // Intercepta de raíz la tecla Enter para que NO altere la pantalla completa
+        // Desvincular Enter, Espacio y Flechas de botones HTML para que no reaccionen mientras juegas
         window.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.code === 'Enter') {
-                e.preventDefault();
-                e.stopPropagation();
+            if (['Enter', 'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) || e.key === 'Enter') {
+                if (document.activeElement && document.activeElement.tagName === 'BUTTON') {
+                    document.activeElement.blur();
+                }
             }
         }, true);
 
@@ -640,36 +575,6 @@
             if (holder) {
                 holder.innerHTML = '';
             }
-
-            const overlayControls = document.getElementById('overlay-controls');
-            if (overlayControls) {
-                overlayControls.style.display = 'none';
-            }
-        }
-
-        function exitGame() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            }
-            stopAndCleanupEmulator();
-            const iconSvg = gameIcons[currentIconKey];
-            const container = document.getElementById('game-holder');
-            container.innerHTML = `
-                <div class="start-screen">
-                    <img src="${iconSvg}" class="bg-poster">
-                    <div class="start-screen-content">
-                        <img src="${iconSvg}" class="game-poster-preview">
-                        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
-                        <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
-                        <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
-                        <div id="load-save-container" style="display: none;">
-                            <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            checkExistingSave(currentRom);
-            showToast('Has salido del juego');
         }
 
         function checkExistingSave(romName) {
@@ -748,11 +653,6 @@
                 iframe.className = 'emulator-iframe';
                 iframe.allow = 'autoplay; gamepad; fullscreen';
 
-                const overlayControls = document.getElementById('overlay-controls');
-                if (overlayControls) {
-                    overlayControls.style.display = 'flex';
-                }
-
                 const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
 
                 iframe.srcdoc = `
@@ -777,13 +677,6 @@
                             
                             ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
 
-                            // Interceptar Enter dentro del emulador para evitar pantalla completa por atajo
-                            window.addEventListener('keydown', function(e) {
-                                if (e.key === 'Enter' || e.code === 'Enter') {
-                                    e.stopPropagation();
-                                }
-                            }, true);
-
                             window.EJS_onSave = function(data) {
                                 if (data && data.save) {
                                     const reader = new FileReader();
@@ -803,12 +696,10 @@
 
                 container.appendChild(iframe);
 
-                // Desenfocar elementos HTML
                 if (document.activeElement) {
                     document.activeElement.blur();
                 }
 
-                // Enfocar automáticamente el iframe del juego
                 iframe.onload = () => {
                     iframe.contentWindow.focus();
                 };
