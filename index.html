@@ -47,16 +47,16 @@
         }
 
         .hoz-logo-svg {
-            width: 45px;
-            height: 45px;
-            filter: drop-shadow(0 0 8px var(--neon-cyan));
-            transition: transform 0.4s ease-in-out;
+            width: 48px;
+            height: 48px;
+            filter: drop-shadow(0 0 10px var(--neon-cyan));
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
 
         .hoz-logo-svg:hover {
-            transform: rotate(-20deg) scale(1.1);
-            filter: drop-shadow(0 0 12px var(--neon-magenta));
+            transform: rotate(-25deg) scale(1.15);
+            filter: drop-shadow(0 0 16px var(--neon-magenta));
         }
 
         .hoz-logo-svg path { transition: fill 0.3s; }
@@ -206,57 +206,81 @@
             object-fit: contain;
         }
 
+        .logo-glow-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 2;
+        }
+
+        .logo-glow-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,240,255,0.4) 0%, rgba(255,0,85,0) 70%);
+            animation: pulseAura 1.8s infinite ease-in-out alternate;
+            z-index: -1;
+        }
+
+        @keyframes pulseAura {
+            0% { transform: scale(0.8); opacity: 0.3; }
+            100% { transform: scale(1.4); opacity: 0.8; }
+        }
+
         .loading-hoz-animation {
-            width: 70px;
-            height: 70px;
-            filter: drop-shadow(0 0 15px var(--neon-cyan));
-            animation: spinHoz 2s infinite linear, pulseHoz 1.5s infinite alternate;
+            width: 85px;
+            height: 85px;
+            filter: drop-shadow(0 0 18px var(--neon-cyan));
+            animation: scytheSlash 2.2s infinite ease-in-out;
             z-index: 2;
         }
 
-        @keyframes spinHoz {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes pulseHoz {
-            0% { filter: drop-shadow(0 0 10px var(--neon-cyan)); }
-            100% { filter: drop-shadow(0 0 25px var(--neon-magenta)); }
-        }
-
-        .loading-text-percentage {
-            font-size: 22px;
-            font-weight: 800;
-            color: #fff;
-            margin-top: 20px;
-            text-shadow: 0 0 10px var(--neon-cyan);
-            z-index: 2;
-        }
-
-        .loading-mb-detail {
-            font-size: 13px;
-            color: #64748b;
-            margin-top: 6px;
-            z-index: 2;
+        @keyframes scytheSlash {
+            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 12px var(--neon-cyan)); }
+            35% { transform: rotate(-35deg) scale(1.15); filter: drop-shadow(0 0 22px var(--neon-cyan)); }
+            50% { transform: rotate(25deg) scale(1.2); filter: drop-shadow(0 0 28px var(--neon-magenta)); }
+            70% { transform: rotate(-10deg) scale(1.05); }
+            100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 12px var(--neon-cyan)); }
         }
 
         .progress-bar-container {
-            width: 60%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-top: 15px;
+            width: 65%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
             overflow: hidden;
             z-index: 2;
-            border: 1px solid rgba(0, 240, 255, 0.3);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) inset;
+            position: relative;
         }
 
         .progress-bar-fill {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
-            transition: width 0.1s linear;
-            box-shadow: 0 0 10px var(--neon-cyan);
+            background: linear-gradient(90deg, var(--neon-cyan) 0%, #00bcff 50%, var(--neon-magenta) 100%);
+            border-radius: 12px;
+            transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 12px var(--neon-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            animation: shimmer 1.2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { left: 100%; }
         }
 
         .play-btn {
@@ -319,14 +343,15 @@
     <header>
         <div class="brand-container">
             <svg class="hoz-logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>
-                <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
-                <circle cx="28" cy="42" r="2" fill="#ff0055"/>
-                <circle cx="34" cy="40" r="2" fill="#ff0055"/>
+                <path d="M20,54 L12,60 C10,61.5 7,61.5 5,59.5 C3,57.5 3,54.5 5,52.5 L15,43 Z" fill="#334155"/>
+                <path d="M18,48 L15,51" stroke="#ff0055" stroke-width="2" stroke-linecap="round"/>
+                <path class="hoz-blade" d="M16,45 C24,38 38,36 49,20 C58,7 52,2 52,2 C52,2 59,13 55,28 C50,43 32,51 16,45 Z" fill="#00f0ff"/>
+                <path d="M22,42 C30,37 40,32 48,20 C46,24 38,36 22,42 Z" fill="#ffffff" opacity="0.5"/>
+                <path d="M8,28 C20,20 36,15 58,10" stroke="#ff0055" stroke-width="2" stroke-dasharray="3,3" opacity="0.8"/>
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 500;">Espacio Jugador Confort v2.1 🕹️</div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 500;">Espacio Jugador Confort v2.3 🕹️</div>
     </header>
 
     <div class="main-layout">
@@ -388,16 +413,19 @@
         let activeBlobUrl = null;
 
         function stopAndCleanupEmulator() {
+            // 1. Cancelar peticiones HTTP en curso
             if (currentXHR) {
                 currentXHR.abort();
                 currentXHR = null;
             }
 
+            // 2. Liberar URL blob en memoria
             if (activeBlobUrl) {
                 URL.revokeObjectURL(activeBlobUrl);
                 activeBlobUrl = null;
             }
 
+            // 3. Detener y silenciar cualquier contexto de audio global (WebAudio / SDL)
             if (window.EJS_emulator) {
                 try {
                     if (typeof window.EJS_emulator.destroy === 'function') {
@@ -407,6 +435,21 @@
                 window.EJS_emulator = null;
             }
 
+            // Fuerza el cierre de todos los hilos de audio activos en la ventana
+            if (window.AudioContext || window.webkitAudioContext) {
+                try {
+                    const ctxList = window.EJS_audioContexts || [];
+                    ctxList.forEach(ctx => { if (ctx && ctx.close) ctx.close(); });
+                } catch(e) {}
+            }
+
+            document.querySelectorAll('audio, video').forEach(media => {
+                media.pause();
+                media.src = '';
+                media.load();
+            });
+
+            // 4. Limpiar iframes y elementos del DOM del reproductor
             const holder = document.getElementById('game-holder');
             if (holder) {
                 const iframes = holder.querySelectorAll('iframe');
@@ -417,10 +460,16 @@
                 holder.innerHTML = '';
             }
 
+            // 5. Remover script del loader previo
             const existingScript = document.getElementById('ejs-loader-script');
             if (existingScript) {
                 existingScript.remove();
             }
+
+            // Resetear variables globales de EmulatorJS
+            delete window.EJS_player;
+            delete window.EJS_gameUrl;
+            delete window.EJS_core;
         }
 
         function changeGame(title, core, romName, imgName, element) {
@@ -461,10 +510,6 @@
             container.appendChild(startDiv);
         }
 
-        function formatBytes(bytes) {
-            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-        }
-
         function startEmulator() {
             stopAndCleanupEmulator();
 
@@ -473,12 +518,16 @@
             container.innerHTML = `
                 <div class="loading-screen">
                     <img src="${currentImg}" class="loading-bg-image" onerror="this.style.display='none'">
-                    <svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>
-                        <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
-                    </svg>
-                    <div class="loading-text-percentage" id="load-pct">Cargando: 0%</div>
-                    <div class="loading-mb-detail" id="load-mb">Descargando ROM...</div>
+                    
+                    <div class="logo-glow-wrapper">
+                        <svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20,54 L12,60 C10,61.5 7,61.5 5,59.5 C3,57.5 3,54.5 5,52.5 L15,43 Z" fill="#334155"/>
+                            <path d="M18,48 L15,51" stroke="#ff0055" stroke-width="2" stroke-linecap="round"/>
+                            <path class="hoz-blade" d="M16,45 C24,38 38,36 49,20 C58,7 52,2 52,2 C52,2 59,13 55,28 C50,43 32,51 16,45 Z" fill="#00f0ff"/>
+                            <path d="M22,42 C30,37 40,32 48,20 C46,24 38,36 22,42 Z" fill="#ffffff" opacity="0.5"/>
+                        </svg>
+                    </div>
+
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" id="load-bar"></div>
                     </div>
@@ -492,29 +541,19 @@
             currentXHR.responseType = 'arraybuffer';
 
             currentXHR.onprogress = function(event) {
-                const pctLabel = document.getElementById('load-pct');
-                const mbLabel = document.getElementById('load-mb');
                 const barFill = document.getElementById('load-bar');
 
                 if (event.lengthComputable && event.total > 0) {
-                    const percent = Math.min(100, Math.floor((event.loaded / event.total) * 100));
-                    if (pctLabel) pctLabel.textContent = 'Cargando: ' + percent + '%';
-                    if (mbLabel) mbLabel.textContent = formatBytes(event.loaded) + ' / ' + formatBytes(event.total);
+                    const percent = (event.loaded / event.total) * 100;
                     if (barFill) barFill.style.width = percent + '%';
                 } else if (event.loaded) {
-                    if (mbLabel) mbLabel.textContent = formatBytes(event.loaded) + ' descargados...';
                     if (barFill) barFill.style.width = '50%';
                 }
             };
 
             currentXHR.onload = function() {
                 if (currentXHR.status === 200 || currentXHR.status === 0) {
-                    const pctLabel = document.getElementById('load-pct');
-                    const mbLabel = document.getElementById('load-mb');
                     const barFill = document.getElementById('load-bar');
-
-                    if (pctLabel) pctLabel.textContent = 'Iniciando juego...';
-                    if (mbLabel) mbLabel.textContent = 'Descarga completada';
                     if (barFill) barFill.style.width = '100%';
 
                     const blob = new Blob([currentXHR.response]);
@@ -532,15 +571,7 @@
                     loaderScript.id = 'ejs-loader-script';
                     loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
                     document.body.appendChild(loaderScript);
-                } else {
-                    const pctLabel = document.getElementById('load-pct');
-                    if (pctLabel) pctLabel.textContent = 'Error: Archivo no encontrado';
                 }
-            };
-
-            currentXHR.onerror = function() {
-                const pctLabel = document.getElementById('load-pct');
-                if (pctLabel) pctLabel.textContent = 'Error de conexión al cargar la ROM';
             };
 
             currentXHR.send();
