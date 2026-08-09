@@ -618,6 +618,14 @@
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
+        // Evita que presionar la tecla Enter active comportamientos predeterminados o botones enfocado
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.code === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
+
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('thumb-mario').src = gameIcons.mario;
             document.getElementById('thumb-pokemon').src = gameIcons.pokemon;
@@ -797,9 +805,9 @@
                             
                             ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
 
-                            // Evitar que Enter / Enter en combinación cambien la pantalla completa
+                            // Evitar la activación accidental de pantalla completa al pulsar Enter
                             window.addEventListener('keydown', function(e) {
-                                if (e.key === 'Enter') {
+                                if (e.key === 'Enter' || e.code === 'Enter') {
                                     e.stopPropagation();
                                 }
                             }, true);
@@ -822,6 +830,16 @@
                 `;
 
                 container.appendChild(iframe);
+
+                // Quitar foco de los botones HTML para evitar disparar acciones por defecto
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+
+                // Dar foco directamente al emulador
+                iframe.onload = () => {
+                    iframe.contentWindow.focus();
+                };
             }, 400); 
         }
     </script>
