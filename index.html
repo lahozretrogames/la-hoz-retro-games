@@ -378,11 +378,17 @@
         let currentRom = "mario_advance.gba"; 
         let currentImg = "mario_advance.png";
         let currentXHR = null;
+        let progressInterval = null;
 
         function stopAndCleanupEmulator() {
             if (currentXHR) {
                 currentXHR.abort();
                 currentXHR = null;
+            }
+
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
             }
 
             if (window.EJS_emulator) {
@@ -392,6 +398,11 @@
                     }
                 } catch (e) {}
                 window.EJS_emulator = null;
+            }
+
+            const existingScript = document.getElementById('ejs-loader-script');
+            if (existingScript) {
+                existingScript.remove();
             }
 
             const holder = document.getElementById('game-holder');
@@ -438,6 +449,13 @@
             container.appendChild(startDiv);
         }
 
+        function updateProgress(percent) {
+            const pctLabel = document.getElementById('load-pct');
+            const barFill = document.getElementById('load-bar');
+            if (pctLabel) pctLabel.textContent = 'Cargando: ' + percent + '%';
+            if (barFill) barFill.style.width = percent + '%';
+        }
+
         function startEmulator() {
             stopAndCleanupEmulator();
 
@@ -450,12 +468,21 @@
                         <path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>
                         <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
                     </svg>
-                    <div class="loading-text-percentage" id="load-pct">Cargando: 0%</div>
+                    <div class="loading-text-percentage" id="load-pct">Cargando: 1%</div>
                     <div class="progress-bar-container">
-                        <div class="progress-bar-fill" id="load-bar"></div>
+                        <div class="progress-bar-fill" id="load-bar" style="width: 1%;"></div>
                     </div>
                 </div>
             `;
+
+            let simulatedPercent = 1;
+            progressInterval = setInterval(() => {
+                if (simulatedPercent < 95) {
+                    simulatedPercent += Math.floor(Math.random() * 3) + 1;
+                    if (simulatedPercent > 95) simulatedPercent = 95;
+                    updateProgress(simulatedPercent);
+                }
+            }, 120);
 
             const romUrl = 'roms/' + currentRom;
 
@@ -464,21 +491,19 @@
             currentXHR.responseType = 'arraybuffer';
 
             currentXHR.onprogress = function(event) {
-                if (event.lengthComputable) {
-                    const percentComplete = Math.floor((event.loaded / event.total) * 100);
-                    const pctLabel = document.getElementById('load-pct');
-                    const barFill = document.getElementById('load-bar');
-                    if (pctLabel) pctLabel.textContent = 'Cargando: ' + percentComplete + '%';
-                    if (barFill) barFill.style.width = percentComplete + '%';
+                if (event.lengthComputable && event.total > 0) {
+                    const realPercent = Math.floor((event.loaded / event.total) * 100);
+                    if (realPercent > simulatedPercent) {
+                        simulatedPercent = realPercent;
+                        updateProgress(simulatedPercent);
+                    }
                 }
             };
 
             currentXHR.onload = function() {
                 if (currentXHR.status === 200 || currentXHR.status === 0) {
-                    const pctLabel = document.getElementById('load-pct');
-                    const barFill = document.getElementById('load-bar');
-                    if (pctLabel) pctLabel.textContent = 'Cargando: 100%';
-                    if (barFill) barFill.style.width = '100%';
+                    if (progressInterval) clearInterval(progressInterval);
+                    updateProgress(100);
 
                     const blob = new Blob([currentXHR.response]);
                     const blobUrl = URL.createObjectURL(blob);
@@ -489,9 +514,7 @@
                     window.EJS_gameUrl = blobUrl; 
                     window.EJS_volume = 0.8;
                     window.EJS_startOnLoaded = true;
-
-                    const existingScript = document.getElementById('ejs-loader-script');
-                    if (existingScript) existingScript.remove();
+                    window.EJS_disableVSync = true;
 
                     const loaderScript = document.createElement('script');
                     loaderScript.id = 'ejs-loader-script';
@@ -501,6 +524,7 @@
             };
 
             currentXHR.onerror = function() {
+                if (progressInterval) clearInterval(progressInterval);
                 const pctLabel = document.getElementById('load-pct');
                 if (pctLabel) pctLabel.textContent = 'Error al cargar la ROM';
             };
