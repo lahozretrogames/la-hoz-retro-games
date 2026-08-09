@@ -88,6 +88,7 @@
             flex: 1;
             position: relative;
             height: calc(100vh - 73px);
+            overflow: hidden;
         }
 
         .sidebar {
@@ -100,6 +101,7 @@
             gap: 15px;
             z-index: 15;
             box-shadow: 5px 0 25px rgba(0,0,0,0.6);
+            overflow: hidden;
         }
 
         .sidebar h3 {
@@ -112,12 +114,13 @@
             text-shadow: 0 0 8px rgba(0,240,255,0.4);
         }
 
+        /* Se quita la barra de desplazamiento */
         .game-list {
             list-style: none;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            overflow-y: auto;
+            overflow: hidden;
         }
 
         .game-item {
@@ -182,6 +185,7 @@
             align-items: center;
             padding: 25px;
             position: relative;
+            overflow: hidden;
         }
 
         .emulator-container-wrapper {
@@ -536,7 +540,6 @@
         <main class="game-zone">
             <div class="emulator-container-wrapper">
                 <div class="emulator-frame" id="emulator-frame">
-                    <!-- Overlay de controles dentro del marco del juego -->
                     <div class="overlay-controls" id="overlay-controls" style="display: none;">
                         <button class="exit-game-btn" onclick="exitGame()">
                             ✖ Salir del Juego
@@ -715,7 +718,6 @@
             const iconSvg = gameIcons[currentIconKey];
             const container = document.getElementById('game-holder');
 
-            // Mostramos una pantalla de carga simplificada mientras el motor de EmulatorJS arranca
             container.innerHTML = `
                 <div class="loading-screen">
                     <img src="${iconSvg}" class="bg-poster">
@@ -733,28 +735,24 @@
                 </div>
             `;
 
-            // URL directa a la ROM, sin "cache buster" para carga rápida.
-            const romUrl = 'roms/' + currentRom;
+            // Construcción correcta de la URL absoluta para GitHub Pages
+            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+            const romAbsoluteUrl = baseUrl + 'roms/' + currentRom;
 
-            // Pequeño delay para que se vea la animación de carga y el DOM se limpie
             setTimeout(() => {
                 container.innerHTML = '';
                 const iframe = document.createElement('iframe');
                 iframe.className = 'emulator-iframe';
                 iframe.allow = 'autoplay; gamepad; fullscreen';
-                container.appendChild(iframe);
 
-                // Mostrar barra de controles overlay sobre el frame
                 const overlayControls = document.getElementById('overlay-controls');
                 if (overlayControls) {
                     overlayControls.style.display = 'flex';
                 }
 
-                const iframeDoc = iframe.contentWindow.document;
                 const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
 
-                iframeDoc.open();
-                iframeDoc.write(`
+                iframe.srcdoc = `
                     <!DOCTYPE html>
                     <html>
                     <head>
@@ -769,8 +767,7 @@
                             window.EJS_player = '#emulator';
                             window.EJS_core = '${currentCore}';
                             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-                            // Apuntamos directamente a la URL de la ROM
-                            window.EJS_gameUrl = '../${romUrl}'; 
+                            window.EJS_gameUrl = '${romAbsoluteUrl}'; 
                             window.EJS_gameName = '${currentRom}';
                             window.EJS_startOnLoaded = true;
                             window.EJS_volume = 0.8;
@@ -788,13 +785,14 @@
                                     };
                                 }
                             };
-                        </script>
-                        <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+                        <\/script>
+                        <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
                     </body>
                     </html>
-                `);
-                iframeDoc.close();
-            }, 500); 
+                `;
+
+                container.appendChild(iframe);
+            }, 400); 
         }
     </script>
 </body>
