@@ -351,89 +351,79 @@
         let currentCore = "gba";
         let currentRom = "mario_advance.gba"; 
         let currentImg = "mario_advance.png";
-        let scriptLoaded = false;
 
         function changeGame(title, core, romName, imgName) {
+            // Detener por completo cualquier emulador activo destruyendo su frame
             document.getElementById('game-holder').innerHTML = '';
 
+            // Quitar clase activa de los botones
             document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            
+            // Buscar y activar el botón correcto
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
 
             currentTitle = title;
             currentCore = core;
             currentRom = romName;
             currentImg = imgName;
 
-            document.getElementById('game-holder').innerHTML = `
-                <div class="start-screen">
-                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">\${title}</h2>
-                    <p style="color: #64748b; font-size: 14px;">Consola: \${core.toUpperCase()}</p>
-                    <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
-                </div>
-            `;
+            // Inyectar el menú limpio usando JavaScript plano tradicional para evitar errores de comillas
+            var container = document.getElementById('game-holder');
+            container.innerHTML = '<div class="start-screen">' +
+                '<h2 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">' + title + '</h2>' +
+                '<p style="color: #64748b; font-size: 14px;">Consola: ' + core.toUpperCase() + '</p>' +
+                '<button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>' +
+            '</div>';
         }
 
         function startEmulator() {
-            document.getElementById('game-holder').innerHTML = `
-                <div class="loading-screen">
-                    <img src="\${currentImg}" class="loading-bg-image" onerror="this.style.display='none'">
-                    <svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>
-                        <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
-                    </svg>
-                    <div class="loading-text-percentage" id="load-pct">Cargando: 0%</div>
-                </div>
-            `;
+            // Inyectar la pantalla de carga con tu logo y la imagen transparente de fondo
+            var container = document.getElementById('game-holder');
+            container.innerHTML = '<div class="loading-screen">' +
+                '<img src="' + currentImg + '" class="loading-bg-image" onerror="this.style.display=\'none\\'">' +
+                '<svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">' +
+                    '<path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>' +
+                    '<path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>' +
+                '</svg>' +
+                '<div class="loading-text-percentage" id="load-pct">Cargando: 1%</div>' +
+            '</div>';
+            
+            // Simular un contador de porcentaje progresivo fluido (1% al 100%) ocultando megabytes reales
+            let currentPct = 1;
+            const pctInterval = setInterval(function() {
+                if (currentPct < 99) {
+                    currentPct += Math.floor(Math.random() * 4) + 1;
+                    if (currentPct > 99) currentPct = 99;
+                    var label = document.getElementById('load-pct');
+                    if (label) {
+                        label.innerText = "Cargando: " + currentPct + "%";
+                    }
+                }
+            }, 100);
 
+            // Ajustar configuraciones del emulador
             window.EJS_player = '#game-holder';
             window.EJS_core = currentCore; 
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
             window.EJS_gameUrl = 'roms/' + currentRom; 
             window.EJS_volume = 0.8;
-            window.EJS_startOnLoaded = false;
+            window.EJS_startOnLoaded = true; // Asegura que descargue completo e inicie de golpe
 
-            fetch(window.EJS_gameUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Fallo de red");
-                    const reader = response.body.getReader();
-                    const contentLength = +response.headers.get('Content-Length') || 8388608;
-                    let receivedLength = 0;
+            // Detener el intervalo y forzar el 100% de éxito de carga cuando el juego arranca de verdad
+            window.EJS_onGameStart = function() {
+                clearInterval(pctInterval);
+                var label = document.getElementById('load-pct');
+                if (label) {
+                    label.innerText = "Cargando: 100%";
+                }
+            };
 
-                    return new Promise((resolve) => {
-                        function read() {
-                            reader.read().then(({done, value}) => {
-                                if (done) {
-                                    document.getElementById('load-pct').innerText = "Cargando: 100%";
-                                    resolve();
-                                    return;
-                                }
-                                receivedLength += value.length;
-                                let percent = Math.round((receivedLength / contentLength) * 100);
-                                if (percent > 99) percent = 99;
-                                document.getElementById('load-pct').innerText = `Cargando: \${percent}%`;
-                                read();
-                            });
-                        }
-                        read();
-                    });
-                })
-                .then(() => {
-                    if (!scriptLoaded) {
-                        const loaderScript = document.createElement('script');
-                        loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-                        loaderScript.onload = () => {
-                            scriptLoaded = true;
-                            if (typeof loadEmulator === 'function') loadEmulator();
-                        };
-                        document.body.appendChild(loaderScript);
-                    } else {
-                        if (typeof loadEmulator === 'function') loadEmulator();
-                    }
-                })
-                .catch(err => {
-                    document.getElementById('load-pct').innerText = "Error al conectar con la ROM";
-                    console.error(err);
-                });
+            // Inyectar el script del cargador limpio del emulador en el cuerpo de la web
+            const loaderScript = document.createElement('script');
+            loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+            document.body.appendChild(loaderScript);
         }
     </script>
 </body>
