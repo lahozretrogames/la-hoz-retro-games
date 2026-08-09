@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Hoz Retro Games</title>
+    <title>La Hoz Retro Games - v3.6</title>
     <style>
         :root {
             --bg-dark: #050508;
@@ -363,6 +363,16 @@
             box-shadow: 0 0 30px var(--neon-cyan);
         }
 
+        .play-btn.load {
+            background: linear-gradient(135deg, var(--neon-magenta), #ff00c8);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            margin-left: 10px;
+        }
+        
+        .play-btn.load:hover {
+            box-shadow: 0 0 30px var(--neon-magenta);
+        }
+
         .ad-skyscraper {
             width: 300px;
             height: 600px;
@@ -409,7 +419,7 @@
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.5 🕹️</div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.6 🕹️</div>
     </header>
 
     <div class="main-layout">
@@ -463,7 +473,10 @@
                             <img id="poster-preview" class="game-poster-preview">
                             <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
                             <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
-                            <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
+                            <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
+                            <div id="load-save-container" style="display: none;">
+                                <button class="play-btn load" onclick="startEmulator(true)">Cargar Partida</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -519,6 +532,21 @@
             }
         }
 
+        // --- SISTEMA DE GUARDADO ---
+        function checkExistingSave(romName) {
+            const saveContainer = document.getElementById('load-save-container');
+            const saveKey = 'emulatorjs_save_' + romName;
+            
+            // Comprobamos si existe una partida guardada en LocalStorage
+            if (localStorage.getItem(saveKey)) {
+                saveContainer.style.display = 'block'; // Mostramos el botón de cargar
+                console.log('Partida encontrada para ' + romName);
+            } else {
+                saveContainer.style.display = 'none'; // Ocultamos el botón
+                console.log('No hay partida guardada para ' + romName);
+            }
+        }
+
         function changeGame(title, core, romName, iconKey, size, element) {
             stopAndCleanupEmulator();
 
@@ -541,13 +569,19 @@
                         <img src="${iconSvg}" class="game-poster-preview">
                         <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
                         <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
-                        <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
+                        <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
+                        <div id="load-save-container" style="display: none;">
+                            <button class="play-btn load" onclick="startEmulator(true)">Cargar Partida</button>
+                        </div>
                     </div>
                 </div>
             `;
+            
+            // Llamamos a la comprobación de guardado
+            checkExistingSave(currentRom);
         }
 
-        function startEmulator() {
+        function startEmulator(loadSave = false) {
             stopAndCleanupEmulator();
 
             const iconSvg = gameIcons[currentIconKey];
@@ -616,6 +650,10 @@
                         container.appendChild(iframe);
 
                         const iframeDoc = iframe.contentWindow.document;
+                        
+                        // Obtenemos la clave de guardado si se ha pedido cargar
+                        const saveKey = loadSave ? ('emulatorjs_save_' + currentRom) : '';
+
                         iframeDoc.open();
                         iframeDoc.write(`
                             <!DOCTYPE html>
@@ -635,6 +673,11 @@
                                     window.EJS_gameUrl = '${blobUrl}';
                                     window.EJS_startOnLoaded = true;
                                     window.EJS_volume = 0.8;
+                                    
+                                    // --- CONFIGURACIÓN DE GUARDADO DENTRO DEL IFRAME ---
+                                    if ('${saveKey}') {
+                                        window.EJS_saveUrl = '${saveKey}'; // EmulatorJS buscará esta clave al iniciar
+                                    }
                                 <\/script>
                                 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
                             </body>
