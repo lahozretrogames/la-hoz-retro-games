@@ -225,11 +225,18 @@
         }
 
         .loading-text-percentage {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: #fff;
             margin-top: 20px;
             text-shadow: 0 0 10px var(--neon-cyan);
+            z-index: 2;
+        }
+
+        .loading-mb-detail {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 6px;
             z-index: 2;
         }
 
@@ -378,7 +385,7 @@
         let currentRom = "mario_advance.gba"; 
         let currentImg = "mario_advance.png";
         let currentXHR = null;
-        let progressInterval = null;
+        let activeBlobUrl = null;
 
         function stopAndCleanupEmulator() {
             if (currentXHR) {
@@ -386,9 +393,9 @@
                 currentXHR = null;
             }
 
-            if (progressInterval) {
-                clearInterval(progressInterval);
-                progressInterval = null;
+            if (activeBlobUrl) {
+                URL.revokeObjectURL(activeBlobUrl);
+                activeBlobUrl = null;
             }
 
             if (window.EJS_emulator) {
@@ -400,14 +407,19 @@
                 window.EJS_emulator = null;
             }
 
+            const holder = document.getElementById('game-holder');
+            if (holder) {
+                const iframes = holder.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    iframe.src = 'about:blank';
+                    iframe.remove();
+                });
+                holder.innerHTML = '';
+            }
+
             const existingScript = document.getElementById('ejs-loader-script');
             if (existingScript) {
                 existingScript.remove();
-            }
-
-            const holder = document.getElementById('game-holder');
-            if (holder) {
-                holder.innerHTML = '';
             }
         }
 
@@ -449,11 +461,8 @@
             container.appendChild(startDiv);
         }
 
-        function updateProgress(percent) {
-            const pctLabel = document.getElementById('load-pct');
-            const barFill = document.getElementById('load-bar');
-            if (pctLabel) pctLabel.textContent = 'Cargando: ' + percent + '%';
-            if (barFill) barFill.style.width = percent + '%';
+        function formatBytes(bytes) {
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
         }
 
         function startEmulator() {
@@ -466,52 +475,55 @@
                     <img src="${currentImg}" class="loading-bg-image" onerror="this.style.display='none'">
                     <svg class="loading-hoz-animation" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22,50 L14,58 C12,60 9,60 7,58 C5,56 5,53 7,51 L15,43 Z" fill="#4a5568"/>
-                        <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C52,4 58,14 54,28 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
+                        <path class="hoz-blade" d="M18,46 C25,40 38,38 48,22 C56,10 52,4 52,4 C50,42 34,50 18,46 Z" fill="#00f0ff"/>
                     </svg>
-                    <div class="loading-text-percentage" id="load-pct">Cargando: 1%</div>
+                    <div class="loading-text-percentage" id="load-pct">Cargando: 0%</div>
+                    <div class="loading-mb-detail" id="load-mb">Descargando ROM...</div>
                     <div class="progress-bar-container">
-                        <div class="progress-bar-fill" id="load-bar" style="width: 1%;"></div>
+                        <div class="progress-bar-fill" id="load-bar"></div>
                     </div>
                 </div>
             `;
 
-            let simulatedPercent = 1;
-            progressInterval = setInterval(() => {
-                if (simulatedPercent < 95) {
-                    simulatedPercent += Math.floor(Math.random() * 3) + 1;
-                    if (simulatedPercent > 95) simulatedPercent = 95;
-                    updateProgress(simulatedPercent);
-                }
-            }, 120);
-
-            const romUrl = 'roms/' + currentRom;
+            const romUrl = 'roms/' + currentRom + '?t=' + new Date().getTime();
 
             currentXHR = new XMLHttpRequest();
             currentXHR.open('GET', romUrl, true);
             currentXHR.responseType = 'arraybuffer';
 
             currentXHR.onprogress = function(event) {
+                const pctLabel = document.getElementById('load-pct');
+                const mbLabel = document.getElementById('load-mb');
+                const barFill = document.getElementById('load-bar');
+
                 if (event.lengthComputable && event.total > 0) {
-                    const realPercent = Math.floor((event.loaded / event.total) * 100);
-                    if (realPercent > simulatedPercent) {
-                        simulatedPercent = realPercent;
-                        updateProgress(simulatedPercent);
-                    }
+                    const percent = Math.min(100, Math.floor((event.loaded / event.total) * 100));
+                    if (pctLabel) pctLabel.textContent = 'Cargando: ' + percent + '%';
+                    if (mbLabel) mbLabel.textContent = formatBytes(event.loaded) + ' / ' + formatBytes(event.total);
+                    if (barFill) barFill.style.width = percent + '%';
+                } else if (event.loaded) {
+                    if (mbLabel) mbLabel.textContent = formatBytes(event.loaded) + ' descargados...';
+                    if (barFill) barFill.style.width = '50%';
                 }
             };
 
             currentXHR.onload = function() {
                 if (currentXHR.status === 200 || currentXHR.status === 0) {
-                    if (progressInterval) clearInterval(progressInterval);
-                    updateProgress(100);
+                    const pctLabel = document.getElementById('load-pct');
+                    const mbLabel = document.getElementById('load-mb');
+                    const barFill = document.getElementById('load-bar');
+
+                    if (pctLabel) pctLabel.textContent = 'Iniciando juego...';
+                    if (mbLabel) mbLabel.textContent = 'Descarga completada';
+                    if (barFill) barFill.style.width = '100%';
 
                     const blob = new Blob([currentXHR.response]);
-                    const blobUrl = URL.createObjectURL(blob);
+                    activeBlobUrl = URL.createObjectURL(blob);
 
                     window.EJS_player = '#game-holder';
                     window.EJS_core = currentCore; 
                     window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-                    window.EJS_gameUrl = blobUrl; 
+                    window.EJS_gameUrl = activeBlobUrl; 
                     window.EJS_volume = 0.8;
                     window.EJS_startOnLoaded = true;
                     window.EJS_disableVSync = true;
@@ -520,13 +532,15 @@
                     loaderScript.id = 'ejs-loader-script';
                     loaderScript.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
                     document.body.appendChild(loaderScript);
+                } else {
+                    const pctLabel = document.getElementById('load-pct');
+                    if (pctLabel) pctLabel.textContent = 'Error: Archivo no encontrado';
                 }
             };
 
             currentXHR.onerror = function() {
-                if (progressInterval) clearInterval(progressInterval);
                 const pctLabel = document.getElementById('load-pct');
-                if (pctLabel) pctLabel.textContent = 'Error al cargar la ROM';
+                if (pctLabel) pctLabel.textContent = 'Error de conexión al cargar la ROM';
             };
 
             currentXHR.send();
