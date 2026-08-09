@@ -3,7 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Hoz Retro Games - v3.7</title>
+    <title>La Hoz Retro Games - Emulador GBA Online Gratis</title>
+
+    <!-- SEO y Metaetiquetas para posicionamiento en Google -->
+    <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) online y gratis. Disfruta de Super Mario Advance, Pokémon Rojo Fuego, Sonic y Zelda directamente en tu navegador sin instalar nada.">
+    <meta name="keywords" content="juegos retro, emulador online, gba online, super mario advance online, pokemon rojo fuego, emulador retro navegador, la hoz retro games">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="La Hoz Retro Games">
+
+    <!-- Open Graph para redes sociales y buscadores -->
+    <meta property="og:title" content="La Hoz Retro Games - Emulador GBA Online Gratis">
+    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance en tu navegador con guardado automático.">
+    <meta property="og:type" content="website">
+
+    <!-- Datos Estructurados Schema.org (JSON-LD) para Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "La Hoz Retro Games",
+      "url": "https://lahozretrogames.github.io/la-hoz-retro-games/",
+      "description": "Emulador online de juegos retro de Game Boy Advance para jugar directamente en el navegador.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any"
+    }
+    </script>
+
     <style>
         :root {
             --bg-dark: #050508;
@@ -592,6 +617,7 @@
         let currentIconKey = "mario";
         let currentSize = "4.00 MB";
         let currentXHR = null;
+        let isGameRunning = false;
 
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('thumb-mario').src = gameIcons.mario;
@@ -605,6 +631,15 @@
 
             checkExistingSave(currentRom);
         });
+
+        // Prevenir acciones por defecto del teclado mientras se juega
+        window.addEventListener('keydown', function(e) {
+            if (isGameRunning) {
+                if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Tab"].indexOf(e.code) > -1) {
+                    e.preventDefault();
+                }
+            }
+        }, false);
 
         function showToast(msg) {
             const container = document.getElementById('toast-container');
@@ -626,6 +661,7 @@
         }
 
         function stopAndCleanupEmulator() {
+            isGameRunning = false;
             if (currentXHR) {
                 currentXHR.abort();
                 currentXHR = null;
@@ -772,6 +808,13 @@
                             
                             ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
 
+                            // Evitar conflicto de teclas dentro del iframe
+                            window.addEventListener('keydown', function(e) {
+                                if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Tab"].indexOf(e.code) > -1) {
+                                    e.stopPropagation();
+                                }
+                            }, true);
+
                             window.EJS_onSave = function(data) {
                                 if (data && data.save) {
                                     const reader = new FileReader();
@@ -790,6 +833,12 @@
                 `;
 
                 container.appendChild(iframe);
+                isGameRunning = true;
+                
+                // Dar foco automático al emulador
+                setTimeout(() => {
+                    iframe.focus();
+                }, 100);
             }, 400); 
         }
     </script>
