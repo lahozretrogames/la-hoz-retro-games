@@ -184,9 +184,58 @@
             position: relative;
         }
 
-        .emulator-frame {
+        .emulator-container-wrapper {
             width: 100%;
             max-width: 850px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .emulator-controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .control-hint {
+            display: flex;
+            gap: 12px;
+        }
+
+        .control-key {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--neon-cyan);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .fullscreen-btn {
+            background: rgba(255, 0, 85, 0.15);
+            border: 1px solid var(--neon-magenta);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .fullscreen-btn:hover {
+            background: var(--neon-magenta);
+            box-shadow: 0 0 10px var(--neon-magenta);
+        }
+
+        .emulator-frame {
+            width: 100%;
             aspect-ratio: 4 / 3;
             background-color: #000;
             border-radius: 16px;
@@ -366,7 +415,7 @@
         .play-btn.load {
             background: linear-gradient(135deg, var(--neon-magenta), #ff00c8);
             box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            margin-left: 10px;
+            margin-top: 10px;
         }
         
         .play-btn.load:hover {
@@ -405,6 +454,32 @@
             font-weight: 600;
             text-align: center;
         }
+
+        /* MEJORA: Sistema de Notificaciones Toast Arcade */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast-msg {
+            background: rgba(12, 13, 20, 0.9);
+            border: 1px solid var(--neon-cyan);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            animation: fadeIn 0.3s forwards, fadeOut 0.3s 2.7s forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
     </style>
 </head>
 <body>
@@ -465,17 +540,26 @@
         </aside>
 
         <main class="game-zone">
-            <div class="emulator-frame">
-                <div id="game-holder">
-                    <div class="start-screen">
-                        <img id="poster-bg" class="bg-poster">
-                        <div class="start-screen-content">
-                            <img id="poster-preview" class="game-poster-preview">
-                            <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
-                            <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
-                            <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
-                            <div id="load-save-container" style="display: none;">
-                                <button class="play-btn load" onclick="startEmulator(true)">Cargar Partida</button>
+            <div class="emulator-container-wrapper">
+                <div class="emulator-controls-bar">
+                    <div class="control-hint">
+                        <span>Guarda automáticamente tu partida</span>
+                    </div>
+                    <button class="fullscreen-btn" onclick="toggleFullScreen()">Pantalla Completa ⛶</button>
+                </div>
+
+                <div class="emulator-frame" id="emulator-frame">
+                    <div id="game-holder">
+                        <div class="start-screen">
+                            <img id="poster-bg" class="bg-poster">
+                            <div class="start-screen-content">
+                                <img id="poster-preview" class="game-poster-preview">
+                                <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
+                                <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
+                                <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
+                                <div id="load-save-container" style="display: none;">
+                                    <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -491,6 +575,8 @@
             </div>
         </main>
     </div>
+
+    <div id="toast-container"></div>
 
     <script>
         const gameIcons = {
@@ -508,7 +594,6 @@
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
-        // Inicializar imágenes miniaturas dinámicamente
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('thumb-mario').src = gameIcons.mario;
             document.getElementById('thumb-pokemon').src = gameIcons.pokemon;
@@ -518,7 +603,28 @@
 
             document.getElementById('poster-bg').src = gameIcons.mario;
             document.getElementById('poster-preview').src = gameIcons.mario;
+
+            checkExistingSave(currentRom);
         });
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function toggleFullScreen() {
+            const elem = document.getElementById('emulator-frame');
+            if (!document.fullscreenElement) {
+                if (elem.requestFullscreen) elem.requestFullscreen();
+                else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
 
         function stopAndCleanupEmulator() {
             if (currentXHR) {
@@ -532,18 +638,14 @@
             }
         }
 
-        // --- SISTEMA DE GUARDADO ---
         function checkExistingSave(romName) {
             const saveContainer = document.getElementById('load-save-container');
             const saveKey = 'emulatorjs_save_' + romName;
             
-            // Comprobamos si existe una partida guardada en LocalStorage
             if (localStorage.getItem(saveKey)) {
-                saveContainer.style.display = 'block'; // Mostramos el botón de cargar
-                console.log('Partida encontrada para ' + romName);
+                if (saveContainer) saveContainer.style.display = 'block';
             } else {
-                saveContainer.style.display = 'none'; // Ocultamos el botón
-                console.log('No hay partida guardada para ' + romName);
+                if (saveContainer) saveContainer.style.display = 'none';
             }
         }
 
@@ -571,13 +673,12 @@
                         <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
                         <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
                         <div id="load-save-container" style="display: none;">
-                            <button class="play-btn load" onclick="startEmulator(true)">Cargar Partida</button>
+                            <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
                         </div>
                     </div>
                 </div>
             `;
             
-            // Llamamos a la comprobación de guardado
             checkExistingSave(currentRom);
         }
 
@@ -646,13 +747,12 @@
                         container.innerHTML = '';
                         const iframe = document.createElement('iframe');
                         iframe.className = 'emulator-iframe';
-                        iframe.allow = 'autoplay; gamepad';
+                        iframe.allow = 'autoplay; gamepad; fullscreen';
                         container.appendChild(iframe);
 
                         const iframeDoc = iframe.contentWindow.document;
-                        
-                        // Obtenemos la clave de guardado si se ha pedido cargar
-                        const saveKey = loadSave ? ('emulatorjs_save_' + currentRom) : '';
+
+                        const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
 
                         iframeDoc.open();
                         iframeDoc.write(`
@@ -671,13 +771,25 @@
                                     window.EJS_core = '${currentCore}';
                                     window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
                                     window.EJS_gameUrl = '${blobUrl}';
+                                    window.EJS_gameName = '${currentRom}';
                                     window.EJS_startOnLoaded = true;
                                     window.EJS_volume = 0.8;
                                     
-                                    // --- CONFIGURACIÓN DE GUARDADO DENTRO DEL IFRAME ---
-                                    if ('${saveKey}') {
-                                        window.EJS_saveUrl = '${saveKey}'; // EmulatorJS buscará esta clave al iniciar
-                                    }
+                                    // Carga automática del archivo .sav si el usuario hizo clic en 'Continuar Partida'
+                                    ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
+
+                                    // Callback para interceptar el guardado de EmulatorJS y almacenarlo en LocalStorage
+                                    window.EJS_onSave = function(data) {
+                                        if (data && data.save) {
+                                            const reader = new FileReader();
+                                            reader.readAsDataURL(new Blob([data.save]));
+                                            reader.onloadend = function() {
+                                                const base64data = reader.result;
+                                                window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
+                                                window.parent.showToast('💾 Progreso guardado automáticamente');
+                                            };
+                                        }
+                                    };
                                 <\/script>
                                 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
                             </body>
