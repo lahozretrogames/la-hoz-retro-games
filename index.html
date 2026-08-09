@@ -409,36 +409,36 @@
         <aside class="sidebar">
             <h3>Selecciona tu ROM</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg', this)">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg" class="game-thumb-mini">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'https://m.media-amazon.com/images/I/61N3K4R0AYL._AC_SX385_.jpg', this)">
+                    <img src="https://m.media-amazon.com/images/I/61N3K4R0AYL._AC_SX385_.jpg" class="game-thumb-mini">
                     <div class="game-info">
                         <span class="game-title">Super Mario Advance</span>
                         <span class="game-subtitle">Game Boy Advance</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co3pkw.jpg', this)">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co3pkw.jpg" class="game-thumb-mini">
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'https://m.media-amazon.com/images/I/61Q6S4G0A3L._AC_SX385_.jpg', this)">
+                    <img src="https://m.media-amazon.com/images/I/61Q6S4G0A3L._AC_SX385_.jpg" class="game-thumb-mini">
                     <div class="game-info">
                         <span class="game-title">Pokémon Rojo Fuego</span>
                         <span class="game-subtitle">Game Boy Advance</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co249x.jpg', this)">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co249x.jpg" class="game-thumb-mini">
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'https://m.media-amazon.com/images/I/61T282R1M3L._AC_SX385_.jpg', this)">
+                    <img src="https://m.media-amazon.com/images/I/61T282R1M3L._AC_SX385_.jpg" class="game-thumb-mini">
                     <div class="game-info">
                         <span class="game-title">Sonic Advance</span>
                         <span class="game-subtitle">Game Boy Advance</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1x3t.jpg', this)">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1x3t.jpg" class="game-thumb-mini">
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'https://m.media-amazon.com/images/I/61P0P3E8G8L._AC_SX385_.jpg', this)">
+                    <img src="https://m.media-amazon.com/images/I/61P0P3E8G8L._AC_SX385_.jpg" class="game-thumb-mini">
                     <div class="game-info">
                         <span class="game-title">Zelda: Minish Cap</span>
                         <span class="game-subtitle">Game Boy Advance</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'https://images.igdb.com/igdb/image/upload/t_cover_big/co259m.jpg', this)">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co259m.jpg" class="game-thumb-mini">
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'https://m.media-amazon.com/images/I/61Q48P5A51L._AC_SX385_.jpg', this)">
+                    <img src="https://m.media-amazon.com/images/I/61Q48P5A51L._AC_SX385_.jpg" class="game-thumb-mini">
                     <div class="game-info">
                         <span class="game-title">Mario Kart Circuit</span>
                         <span class="game-subtitle">Game Boy Advance</span>
@@ -451,9 +451,9 @@
             <div class="emulator-frame">
                 <div id="game-holder">
                     <div class="start-screen">
-                        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg" class="bg-poster">
+                        <img src="https://m.media-amazon.com/images/I/61N3K4R0AYL._AC_SX385_.jpg" class="bg-poster">
                         <div class="start-screen-content">
-                            <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg" class="game-poster-preview">
+                            <img src="https://m.media-amazon.com/images/I/61N3K4R0AYL._AC_SX385_.jpg" class="game-poster-preview">
                             <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
                             <p style="color: #64748b; font-size: 13px;">Consola: GBA</p>
                             <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
@@ -476,7 +476,7 @@
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
         let currentRom = "mario_advance.gba";
-        let currentImg = "https://images.igdb.com/igdb/image/upload/t_cover_big/co2047.jpg";
+        let currentImg = "https://m.media-amazon.com/images/I/61N3K4R0AYL._AC_SX385_.jpg";
         let currentXHR = null;
 
         function stopAndCleanupEmulator() {
