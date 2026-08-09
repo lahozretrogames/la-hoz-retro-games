@@ -114,7 +114,6 @@
             text-shadow: 0 0 8px rgba(0,240,255,0.4);
         }
 
-        /* Se quita la barra de desplazamiento */
         .game-list {
             list-style: none;
             display: flex;
@@ -735,7 +734,6 @@
                 </div>
             `;
 
-            // Construcción correcta de la URL absoluta para GitHub Pages
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
             const romAbsoluteUrl = baseUrl + 'roms/' + currentRom;
 
@@ -781,7 +779,7 @@
                                     reader.onloadend = function() {
                                         const base64data = reader.result;
                                         window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
-                                        window.parent.showToast('💾 Progreso guardado automáticamente');
+                                        window.parent.showToast('💾 Progreso guardado en tu navegador');
                                     };
                                 }
                             };
