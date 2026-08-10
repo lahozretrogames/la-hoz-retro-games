@@ -1,777 +1,580 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Hoz Retro Games - Emulador Online Gratis</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Hoz Retro Games - Emulador Online Gratis</title>
+  <link rel="canonical" href="https://lahozretrogames.github.io/la-hoz-retro-games/" />
+  <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) y Nintendo 64 (N64) online y gratis en tu navegador.">
+  <meta name="keywords" content="juegos retro, emulador online, gba online, n64 online, super mario 64, zelda ocarina of time, la hoz retro games">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="La Hoz Retro Games">
+  <meta property="og:title" content="La Hoz Retro Games - Emulador GBA y N64 Online Gratis">
+  <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance y Nintendo 64 en tu navegador con guardado automático y fluidez máxima.">
+  <meta property="og:type" content="website">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "La Hoz Retro Games",
+    "url": "https://lahozretrogames.github.io/la-hoz-retro-games/",
+    "description": "Emulador online de juegos retro de Game Boy Advance y Nintendo 64 optimizado para máxima velocidad y controles direccionales de PC.",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Any"
+  }
+  </script>
 
-    <link rel="canonical" href="https://lahozretrogames.github.io/la-hoz-retro-games/" />
-
-    <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) y Nintendo 64 (N64) online y gratis en tu navegador.">
-    <meta name="keywords" content="juegos retro, emulador online, gba online, n64 online, super mario 64, zelda ocarina of time, la hoz retro games">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="La Hoz Retro Games">
-
-    <meta property="og:title" content="La Hoz Retro Games - Emulador GBA y N64 Online Gratis">
-    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance y Nintendo 64 en tu navegador con guardado automático.">
-    <meta property="og:type" content="website">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "La Hoz Retro Games",
-      "url": "https://lahozretrogames.github.io/la-hoz-retro-games/",
-      "description": "Emulador online de juegos retro de Game Boy Advance y Nintendo 64 para jugar directamente en el navegador.",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "Any"
+  <style>
+    :root {
+      --bg-dark: #050508;
+      --panel-bg: #0c0d14;
+      --card-bg: #12131f;
+      --neon-cyan: #00f0ff;
+      --neon-magenta: #ff0055;
+      --neon-green: #00ff66;
+      --text-main: #f1f5f9;
     }
-    </script>
 
-    <style>
-        :root {
-            --bg-dark: #050508;
-            --panel-bg: #0c0d14;
-            --card-bg: #12131f;
-            --neon-cyan: #00f0ff;
-            --neon-magenta: #ff0055;
-            --text-main: #f1f5f9;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, -apple-system, sans-serif; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
-        }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-image: radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.08) 0%, transparent 45%), radial-gradient(circle at 85% 80%, rgba(255, 0, 85, 0.08) 0%, transparent 45%);
+    }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 85% 80%, rgba(255, 0, 85, 0.08) 0%, transparent 45%);
-        }
+    header {
+      background: rgba(12, 13, 20, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 12px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9);
+      z-index: 20;
+    }
 
-        header {
-            background: rgba(12, 13, 20, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 12px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9);
-            z-index: 20;
-        }
+    .brand-container { display: flex; align-items: center; gap: 16px; }
 
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+    .hoz-logo-svg {
+      width: 48px;
+      height: 48px;
+      filter: drop-shadow(0 0 10px var(--neon-cyan));
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
 
-        .hoz-logo-svg {
-            width: 48px;
-            height: 48px;
-            filter: drop-shadow(0 0 10px var(--neon-cyan));
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            will-change: transform;
-        }
+    .hoz-logo-svg:hover { transform: rotate(-15deg) scale(1.1); filter: drop-shadow(0 0 16px var(--neon-magenta)); }
 
-        .hoz-logo-svg:hover {
-            transform: rotate(-15deg) scale(1.1);
-            filter: drop-shadow(0 0 16px var(--neon-magenta));
-        }
+    .logo-text { font-size: 24px; font-weight: 900; letter-spacing: 2px; color: #fff; text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
+    .logo-text span { color: var(--neon-magenta); text-shadow: 0 0 12px var(--neon-magenta); animation: neonPulse 2s infinite alternate; }
 
-        .logo-text {
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
-        }
+    @keyframes neonPulse {
+      0%, 100% { opacity: 1; text-shadow: 0 0 12px var(--neon-magenta); }
+      50% { opacity: 0.75; text-shadow: 0 0 4px var(--neon-magenta); }
+    }
 
-        .logo-text span {
-            color: var(--neon-magenta);
-            text-shadow: 0 0 12px var(--neon-magenta);
-            animation: neonPulse 2s infinite alternate;
-            will-change: opacity, text-shadow;
-        }
+    .main-layout { display: flex; flex: 1; position: relative; height: calc(100vh - 73px); overflow: hidden; }
 
-        @keyframes neonPulse {
-            0%, 100% { opacity: 1; text-shadow: 0 0 12px var(--neon-magenta); }
-            50% { opacity: 0.75; text-shadow: 0 0 4px var(--neon-magenta); }
-        }
+    .sidebar {
+      width: 330px;
+      background-color: var(--panel-bg);
+      border-right: 1px solid rgba(0, 240, 255, 0.15);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 15;
+      box-shadow: 5px 0 25px rgba(0,0,0,0.6);
+      overflow-y: auto;
+    }
 
-        .main-layout {
-            display: flex;
-            flex: 1;
-            position: relative;
-            height: calc(100vh - 73px);
-            overflow: hidden;
-        }
+    .sidebar::-webkit-scrollbar { width: 6px; }
+    .sidebar::-webkit-scrollbar-track { background: rgba(5, 5, 8, 0.5); }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 3px; }
 
-        .sidebar {
-            width: 310px;
-            background-color: var(--panel-bg);
-            border-right: 1px solid rgba(0, 240, 255, 0.15);
-            padding: 20px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 15;
-            box-shadow: 5px 0 25px rgba(0,0,0,0.6);
-            overflow-y: auto;
-        }
+    .controls-banner {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 85, 0.05));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 11px;
+    }
 
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
+    .controls-banner h4 {
+      color: var(--neon-cyan);
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(5, 5, 8, 0.5);
-        }
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      color: #94a3b8;
+    }
 
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(0, 240, 255, 0.3);
-            border-radius: 3px;
-        }
+    .controls-grid div {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-        .sidebar h3 {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--neon-cyan);
-            margin-top: 10px;
-            margin-bottom: 2px;
-            font-weight: 800;
-            text-shadow: 0 0 8px rgba(0,240,255,0.4);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            padding-bottom: 4px;
-        }
+    .controls-grid strong { color: #fff; }
 
-        .sidebar h3:first-of-type {
-            margin-top: 0;
-        }
+    .sidebar h3 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--neon-cyan);
+      margin-top: 6px;
+      margin-bottom: 2px;
+      font-weight: 800;
+      text-shadow: 0 0 8px rgba(0,240,255,0.4);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      padding-bottom: 4px;
+    }
 
-        .game-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+    .game-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 
-        .game-item {
-            padding: 10px 12px;
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            user-select: none;
-            will-change: transform;
-        }
+    .game-item {
+      padding: 10px 12px;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+    }
 
-        .game-item:hover {
-            background: rgba(0, 240, 255, 0.1);
-            border-color: rgba(0, 240, 255, 0.5);
-            transform: translateX(4px);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
-        }
+    .game-item:hover {
+      background: rgba(0, 240, 255, 0.1);
+      border-color: rgba(0, 240, 255, 0.5);
+      transform: translateX(4px);
+    }
 
-        .game-item.active {
-            background: linear-gradient(90deg, rgba(0, 240, 255, 0.2) 0%, rgba(255, 0, 85, 0.08) 100%);
-            border-color: var(--neon-cyan);
-            color: #fff;
-            box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);
-            transform: translateX(5px);
-        }
+    .game-item.active {
+      background: linear-gradient(90deg, rgba(0, 240, 255, 0.2) 0%, rgba(255, 0, 85, 0.08) 100%);
+      border-color: var(--neon-cyan);
+      color: #fff;
+      transform: translateX(5px);
+    }
 
-        .game-thumb-mini {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            object-fit: contain;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            background: #11121d;
-            padding: 3px;
-        }
+    .game-thumb-mini {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: contain;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      background: #11121d;
+      padding: 3px;
+    }
 
-        .game-info {
-            display: flex;
-            flex-direction: column;
-        }
+    .game-info { display: flex; flex-direction: column; }
+    .game-title { font-size: 13px; font-weight: 700; color: #fff; }
+    .game-subtitle { font-size: 10px; color: #64748b; margin-top: 2px; }
 
-        .game-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-        }
+    .game-zone { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; overflow: hidden; }
 
-        .game-subtitle {
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 2px;
-        }
+    .emulator-container-wrapper { width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 10px; }
 
-        .game-zone {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 25px;
-            position: relative;
-            overflow: hidden;
-        }
+    .emulator-frame {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background-color: #000;
+      border-radius: 16px;
+      border: 2px solid rgba(0, 240, 255, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
 
-        .emulator-container-wrapper {
-            width: 100%;
-            max-width: 850px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    #game-holder { width: 100%; height: 100%; position: relative; }
+    .emulator-iframe { width: 100%; height: 100%; border: none; display: block; }
 
-        .emulator-frame {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            background-color: #000;
-            border-radius: 16px;
-            border: 2px solid rgba(0, 240, 255, 0.4);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 240, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-            transform: translateZ(0);
-        }
+    .start-screen { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px; position: relative; }
 
-        #game-holder {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
+    .bg-poster { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.15; filter: blur(2px); }
 
-        .emulator-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-            backface-visibility: hidden;
-            transform: translateZ(0);
-        }
+    .start-screen-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(7, 7, 14, 0.88);
+      backdrop-filter: blur(12px);
+      padding: 25px 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
 
-        .start-screen {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-        }
+    .game-poster-preview { width: 110px; height: 110px; border-radius: 16px; object-fit: contain; margin-bottom: 15px; border: 2px solid var(--neon-cyan); background: #11121d; padding: 8px; }
 
-        .bg-poster {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: contain;
-            opacity: 0.15;
-            filter: blur(2px) scale(1.05);
-            transition: opacity 0.3s ease;
-            padding: 40px;
-        }
+    .quick-settings {
+      display: flex;
+      gap: 12px;
+      margin-top: 15px;
+      background: rgba(0,0,0,0.5);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 12px;
+    }
 
-        .start-screen-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(7, 7, 14, 0.85);
-            backdrop-filter: blur(12px);
-            padding: 30px 45px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-        }
+    .quick-settings label { display: flex; align-items: center; gap: 6px; cursor: pointer; color: #cbd5e1; }
+    .quick-settings input[type="checkbox"] { accent-color: var(--neon-cyan); }
 
-        .game-poster-preview {
-            width: 130px;
-            height: 130px;
-            border-radius: 16px;
-            object-fit: contain;
-            margin-bottom: 20px;
-            border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
-            background: #11121d;
-            padding: 10px;
-        }
+    .play-btn {
+      background: linear-gradient(135deg, var(--neon-cyan), #00a2ff);
+      color: #000;
+      border: none;
+      padding: 12px 32px;
+      font-size: 15px;
+      font-weight: 800;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-        .loading-screen {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #07070e;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
+    .play-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px var(--neon-cyan); }
+    .play-btn.load { background: linear-gradient(135deg, var(--neon-magenta), #ff00c8); color: #fff; margin-top: 10px; }
 
-        .logo-glow-wrapper {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .spinner-ring {
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: var(--neon-cyan);
-            border-right-color: var(--neon-magenta);
-            animation: spin 1.2s linear infinite;
-            will-change: transform;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-hoz-animation {
-            width: 90px;
-            height: 90px;
-            filter: drop-shadow(0 0 20px var(--neon-cyan));
-            animation: scytheSlash 2.2s infinite ease-in-out;
-            z-index: 2;
-            will-change: transform;
-        }
-
-        @keyframes scytheSlash {
-            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
-            35% { transform: rotate(-25deg) scale(1.1); filter: drop-shadow(0 0 25px var(--neon-cyan)); }
-            50% { transform: rotate(20deg) scale(1.15); filter: drop-shadow(0 0 30px var(--neon-magenta)); }
-            75% { transform: rotate(-10deg) scale(1.05); }
-            100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
-        }
-
-        .play-btn {
-            background: linear-gradient(135deg, var(--neon-cyan), #00a2ff);
-            color: #000;
-            border: none;
-            padding: 14px 38px;
-            font-size: 16px;
-            font-weight: 800;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            will-change: transform;
-        }
-
-        .play-btn:hover {
-            transform: scale(1.06);
-            box-shadow: 0 0 30px var(--neon-cyan);
-        }
-
-        .play-btn.load {
-            background: linear-gradient(135deg, var(--neon-magenta), #ff00c8);
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            margin-top: 10px;
-            color: #fff;
-        }
-        
-        .play-btn.load:hover {
-            box-shadow: 0 0 30px var(--neon-magenta);
-        }
-
-        .ad-skyscraper {
-            width: 300px;
-            height: 600px;
-            background-color: #090a10;
-            border: 1px dashed rgba(0, 240, 255, 0.25);
-            border-radius: 12px;
-            margin-left: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            transition: border-color 0.3s;
-        }
-
-        .ad-skyscraper:hover { border-color: var(--neon-cyan); }
-
-        #toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast-msg {
-            background: rgba(12, 13, 20, 0.9);
-            border: 1px solid var(--neon-cyan);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-            animation: fadeIn 0.3s forwards, fadeOut 0.3s 2.7s forwards;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
-    </style>
+    .ad-skyscraper {
+      width: 280px;
+      height: 600px;
+      background-color: #090a10;
+      border: 1px dashed rgba(0, 240, 255, 0.25);
+      border-radius: 12px;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand-container">
-            <svg class="hoz-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
-                <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
-                <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
-                <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
-            </svg>
-            <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
-        </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v4.0 🕹️</div>
-    </header>
-
-    <div class="main-layout">
-        <aside class="sidebar">
-            <h3>Game Boy Advance</h3>
-            <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario', '4.00 MB', this)">
-                    <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
-                    <div class="game-info">
-                        <span class="game-title">Super Mario Advance</span>
-                        <span class="game-subtitle">GBA • 4.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
-                    <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
-                    <div class="game-info">
-                        <span class="game-title">Pokémon Rojo Fuego</span>
-                        <span class="game-subtitle">GBA • 16.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic', '8.00 MB', this)">
-                    <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
-                    <div class="game-info">
-                        <span class="game-title">Sonic Advance</span>
-                        <span class="game-subtitle">GBA • 8.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
-                    <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
-                    <div class="game-info">
-                        <span class="game-title">Zelda: Minish Cap</span>
-                        <span class="game-subtitle">GBA • 16.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mariokart', '4.00 MB', this)">
-                    <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
-                    <div class="game-info">
-                        <span class="game-title">Mario Kart Circuit</span>
-                        <span class="game-subtitle">GBA • 4.00 MB</span>
-                    </div>
-                </li>
-            </ul>
-
-            <h3>Nintendo 64</h3>
-            <ul class="game-list">
-                <li class="game-item" onclick="changeGame('Super Mario 64', 'n64', 'n64/mario64.z64', 'mario64', '8.00 MB', this)">
-                    <img id="thumb-mario64" class="game-thumb-mini" alt="Super Mario 64">
-                    <div class="game-info">
-                        <span class="game-title">Super Mario 64</span>
-                        <span class="game-subtitle">N64 • 8.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Mario Kart 64', 'n64', 'n64/mariokart64.z64', 'mariokart64', '12.00 MB', this)">
-                    <img id="thumb-mariokart64" class="game-thumb-mini" alt="Mario Kart 64">
-                    <div class="game-info">
-                        <span class="game-title">Mario Kart 64</span>
-                        <span class="game-subtitle">N64 • 12.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'n64/zelda_oot.zip', 'zelda_oot', '16.00 MB', this)">
-                    <img id="thumb-zelda_oot" class="game-thumb-mini" alt="Zelda Ocarina of Time">
-                    <div class="game-info">
-                        <span class="game-title">Zelda: Ocarina of Time</span>
-                        <span class="game-subtitle">N64 • 16.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'n64/smashbros.zip', 'smashbros', '12.00 MB', this)">
-                    <img id="thumb-smashbros" class="game-thumb-mini" alt="Super Smash Bros.">
-                    <div class="game-info">
-                        <span class="game-title">Super Smash Bros.</span>
-                        <span class="game-subtitle">N64 • 12.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'n64/paper_mario.zip', 'paper_mario', '20.00 MB', this)">
-                    <img id="thumb-paper_mario" class="game-thumb-mini" alt="Paper Mario">
-                    <div class="game-info">
-                        <span class="game-title">Paper Mario</span>
-                        <span class="game-subtitle">N64 • 20.00 MB</span>
-                    </div>
-                </li>
-            </ul>
-        </aside>
-
-        <main class="game-zone">
-            <div class="emulator-container-wrapper">
-                <div class="emulator-frame" id="emulator-frame">
-                    <div id="game-holder">
-                        <div class="start-screen">
-                            <img id="poster-bg" class="bg-poster">
-                            <div class="start-screen-content">
-                                <img id="poster-preview" class="game-poster-preview">
-                                <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
-                                <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
-                                <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
-                                <div id="load-save-container" style="display: none;">
-                                    <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ad-skyscraper">
-                <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
-                    <p>Espacio Publicitario</p>
-                </div>
-            </div>
-        </main>
+  <header>
+    <div class="brand-container">
+      <svg class="hoz-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
+        <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
+        <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
+        <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
+      </svg>
+      <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
     </div>
+    <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v5.0 🕹️</div>
+  </header>
 
-    <div id="toast-container"></div>
+  <div class="main-layout">
+    <aside class="sidebar">
+      
+      <div class="controls-banner">
+        <h4>Controles de PC 🎮 <span style="font-size:9px; color:var(--neon-green);">Modo Fluido</span></h4>
+        <div class="controls-grid">
+          <div><strong>Moverse:</strong> Flechas (▲▼◄►)</div>
+          <div><strong>Palanca/Analog:</strong> Flechas (▲▼◄►)</div>
+          <div><strong>Saltar / Acción A:</strong> Espacio</div>
+          <div><strong>Atacar / Acción B:</strong> Z</div>
+          <div><strong>Botón X / Y:</strong> X / C</div>
+          <div><strong>Gatillos L / R:</strong> A / S</div>
+          <div><strong>Start / Select:</strong> Enter / Shift</div>
+        </div>
+        <p style="margin-top:6px; color:#64748b; font-size:10px;">
+          👥 <strong>Jugador 2:</strong> Moverse con WASD | Botones: F, G, H, T
+        </p>
+      </div>
 
-    <script>
-        const gameIcons = {
-            mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 52 C10 25 30 18 50 18 C70 18 90 25 90 52 C90 60 10 60 10 52 Z' fill='%23e53e3e'/><path d='M 12 52 Q 50 42 88 52 C 92 68 8 68 12 52 Z' fill='%23c53030'/><circle cx='50' cy='36' r='14' fill='%23ffffff'/><text x='50' y='42' font-size='17' font-weight='900' text-anchor='middle' fill='%23e53e3e' font-family='Arial'>M</text></svg>",
-            pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e53e3e'/><path d='M 8 50 A 42 42 0 0 0 92 50 Z' fill='%23ffffff'/><line x1='8' y1='50' x2='92' y2='50' stroke='%231a202c' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%23ffffff' stroke='%231a202c' stroke-width='7'/><circle cx='50' cy='50' r='6' fill='%231a202c'/></svg>",
-            sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 75 Q15 45 35 35 Q30 20 50 20 Q50 35 60 30 Q65 15 85 25 Q70 45 80 50 Q85 52 80 65 C65 80 35 85 20 75 Z' fill='%233182ce'/><circle cx='55' cy='42' r='7' fill='%23ffffff'/><circle cx='57' cy='42' r='3.5' fill='%23000000'/></svg>",
-            zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23f6e05e'/><polygon points='30,50 10,85 50,85' fill='%23f6e05e'/><polygon points='70,50 50,85 90,85' fill='%23f6e05e'/><polygon points='50,50 30,85 70,85' fill='%231a202c'/></svg>",
-            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='36' fill='none' stroke='%23e53e3e' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%231a202c'/><path d='M 20 50 L 38 50 M 62 50 L 80 50 M 50 62 L 50 80' stroke='%23cbd5e0' stroke-width='8' stroke-linecap='round'/></svg>",
-            mario64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 50 C10 25 30 18 50 18 C70 18 90 25 90 50 C90 60 10 60 10 50 Z' fill='%23ff0055'/><path d='M 12 50 Q 50 40 88 50 C 92 65 8 65 12 50 Z' fill='%23c53030'/><circle cx='50' cy='35' r='13' fill='%23ffffff'/><text x='50' y='41' font-size='16' font-weight='900' text-anchor='middle' fill='%23ff0055' font-family='Arial'>M</text><text x='82' y='82' font-size='20' font-weight='900' fill='%2300f0ff' font-family='Arial'>64</text></svg>",
-            mariokart64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='36' fill='none' stroke='%2300f0ff' stroke-width='12'/><circle cx='50' cy='50' r='14' fill='%23ff0055'/><path d='M 20 50 L 36 50 M 64 50 L 80 50 M 50 64 L 50 80' stroke='%23ffffff' stroke-width='8' stroke-linecap='round'/><text x='50' y='55' font-size='11' font-weight='900' text-anchor='middle' fill='%23ffffff' font-family='Arial'>64</text></svg>",
-            zelda_oot: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 45,65 55,65' fill='%23e2e8f0'/><polygon points='50,15 50,65 55,65' fill='%23cbd5e1'/><path d='M32 65 C40 60 60 60 68 65 L65 72 C55 68 45 68 35 72 Z' fill='%2300f0ff'/><rect x='46' y='72' width='8' height='18' rx='2' fill='%23ff0055'/><circle cx='50' cy='93' r='6' fill='%23f6e05e'/><polygon points='50,38 46,45 54,45' fill='%23f6e05e'/></svg>",
-            smashbros: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ff0055' stroke='%2300f0ff' stroke-width='4'/><rect x='10' y='42' width='80' height='16' fill='%23050508'/><rect x='34' y='10' width='12' height='80' fill='%23050508'/></svg>",
-            paper_mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M15 30 Q50 20 85 30 L85 75 Q50 65 15 75 Z' fill='%23ffffff' stroke='%2300f0ff' stroke-width='4'/><line x1='50' y1='23' x2='50' y2='68' stroke='%2300f0ff' stroke-width='3'/><polygon points='50,32 53,40 62,40 55,45 57,53 50,48 43,53 45,45 38,40 47,40' fill='%23f6e05e' stroke='%23ff0055' stroke-width='1.5'/></svg>"
-        };
+      <h3>Game Boy Advance</h3>
+      <ul class="game-list">
+        <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario', '4.00 MB', this)">
+          <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
+          <div class="game-info">
+            <span class="game-title">Super Mario Advance</span>
+            <span class="game-subtitle">GBA • 4.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
+          <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
+          <div class="game-info">
+            <span class="game-title">Pokémon Rojo Fuego</span>
+            <span class="game-subtitle">GBA • 16.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic', '8.00 MB', this)">
+          <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
+          <div class="game-info">
+            <span class="game-title">Sonic Advance</span>
+            <span class="game-subtitle">GBA • 8.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
+          <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
+          <div class="game-info">
+            <span class="game-title">Zelda: Minish Cap</span>
+            <span class="game-subtitle">GBA • 16.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mariokart', '4.00 MB', this)">
+          <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
+          <div class="game-info">
+            <span class="game-title">Mario Kart Circuit</span>
+            <span class="game-subtitle">GBA • 4.00 MB</span>
+          </div>
+        </li>
+      </ul>
 
-        let currentTitle = "Super Mario Advance";
-        let currentCore = "gba";
-        let currentRom = "mario_advance.gba";
-        let currentIconKey = "mario";
-        let currentSize = "4.00 MB";
-        let currentXHR = null;
+      <h3>Nintendo 64</h3>
+      <ul class="game-list">
+        <li class="game-item" onclick="changeGame('Super Mario 64', 'n64', 'n64/mario64.z64', 'mario64', '8.00 MB', this)">
+          <img id="thumb-mario64" class="game-thumb-mini" alt="Super Mario 64">
+          <div class="game-info">
+            <span class="game-title">Super Mario 64</span>
+            <span class="game-subtitle">N64 • 8.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Mario Kart 64', 'n64', 'n64/mariokart64.z64', 'mariokart64', '12.00 MB', this)">
+          <img id="thumb-mariokart64" class="game-thumb-mini" alt="Mario Kart 64">
+          <div class="game-info">
+            <span class="game-title">Mario Kart 64</span>
+            <span class="game-subtitle">N64 • 12.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'n64/zelda_oot.zip', 'zelda_oot', '16.00 MB', this)">
+          <img id="thumb-zelda_oot" class="game-thumb-mini" alt="Zelda Ocarina of Time">
+          <div class="game-info">
+            <span class="game-title">Zelda: Ocarina of Time</span>
+            <span class="game-subtitle">N64 • 16.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'n64/smashbros.zip', 'smashbros', '12.00 MB', this)">
+          <img id="thumb-smashbros" class="game-thumb-mini" alt="Super Smash Bros.">
+          <div class="game-info">
+            <span class="game-title">Super Smash Bros.</span>
+            <span class="game-subtitle">N64 • 12.00 MB</span>
+          </div>
+        </li>
+        <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'n64/paper_mario.zip', 'paper_mario', '20.00 MB', this)">
+          <img id="thumb-paper_mario" class="game-thumb-mini" alt="Paper Mario">
+          <div class="game-info">
+            <span class="game-title">Paper Mario</span>
+            <span class="game-subtitle">N64 • 20.00 MB</span>
+          </div>
+        </li>
+      </ul>
+    </aside>
 
-        window.addEventListener('keydown', function(e) {
-            if (['Enter', 'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) || e.key === 'Enter') {
-                if (document.activeElement && document.activeElement.tagName === 'BUTTON') {
-                    document.activeElement.blur();
-                }
-            }
-        }, true);
+    <main class="game-zone">
+      <div class="emulator-container-wrapper">
+        <div class="emulator-frame" id="emulator-frame">
+          <div id="game-holder">
+            <div class="start-screen">
+              <img id="poster-bg" class="bg-poster">
+              <div class="start-screen-content">
+                <img id="poster-preview" class="game-poster-preview">
+                <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
+                <p style="color: #64748b; font-size: 12px;">Consola: GBA | Peso: 4.00 MB</p>
 
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById('thumb-mario').src = gameIcons.mario;
-            document.getElementById('thumb-pokemon').src = gameIcons.pokemon;
-            document.getElementById('thumb-sonic').src = gameIcons.sonic;
-            document.getElementById('thumb-zelda').src = gameIcons.zelda;
-            document.getElementById('thumb-mariokart').src = gameIcons.mariokart;
-
-            document.getElementById('thumb-mario64').src = gameIcons.mario64;
-            document.getElementById('thumb-mariokart64').src = gameIcons.mariokart64;
-            document.getElementById('thumb-zelda_oot').src = gameIcons.zelda_oot;
-            document.getElementById('thumb-smashbros').src = gameIcons.smashbros;
-            document.getElementById('thumb-paper_mario').src = gameIcons.paper_mario;
-
-            document.getElementById('poster-bg').src = gameIcons.mario;
-            document.getElementById('poster-preview').src = gameIcons.mario;
-
-            checkExistingSave(currentRom);
-        });
-
-        function showToast(msg) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast-msg';
-            toast.innerText = msg;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        function stopAndCleanupEmulator() {
-            if (currentXHR) {
-                currentXHR.abort();
-                currentXHR = null;
-            }
-
-            const holder = document.getElementById('game-holder');
-            if (holder) {
-                holder.innerHTML = '';
-            }
-        }
-
-        function checkExistingSave(romName) {
-            const saveContainer = document.getElementById('load-save-container');
-            const saveKey = 'emulatorjs_save_' + romName;
-            
-            if (localStorage.getItem(saveKey)) {
-                if (saveContainer) saveContainer.style.display = 'block';
-            } else {
-                if (saveContainer) saveContainer.style.display = 'none';
-            }
-        }
-
-        function changeGame(title, core, romName, iconKey, size, element) {
-            stopAndCleanupEmulator();
-
-            document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
-            if (element) element.classList.add('active');
-
-            currentTitle = title;
-            currentCore = core;
-            currentRom = romName;
-            currentIconKey = iconKey;
-            currentSize = size;
-
-            const iconSvg = gameIcons[currentIconKey];
-
-            const container = document.getElementById('game-holder');
-            container.innerHTML = `
-                <div class="start-screen">
-                    <img src="${iconSvg}" class="bg-poster">
-                    <div class="start-screen-content">
-                        <img src="${iconSvg}" class="game-poster-preview">
-                        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
-                        <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
-                        <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
-                        <div id="load-save-container" style="display: none;">
-                            <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
-                        </div>
-                    </div>
+                <div class="quick-settings">
+                  <label><input type="checkbox" id="toggle-vsync"> Activar V-Sync</label>
+                  <label><input type="checkbox" id="toggle-shaders"> Suavizado / Shaders</label>
                 </div>
-            `;
-            
-            checkExistingSave(currentRom);
-        }
 
-        function startEmulator(loadSave = false) {
-            stopAndCleanupEmulator();
-
-            const iconSvg = gameIcons[currentIconKey];
-            const container = document.getElementById('game-holder');
-
-            container.innerHTML = `
-                <div class="loading-screen">
-                    <img src="${iconSvg}" class="bg-poster">
-                    
-                    <div class="logo-glow-wrapper">
-                        <div class="spinner-ring"></div>
-                        <svg class="loading-hoz-animation" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
-                            <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
-                            <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
-                            <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
-                        </svg>
-                    </div>
-                    <p style="color: white; font-weight: bold;">Cargando motor de juego...</p>
+                <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
+                <div id="load-save-container" style="display: none;">
+                  <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
                 </div>
-            `;
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const romAbsoluteUrl = baseUrl + 'roms/' + currentRom;
+      <div class="ad-skyscraper">
+        <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
+          <p>Espacio Publicitario</p>
+        </div>
+      </div>
+    </main>
+  </div>
 
-            setTimeout(() => {
-                container.innerHTML = '';
-                const iframe = document.createElement('iframe');
-                iframe.className = 'emulator-iframe';
-                iframe.allow = 'autoplay; gamepad; fullscreen';
+  <script>
+    const gameIcons = {
+      mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 52 C10 25 30 18 50 18 C70 18 90 25 90 52 C90 60 10 60 10 52 Z' fill='%23e53e3e'/><circle cx='50' cy='36' r='14' fill='%23ffffff'/><text x='50' y='42' font-size='17' font-weight='900' text-anchor='middle' fill='%23e53e3e'>M</text></svg>",
+      pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e53e3e'/><path d='M 8 50 A 42 42 0 0 0 92 50 Z' fill='%23ffffff'/><line x1='8' y1='50' x2='92' y2='50' stroke='%231a202c' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%23ffffff' stroke='%231a202c' stroke-width='7'/></svg>",
+      sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 75 Q15 45 35 35 Q30 20 50 20 Q50 35 60 30 Q65 15 85 25 Q70 45 80 50 Q85 52 80 65 C65 80 35 85 20 75 Z' fill='%233182ce'/></svg>",
+      zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23f6e05e'/><polygon points='30,50 10,85 50,85' fill='%23f6e05e'/><polygon points='70,50 50,85 90,85' fill='%23f6e05e'/></svg>",
+      mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='36' fill='none' stroke='%23e53e3e' stroke-width='12'/></svg>",
+      mario64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 50 C10 25 30 18 50 18 C70 18 90 25 90 50 Z' fill='%23ff0055'/><text x='82' y='82' font-size='20' font-weight='900' fill='%2300f0ff'>64</text></svg>",
+      mariokart64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='36' fill='none' stroke='%2300f0ff' stroke-width='12'/></svg>",
+      zelda_oot: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 45,65 55,65' fill='%23e2e8f0'/></svg>",
+      smashbros: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ff0055'/></svg>",
+      paper_mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M15 30 Q50 20 85 30 L85 75 Z' fill='%23ffffff'/></svg>"
+    };
 
-                const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
+    let currentTitle = "Super Mario Advance";
+    let currentCore = "gba";
+    let currentRom = "mario_advance.gba";
+    let currentIconKey = "mario";
+    let currentSize = "4.00 MB";
 
-                iframe.srcdoc = `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <style>
-                            html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }
-                            #emulator { width:100%; height:100%; }
-                        </style>
-                    </head>
-                    <body>
-                        <div id="emulator"></div>
-                        <script>
-                            window.EJS_player = '#emulator';
-                            window.EJS_core = '${currentCore}';
-                            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-                            window.EJS_gameUrl = '${romAbsoluteUrl}'; 
-                            window.EJS_gameName = '${currentRom}';
-                            window.EJS_startOnLoaded = true;
-                            window.EJS_volume = 0.8;
-                            
-                            ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById('thumb-mario').src = gameIcons.mario;
+      document.getElementById('thumb-pokemon').src = gameIcons.pokemon;
+      document.getElementById('thumb-sonic').src = gameIcons.sonic;
+      document.getElementById('thumb-zelda').src = gameIcons.zelda;
+      document.getElementById('thumb-mariokart').src = gameIcons.mariokart;
+      document.getElementById('thumb-mario64').src = gameIcons.mario64;
+      document.getElementById('thumb-mariokart64').src = gameIcons.mariokart64;
+      document.getElementById('thumb-zelda_oot').src = gameIcons.zelda_oot;
+      document.getElementById('thumb-smashbros').src = gameIcons.smashbros;
+      document.getElementById('thumb-paper_mario').src = gameIcons.paper_mario;
+      document.getElementById('poster-bg').src = gameIcons.mario;
+      document.getElementById('poster-preview').src = gameIcons.mario;
+      checkExistingSave(currentRom);
+    });
 
-                            window.EJS_onSave = function(data) {
-                                if (data && data.save) {
-                                    const reader = new FileReader();
-                                    reader.readAsDataURL(new Blob([data.save]));
-                                    reader.onloadend = function() {
-                                        const base64data = reader.result;
-                                        window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
-                                        window.parent.showToast('💾 Progreso guardado en tu navegador');
-                                    };
-                                }
-                            };
-                        <\/script>
-                        <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
-                    </body>
-                    </html>
-                `;
+    function checkExistingSave(romName) {
+      const saveContainer = document.getElementById('load-save-container');
+      const saveKey = 'emulatorjs_save_' + romName;
+      if (localStorage.getItem(saveKey)) {
+        if (saveContainer) saveContainer.style.display = 'block';
+      } else {
+        if (saveContainer) saveContainer.style.display = 'none';
+      }
+    }
 
-                container.appendChild(iframe);
+    function changeGame(title, core, romName, iconKey, size, element) {
+      document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
+      if (element) element.classList.add('active');
+      currentTitle = title;
+      currentCore = core;
+      currentRom = romName;
+      currentIconKey = iconKey;
+      currentSize = size;
 
-                if (document.activeElement) {
-                    document.activeElement.blur();
+      const iconSvg = gameIcons[currentIconKey];
+      const container = document.getElementById('game-holder');
+      container.innerHTML = `
+        <div class="start-screen">
+          <img src="${iconSvg}" class="bg-poster">
+          <div class="start-screen-content">
+            <img src="${iconSvg}" class="game-poster-preview">
+            <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
+            <p style="color: #64748b; font-size: 12px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
+            <div class="quick-settings">
+              <label><input type="checkbox" id="toggle-vsync"> Activar V-Sync</label>
+              <label><input type="checkbox" id="toggle-shaders"> Suavizado / Shaders</label>
+            </div>
+            <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
+            <div id="load-save-container" style="display: none;">
+              <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
+            </div>
+          </div>
+        </div>
+      `;
+      checkExistingSave(currentRom);
+    }
+
+    function startEmulator(loadSave = false) {
+      const container = document.getElementById('game-holder');
+      const enableVsync = document.getElementById('toggle-vsync')?.checked || false;
+      const enableShaders = document.getElementById('toggle-shaders')?.checked || false;
+
+      container.innerHTML = '<p style="color:white; text-align:center; padding-top:20%;">Iniciando motor a máxima velocidad...</p>';
+
+      const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      const romAbsoluteUrl = baseUrl + 'roms/' + currentRom;
+
+      setTimeout(() => {
+        container.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.className = 'emulator-iframe';
+        iframe.allow = 'autoplay; gamepad; fullscreen';
+
+        iframe.srcdoc = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <style>html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }</style>
+          </head>
+          <body>
+            <div id="game"></div>
+            <script>
+              EJS_player = '#game';
+              EJS_core = '${currentCore}';
+              EJS_gameName = '${currentTitle}';
+              EJS_gameUrl = '${romAbsoluteUrl}';
+              EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+              
+              EJS_vsync = ${enableVsync};
+              EJS_smooth = ${enableShaders};
+              EJS_threads = true;
+
+              EJS_defaultControls = {
+                0: {
+                  'dpaddown': 'ArrowDown',
+                  'dpadleft': 'ArrowLeft',
+                  'dpadright': 'ArrowRight',
+                  'dpadup': 'ArrowUp',
+                  'an_down': 'ArrowDown',
+                  'an_left': 'ArrowLeft',
+                  'an_right': 'ArrowRight',
+                  'an_up': 'ArrowUp',
+                  'a': 'Space',
+                  'b': 'KeyZ',
+                  'x': 'KeyX',
+                  'y': 'KeyC',
+                  'l': 'KeyA',
+                  'r': 'KeyS',
+                  'start': 'Enter',
+                  'select': 'ShiftLeft'
+                },
+                1: {
+                  'dpaddown': 'KeyS',
+                  'dpadleft': 'KeyA',
+                  'dpadright': 'KeyD',
+                  'dpadup': 'KeyW',
+                  'an_down': 'KeyS',
+                  'an_left': 'KeyA',
+                  'an_right': 'KeyD',
+                  'an_up': 'KeyW',
+                  'a': 'KeyF',
+                  'b': 'KeyG',
+                  'x': 'KeyH',
+                  'y': 'KeyT',
+                  'start': 'KeyY',
+                  'select': 'KeyU'
                 }
-
-                iframe.onload = () => {
-                    iframe.contentWindow.focus();
-                };
-            }, 300); 
-        }
-    </script>
+              };
+            <\/script>
+            <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
+          </body>
+          </html>
+        `;
+        container.appendChild(iframe);
+      }, 500);
+    }
+  </script>
 </body>
 </html>
