@@ -3,30 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Hoz Retro Games - Emulador GBA Online Gratis</title>
+    <title>La Hoz Retro Games - Emulador Online Gratis</title>
 
-    <!-- Etiqueta Canónica -->
     <link rel="canonical" href="https://lahozretrogames.github.io/la-hoz-retro-games/" />
 
-    <!-- SEO y Metaetiquetas para Google -->
-    <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) online y gratis. Disfruta de Super Mario Advance, Pokémon Rojo Fuego, Sonic y Zelda en tu navegador con emulador retro online.">
-    <meta name="keywords" content="juegos retro, emulador online, gba online, super mario advance online, pokemon rojo fuego, emulador retro navegador, la hoz retro games">
+    <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) y Nintendo 64 (N64) online y gratis en tu navegador.">
+    <meta name="keywords" content="juegos retro, emulador online, gba online, n64 online, super mario 64, zelda ocarina of time, la hoz retro games">
     <meta name="robots" content="index, follow">
     <meta name="author" content="La Hoz Retro Games">
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="La Hoz Retro Games - Emulador GBA Online Gratis">
-    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance en tu navegador con guardado automático.">
+    <meta property="og:title" content="La Hoz Retro Games - Emulador GBA y N64 Online Gratis">
+    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance y Nintendo 64 en tu navegador con guardado automático.">
     <meta property="og:type" content="website">
 
-    <!-- Datos Estructurados Schema.org -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "La Hoz Retro Games",
       "url": "https://lahozretrogames.github.io/la-hoz-retro-games/",
-      "description": "Emulador online de juegos retro de Game Boy Advance para jugar directamente en el navegador.",
+      "description": "Emulador online de juegos retro de Game Boy Advance y Nintendo 64 para jugar directamente en el navegador.",
       "applicationCategory": "GameApplication",
       "operatingSystem": "Any"
     }
@@ -125,43 +121,62 @@
             width: 310px;
             background-color: var(--panel-bg);
             border-right: 1px solid rgba(0, 240, 255, 0.15);
-            padding: 24px 18px;
+            padding: 20px 14px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             z-index: 15;
             box-shadow: 5px 0 25px rgba(0,0,0,0.6);
-            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(5, 5, 8, 0.5);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0, 240, 255, 0.3);
+            border-radius: 3px;
         }
 
         .sidebar h3 {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--neon-cyan);
-            margin-bottom: 5px;
-            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 2px;
+            font-weight: 800;
             text-shadow: 0 0 8px rgba(0,240,255,0.4);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding-bottom: 4px;
+        }
+
+        .sidebar h3:first-of-type {
+            margin-top: 0;
         }
 
         .game-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            overflow: hidden;
+            gap: 8px;
         }
 
         .game-item {
-            padding: 12px 14px;
+            padding: 10px 12px;
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             user-select: none;
             will-change: transform;
         }
@@ -169,7 +184,7 @@
         .game-item:hover {
             background: rgba(0, 240, 255, 0.1);
             border-color: rgba(0, 240, 255, 0.5);
-            transform: translateX(5px);
+            transform: translateX(4px);
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
         }
 
@@ -178,17 +193,17 @@
             border-color: var(--neon-cyan);
             color: #fff;
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);
-            transform: translateX(6px);
+            transform: translateX(5px);
         }
 
         .game-thumb-mini {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 8px;
             object-fit: contain;
             border: 1px solid rgba(0, 240, 255, 0.3);
             background: #11121d;
-            padding: 4px;
+            padding: 3px;
         }
 
         .game-info {
@@ -197,13 +212,13 @@
         }
 
         .game-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #fff;
         }
 
         .game-subtitle {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748b;
             margin-top: 2px;
         }
@@ -446,12 +461,12 @@
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v3.8 🕹️</div>
+        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v4.0 🕹️</div>
     </header>
 
     <div class="main-layout">
         <aside class="sidebar">
-            <h3>Selecciona tu ROM</h3>
+            <h3>Game Boy Advance</h3>
             <ul class="game-list">
                 <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario', '4.00 MB', this)">
                     <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
@@ -486,6 +501,45 @@
                     <div class="game-info">
                         <span class="game-title">Mario Kart Circuit</span>
                         <span class="game-subtitle">GBA • 4.00 MB</span>
+                    </div>
+                </li>
+            </ul>
+
+            <h3>Nintendo 64</h3>
+            <ul class="game-list">
+                <li class="game-item" onclick="changeGame('Super Mario 64', 'n64', 'n64/mario64.z64', 'mario64', '8.00 MB', this)">
+                    <img id="thumb-mario64" class="game-thumb-mini" alt="Super Mario 64">
+                    <div class="game-info">
+                        <span class="game-title">Super Mario 64</span>
+                        <span class="game-subtitle">N64 • 8.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Mario Kart 64', 'n64', 'n64/mariokart64.z64', 'mariokart64', '12.00 MB', this)">
+                    <img id="thumb-mariokart64" class="game-thumb-mini" alt="Mario Kart 64">
+                    <div class="game-info">
+                        <span class="game-title">Mario Kart 64</span>
+                        <span class="game-subtitle">N64 • 12.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'n64/zelda_oot.z64', 'zelda_oot', '32.00 MB', this)">
+                    <img id="thumb-zelda_oot" class="game-thumb-mini" alt="Zelda Ocarina of Time">
+                    <div class="game-info">
+                        <span class="game-title">Zelda: Ocarina of Time</span>
+                        <span class="game-subtitle">N64 • 32.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'n64/smashbros.z64', 'smashbros', '16.00 MB', this)">
+                    <img id="thumb-smashbros" class="game-thumb-mini" alt="Super Smash Bros.">
+                    <div class="game-info">
+                        <span class="game-title">Super Smash Bros.</span>
+                        <span class="game-subtitle">N64 • 16.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'n64/paper_mario.z64', 'paper_mario', '40.00 MB', this)">
+                    <img id="thumb-paper_mario" class="game-thumb-mini" alt="Paper Mario">
+                    <div class="game-info">
+                        <span class="game-title">Paper Mario</span>
+                        <span class="game-subtitle">N64 • 40.00 MB</span>
                     </div>
                 </li>
             </ul>
@@ -527,7 +581,12 @@
             pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e53e3e'/><path d='M 8 50 A 42 42 0 0 0 92 50 Z' fill='%23ffffff'/><line x1='8' y1='50' x2='92' y2='50' stroke='%231a202c' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%23ffffff' stroke='%231a202c' stroke-width='7'/><circle cx='50' cy='50' r='6' fill='%231a202c'/></svg>",
             sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 75 Q15 45 35 35 Q30 20 50 20 Q50 35 60 30 Q65 15 85 25 Q70 45 80 50 Q85 52 80 65 C65 80 35 85 20 75 Z' fill='%233182ce'/><circle cx='55' cy='42' r='7' fill='%23ffffff'/><circle cx='57' cy='42' r='3.5' fill='%23000000'/></svg>",
             zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23f6e05e'/><polygon points='30,50 10,85 50,85' fill='%23f6e05e'/><polygon points='70,50 50,85 90,85' fill='%23f6e05e'/><polygon points='50,50 30,85 70,85' fill='%231a202c'/></svg>",
-            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='36' fill='none' stroke='%23e53e3e' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%231a202c'/><path d='M 20 50 L 38 50 M 62 50 L 80 50 M 50 62 L 50 80' stroke='%23cbd5e0' stroke-width='8' stroke-linecap='round'/></svg>"
+            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='36' fill='none' stroke='%23e53e3e' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%231a202c'/><path d='M 20 50 L 38 50 M 62 50 L 80 50 M 50 62 L 50 80' stroke='%23cbd5e0' stroke-width='8' stroke-linecap='round'/></svg>",
+            mario64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 15 L85 35 L85 75 L50 95 L15 75 L15 35 Z' fill='none' stroke='%2300f0ff' stroke-width='6'/><path d='M15 35 L50 55 L85 35 M50 55 L50 95' stroke='%2300f0ff' stroke-width='4'/><polygon points='50,22 75,37 50,52 25,37' fill='%23ff0055' opacity='0.8'/><text x='50' y='72' font-size='22' font-weight='900' text-anchor='middle' fill='%2300f0ff' font-family='Arial'>64</text></svg>",
+            mariokart64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%2300f0ff' stroke-width='8'/><path d='M 20 50 L 40 50 M 60 50 L 80 50 M 50 20 L 50 40' stroke='%23ff0055' stroke-width='6' stroke-linecap='round'/><circle cx='50' cy='50' r='10' fill='%2300f0ff'/><path d='M35 78 L65 78 L50 60 Z' fill='%23ff0055'/></svg>",
+            zelda_oot: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='55' rx='35' ry='22' fill='none' stroke='%2300f0ff' stroke-width='6'/><ellipse cx='50' cy='55' rx='20' ry='12' fill='none' stroke='%23ff0055' stroke-width='3'/><circle cx='35' cy='55' r='4' fill='%2300f0ff'/><circle cx='45' cy='58' r='4' fill='%2300f0ff'/><circle cx='55' cy='58' r='4' fill='%2300f0ff'/><circle cx='65' cy='55' r='4' fill='%2300f0ff'/><path d='M65 38 C75 25, 80 20, 85 25 C88 28, 80 38, 72 42 Z' fill='%2300f0ff'/></svg>",
+            smashbros: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23ff0055' stroke-width='7'/><line x1='10' y1='62' x2='90' y2='62' stroke='%2300f0ff' stroke-width='10'/><line x1='38' y1='10' x2='38' y2='90' stroke='%2300f0ff' stroke-width='10'/></svg>",
+            paper_mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 25 L70 20 C80 20, 85 30, 80 40 L30 45 Z' fill='%23ff0055' stroke='%2300f0ff' stroke-width='3'/><circle cx='50' cy='32' r='8' fill='%23ffffff'/><text x='50' y='36' font-size='10' font-weight='900' text-anchor='middle' fill='%23ff0055' font-family='Arial'>M</text><rect x='25' y='45' width='50' height='35' rx='5' fill='none' stroke='%2300f0ff' stroke-width='4' stroke-dasharray='6 4'/></svg>"
         };
 
         let currentTitle = "Super Mario Advance";
@@ -537,7 +596,6 @@
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
-        // Desvincular Enter, Espacio y Flechas de botones HTML para que no reaccionen mientras juegas
         window.addEventListener('keydown', function(e) {
             if (['Enter', 'Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) || e.key === 'Enter') {
                 if (document.activeElement && document.activeElement.tagName === 'BUTTON') {
@@ -552,6 +610,12 @@
             document.getElementById('thumb-sonic').src = gameIcons.sonic;
             document.getElementById('thumb-zelda').src = gameIcons.zelda;
             document.getElementById('thumb-mariokart').src = gameIcons.mariokart;
+
+            document.getElementById('thumb-mario64').src = gameIcons.mario64;
+            document.getElementById('thumb-mariokart64').src = gameIcons.mariokart64;
+            document.getElementById('thumb-zelda_oot').src = gameIcons.zelda_oot;
+            document.getElementById('thumb-smashbros').src = gameIcons.smashbros;
+            document.getElementById('thumb-paper_mario').src = gameIcons.paper_mario;
 
             document.getElementById('poster-bg').src = gameIcons.mario;
             document.getElementById('poster-preview').src = gameIcons.mario;
