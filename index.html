@@ -36,6 +36,7 @@
             --neon-cyan: #00f0ff;
             --neon-magenta: #ff0055;
             --text-main: #f1f5f9;
+            --gold-star: #ffd700;
         }
 
         * {
@@ -162,6 +163,45 @@
             margin-top: 0;
         }
 
+        /* Buscador y filtro de favoritos */
+        .search-box-wrapper {
+            display: flex;
+            gap: 6px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+        }
+
+        .fav-filter-btn {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: var(--gold-star);
+            border-radius: 8px;
+            padding: 0 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .fav-filter-btn.active, .fav-filter-btn:hover {
+            background: rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
         .controls-card {
             background: var(--card-bg);
             border: 1px solid rgba(0, 240, 255, 0.2);
@@ -239,7 +279,7 @@
         }
 
         .game-item {
-            padding: 10px 12px;
+            padding: 8px 10px;
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 10px;
@@ -247,9 +287,18 @@
             transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            gap: 10px;
             user-select: none;
             will-change: transform;
+        }
+
+        .game-item-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            overflow: hidden;
         }
 
         .game-item:hover {
@@ -271,27 +320,49 @@
             width: 38px;
             height: 38px;
             border-radius: 8px;
-            object-fit: contain;
+            object-fit: cover;
             border: 1px solid rgba(0, 240, 255, 0.3);
             background: #11121d;
-            padding: 3px;
+            padding: 2px;
+            flex-shrink: 0;
         }
 
         .game-info {
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .game-title {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 700;
             color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .game-subtitle {
             font-size: 10px;
             color: #64748b;
             margin-top: 2px;
+        }
+
+        .fav-star {
+            font-size: 16px;
+            color: #4a5568;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            padding: 4px;
+        }
+
+        .fav-star:hover {
+            transform: scale(1.2);
+        }
+
+        .fav-star.active {
+            color: var(--gold-star);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
         }
 
         .game-zone {
@@ -356,11 +427,10 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             opacity: 0.15;
-            filter: blur(2px) scale(1.05);
+            filter: blur(4px) scale(1.05);
             transition: opacity 0.3s ease;
-            padding: 40px;
         }
 
         .start-screen-content {
@@ -381,12 +451,12 @@
             width: 130px;
             height: 130px;
             border-radius: 16px;
-            object-fit: contain;
+            object-fit: cover;
             margin-bottom: 20px;
             border: 2px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
             background: #11121d;
-            padding: 10px;
+            padding: 4px;
         }
 
         .loading-screen {
@@ -538,6 +608,11 @@
     <div class="main-layout">
         <aside class="sidebar">
             
+            <div class="search-box-wrapper">
+                <input type="text" id="game-search" class="search-input" placeholder="🔍 Buscar juego..." oninput="filterGames()">
+                <button id="fav-filter-btn" class="fav-filter-btn" title="Mostrar solo favoritos" onclick="toggleFavFilter()">★</button>
+            </div>
+
             <h3>Controles de PC 🎮</h3>
             <div class="controls-card">
                 <div class="control-box"><b>Moverse / Palanca:</b> Flechas (▲▼◄►)</div>
@@ -565,81 +640,111 @@
                 </div>
             </div>
 
-            <h3>Game Boy Advance</h3>
-            <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario', '4.00 MB', this)">
-                    <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
-                    <div class="game-info">
-                        <span class="game-title">Super Mario Advance</span>
-                        <span class="game-subtitle">GBA • 4.00 MB</span>
+            <h3 class="section-title">Game Boy Advance</h3>
+            <ul class="game-list" id="gba-list">
+                <li class="game-item active" data-id="mario" onclick="selectGame('mario', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="gba/mario.png" alt="Super Mario Advance" onerror="this.src='gba/mario.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Super Mario Advance</span>
+                            <span class="game-subtitle">GBA • 4.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'mario')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
-                    <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
-                    <div class="game-info">
-                        <span class="game-title">Pokémon Rojo Fuego</span>
-                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                <li class="game-item" data-id="pokemon" onclick="selectGame('pokemon', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="gba/pokemon.png" alt="Pokémon Rojo Fuego" onerror="this.src='gba/pokemon.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Pokémon Rojo Fuego</span>
+                            <span class="game-subtitle">GBA • 16.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'pokemon')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic', '8.00 MB', this)">
-                    <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
-                    <div class="game-info">
-                        <span class="game-title">Sonic Advance</span>
-                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                <li class="game-item" data-id="sonic" onclick="selectGame('sonic', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="gba/sonic.png" alt="Sonic Advance" onerror="this.src='gba/sonic.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Sonic Advance</span>
+                            <span class="game-subtitle">GBA • 8.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'sonic')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
-                    <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
-                    <div class="game-info">
-                        <span class="game-title">Zelda: Minish Cap</span>
-                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                <li class="game-item" data-id="zelda" onclick="selectGame('zelda', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="gba/zelda.png" alt="Zelda: Minish Cap" onerror="this.src='gba/zelda.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Zelda: Minish Cap</span>
+                            <span class="game-subtitle">GBA • 16.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'zelda')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mariokart', '4.00 MB', this)">
-                    <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
-                    <div class="game-info">
-                        <span class="game-title">Mario Kart Circuit</span>
-                        <span class="game-subtitle">GBA • 4.00 MB</span>
+                <li class="game-item" data-id="mariokart" onclick="selectGame('mariokart', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="gba/mariokart.png" alt="Mario Kart Circuit" onerror="this.src='gba/mariokart.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Mario Kart Circuit</span>
+                            <span class="game-subtitle">GBA • 4.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'mariokart')">★</span>
                 </li>
             </ul>
 
-            <h3>Nintendo 64</h3>
-            <ul class="game-list">
-                <li class="game-item" onclick="changeGame('Super Mario 64', 'n64', 'n64/mario64.z64', 'mario64', '8.00 MB', this)">
-                    <img id="thumb-mario64" class="game-thumb-mini" alt="Super Mario 64">
-                    <div class="game-info">
-                        <span class="game-title">Super Mario 64</span>
-                        <span class="game-subtitle">N64 • 8.00 MB</span>
+            <h3 class="section-title">Nintendo 64</h3>
+            <ul class="game-list" id="n64-list">
+                <li class="game-item" data-id="mario64" onclick="selectGame('mario64', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="n64/mario64.png" alt="Super Mario 64" onerror="this.src='n64/mario64.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Super Mario 64</span>
+                            <span class="game-subtitle">N64 • 8.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'mario64')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart 64', 'n64', 'n64/mariokart64.z64', 'mariokart64', '12.00 MB', this)">
-                    <img id="thumb-mariokart64" class="game-thumb-mini" alt="Mario Kart 64">
-                    <div class="game-info">
-                        <span class="game-title">Mario Kart 64</span>
-                        <span class="game-subtitle">N64 • 12.00 MB</span>
+                <li class="game-item" data-id="mariokart64" onclick="selectGame('mariokart64', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="n64/mariokart64.png" alt="Mario Kart 64" onerror="this.src='n64/mariokart64.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Mario Kart 64</span>
+                            <span class="game-subtitle">N64 • 12.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'mariokart64')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'n64/zelda_oot.zip', 'zelda_oot', '16.00 MB', this)">
-                    <img id="thumb-zelda_oot" class="game-thumb-mini" alt="Zelda Ocarina of Time">
-                    <div class="game-info">
-                        <span class="game-title">Zelda: Ocarina of Time</span>
-                        <span class="game-subtitle">N64 • 16.00 MB</span>
+                <li class="game-item" data-id="zelda_oot" onclick="selectGame('zelda_oot', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="n64/zelda_oot.png" alt="Zelda: Ocarina of Time" onerror="this.src='n64/zelda_oot.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Zelda: Ocarina of Time</span>
+                            <span class="game-subtitle">N64 • 16.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'zelda_oot')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'n64/smashbros.zip', 'smashbros', '12.00 MB', this)">
-                    <img id="thumb-smashbros" class="game-thumb-mini" alt="Super Smash Bros.">
-                    <div class="game-info">
-                        <span class="game-title">Super Smash Bros.</span>
-                        <span class="game-subtitle">N64 • 12.00 MB</span>
+                <li class="game-item" data-id="smashbros" onclick="selectGame('smashbros', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="n64/smashbros.png" alt="Super Smash Bros." onerror="this.src='n64/smashbros.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Super Smash Bros.</span>
+                            <span class="game-subtitle">N64 • 12.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'smashbros')">★</span>
                 </li>
-                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'n64/paper_mario.zip', 'paper_mario', '20.00 MB', this)">
-                    <img id="thumb-paper_mario" class="game-thumb-mini" alt="Paper Mario">
-                    <div class="game-info">
-                        <span class="game-title">Paper Mario</span>
-                        <span class="game-subtitle">N64 • 20.00 MB</span>
+                <li class="game-item" data-id="paper_mario" onclick="selectGame('paper_mario', this)">
+                    <div class="game-item-content">
+                        <img class="game-thumb-mini" src="n64/paper_mario.png" alt="Paper Mario" onerror="this.src='n64/paper_mario.jpg'">
+                        <div class="game-info">
+                            <span class="game-title">Paper Mario</span>
+                            <span class="game-subtitle">N64 • 20.00 MB</span>
+                        </div>
                     </div>
+                    <span class="fav-star" onclick="toggleFavorite(event, 'paper_mario')">★</span>
                 </li>
             </ul>
         </aside>
@@ -653,7 +758,7 @@
                             <div class="start-screen-content">
                                 <img id="poster-preview" class="game-poster-preview">
                                 <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
-                                <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
+                                <p style="color: #64748b; font-size: 13px;" id="display-subtitle">Consola: GBA | Peso: 4.00 MB</p>
                                 <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
                                 <div id="load-save-container" style="display: none;">
                                     <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
@@ -675,43 +780,41 @@
     <div id="toast-container"></div>
 
     <script>
-        const gameIcons = {
-            mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 52 C10 25 30 18 50 18 C70 18 90 25 90 52 C90 60 10 60 10 52 Z' fill='%23e53e3e'/><path d='M 12 52 Q 50 42 88 52 C 92 68 8 68 12 52 Z' fill='%23c53030'/><circle cx='50' cy='36' r='14' fill='%23ffffff'/><text x='50' y='42' font-size='17' font-weight='900' text-anchor='middle' fill='%23e53e3e' font-family='Arial'>M</text></svg>",
-            pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e53e3e'/><path d='M 8 50 A 42 42 0 0 0 92 50 Z' fill='%23ffffff'/><line x1='8' y1='50' x2='92' y2='50' stroke='%231a202c' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%23ffffff' stroke='%231a202c' stroke-width='7'/><circle cx='50' cy='50' r='6' fill='%231a202c'/></svg>",
-            sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 75 Q15 45 35 35 Q30 20 50 20 Q50 35 60 30 Q65 15 85 25 Q70 45 80 50 Q85 52 80 65 C65 80 35 85 20 75 Z' fill='%233182ce'/><circle cx='55' cy='42' r='7' fill='%23ffffff'/><circle cx='57' cy='42' r='3.5' fill='%23000000'/></svg>",
-            zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23f6e05e'/><polygon points='30,50 10,85 50,85' fill='%23f6e05e'/><polygon points='70,50 50,85 90,85' fill='%23f6e05e'/><polygon points='50,50 30,85 70,85' fill='%231a202c'/></svg>",
-            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23ff0055' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%2300f0ff'/><path d='M 18 50 L 38 50 M 62 50 L 82 50 M 50 62 L 50 88' stroke='%23ffffff' stroke-width='8' stroke-linecap='round'/></svg>",
-            mario64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 50 C10 25 30 18 50 18 C70 18 90 25 90 50 C90 60 10 60 10 50 Z' fill='%23ff0055'/><path d='M 12 50 Q 50 40 88 50 C 92 65 8 65 12 50 Z' fill='%23c53030'/><circle cx='50' cy='35' r='13' fill='%23ffffff'/><text x='50' y='41' font-size='16' font-weight='900' text-anchor='middle' fill='%23ff0055' font-family='Arial'>M</text><text x='82' y='82' font-size='20' font-weight='900' fill='%2300f0ff' font-family='Arial'>64</text></svg>",
-            mariokart64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%2300f0ff' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%23ff0055'/><path d='M 18 50 L 38 50 M 62 50 L 82 50 M 50 62 L 50 88' stroke='%23ffffff' stroke-width='8' stroke-linecap='round'/><text x='50' y='36' font-size='12' font-weight='900' text-anchor='middle' fill='%23ffffff' font-family='Arial'>64</text></svg>",
-            zelda_oot: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 45,65 55,65' fill='%23e2e8f0'/><polygon points='50,15 50,65 55,65' fill='%23cbd5e1'/><path d='M32 65 C40 60 60 60 68 65 L65 72 C55 68 45 68 35 72 Z' fill='%2300f0ff'/><rect x='46' y='72' width='8' height='18' rx='2' fill='%23ff0055'/><circle cx='50' cy='93' r='6' fill='%23f6e05e'/><polygon points='50,38 46,45 54,45' fill='%23f6e05e'/></svg>",
-            smashbros: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ff0055' stroke='%2300f0ff' stroke-width='4'/><rect x='10' y='42' width='80' height='16' fill='%23050508'/><rect x='34' y='10' width='12' height='80' fill='%23050508'/></svg>",
-            paper_mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M15 30 Q50 20 85 30 L85 75 Q50 65 15 75 Z' fill='%23ffffff' stroke='%2300f0ff' stroke-width='4'/><line x1='50' y1='23' x2='50' y2='68' stroke='%2300f0ff' stroke-width='3'/><polygon points='50,32 53,40 62,40 55,45 57,53 50,48 43,53 45,45 38,40 47,40' fill='%23f6e05e' stroke='%23ff0055' stroke-width='1.5'/></svg>"
+        // Catálogo centralizado de juegos con rutas locales
+        const gamesData = {
+            mario: { title: "Super Mario Advance", core: "gba", rom: "mario_advance.gba", img: "gba/mario.png", fallbackImg: "gba/mario.jpg", size: "4.00 MB" },
+            pokemon: { title: "Pokémon Rojo Fuego", core: "gba", rom: "pokemon_rojo_fuego.gba", img: "gba/pokemon.png", fallbackImg: "gba/pokemon.jpg", size: "16.00 MB" },
+            sonic: { title: "Sonic Advance", core: "gba", rom: "sonic_advance.gba", img: "gba/sonic.png", fallbackImg: "gba/sonic.jpg", size: "8.00 MB" },
+            zelda: { title: "Zelda: Minish Cap", core: "gba", rom: "zelda_minish_cap.gba", img: "gba/zelda.png", fallbackImg: "gba/zelda.jpg", size: "16.00 MB" },
+            mariokart: { title: "Mario Kart Circuit", core: "gba", rom: "mario_kart.gba", img: "gba/mariokart.png", fallbackImg: "gba/mariokart.jpg", size: "4.00 MB" },
+            
+            mario64: { title: "Super Mario 64", core: "n64", rom: "n64/mario64.z64", img: "n64/mario64.png", fallbackImg: "n64/mario64.jpg", size: "8.00 MB" },
+            mariokart64: { title: "Mario Kart 64", core: "n64", rom: "n64/mariokart64.z64", img: "n64/mariokart64.png", fallbackImg: "n64/mariokart64.jpg", size: "12.00 MB" },
+            zelda_oot: { title: "Zelda: Ocarina of Time", core: "n64", rom: "n64/zelda_oot.zip", img: "n64/zelda_oot.png", fallbackImg: "n64/zelda_oot.jpg", size: "16.00 MB" },
+            smashbros: { title: "Super Smash Bros.", core: "n64", rom: "n64/smashbros.zip", img: "n64/smashbros.png", fallbackImg: "n64/smashbros.jpg", size: "12.00 MB" },
+            paper_mario: { title: "Paper Mario", core: "n64", rom: "n64/paper_mario.zip", img: "n64/paper_mario.png", fallbackImg: "n64/paper_mario.jpg", size: "20.00 MB" }
         };
 
-        // Mapeo detallado de teclas
         const keyMap = {
-            "0": { "code": "ArrowUp" },      // Arriba
-            "1": { "code": "ArrowDown" },    // Abajo
-            "2": { "code": "ArrowLeft" },    // Izquierda (Doblar)
-            "3": { "code": "ArrowRight" },   // Derecha (Doblar)
-            "4": { "code": "Space" },        // Botón A
-            "5": { "code": "KeyZ" },         // Botón B
-            "6": { "code": "KeyX" },         // Botón X
-            "7": { "code": "KeyC" },         // Botón Y
-            "8": { "code": "KeyA" },         // Gatillo L
-            "9": { "code": "KeyS" },         // Gatillo R
-            "10": { "code": "Enter" },       // Start
-            "11": { "code": "ShiftLeft" }    // Select
+            "0": { "code": "ArrowUp" },
+            "1": { "code": "ArrowDown" },
+            "2": { "code": "ArrowLeft" },
+            "3": { "code": "ArrowRight" },
+            "4": { "code": "Space" },
+            "5": { "code": "KeyZ" },
+            "6": { "code": "KeyX" },
+            "7": { "code": "KeyC" },
+            "8": { "code": "KeyA" },
+            "9": { "code": "KeyS" },
+            "10": { "code": "Enter" },
+            "11": { "code": "ShiftLeft" }
         };
 
-        let currentTitle = "Super Mario Advance";
-        let currentCore = "gba";
-        let currentRom = "mario_advance.gba";
-        let currentIconKey = "mario";
-        let currentSize = "4.00 MB";
+        let currentGameId = "mario";
+        let favorites = JSON.parse(localStorage.getItem('lahoz_favorites') || '[]');
+        let onlyFavsFilter = false;
         let currentXHR = null;
 
-        // Evitar desplazamientos no deseados de la página
         window.addEventListener('keydown', function(e) {
             if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                 e.preventDefault();
@@ -722,27 +825,21 @@
         }, true);
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Inicializar checkboxes desmarcados por defecto para rendimiento fluido
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
 
-            document.getElementById('thumb-mario').src = gameIcons.mario;
-            document.getElementById('thumb-pokemon').src = gameIcons.pokemon;
-            document.getElementById('thumb-sonic').src = gameIcons.sonic;
-            document.getElementById('thumb-zelda').src = gameIcons.zelda;
-            document.getElementById('thumb-mariokart').src = gameIcons.mariokart;
+            updateFavoritesUI();
 
-            document.getElementById('thumb-mario64').src = gameIcons.mario64;
-            document.getElementById('thumb-mariokart64').src = gameIcons.mariokart64;
-            document.getElementById('thumb-zelda_oot').src = gameIcons.zelda_oot;
-            document.getElementById('thumb-smashbros').src = gameIcons.smashbros;
-            document.getElementById('thumb-paper_mario').src = gameIcons.paper_mario;
-
-            document.getElementById('poster-bg').src = gameIcons.mario;
-            document.getElementById('poster-preview').src = gameIcons.mario;
-
-            checkExistingSave(currentRom);
+            // Cargar juego por URL dinámica si existe el parámetro ?game=ID
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameParam = urlParams.get('game');
+            if (gameParam && gamesData[gameParam]) {
+                const targetElement = document.querySelector(`.game-item[data-id="${gameParam}"]`);
+                selectGame(gameParam, targetElement, false);
+            } else {
+                updateStartScreen();
+            }
         });
 
         function showToast(msg) {
@@ -759,46 +856,52 @@
                 currentXHR.abort();
                 currentXHR = null;
             }
-
             const holder = document.getElementById('game-holder');
-            if (holder) {
-                holder.innerHTML = '';
-            }
+            if (holder) holder.innerHTML = '';
         }
 
         function checkExistingSave(romName) {
             const saveContainer = document.getElementById('load-save-container');
             const saveKey = 'emulatorjs_save_' + romName;
-            
-            if (localStorage.getItem(saveKey)) {
-                if (saveContainer) saveContainer.style.display = 'block';
-            } else {
-                if (saveContainer) saveContainer.style.display = 'none';
+            if (saveContainer) {
+                saveContainer.style.display = localStorage.getItem(saveKey) ? 'block' : 'none';
             }
         }
 
-        function changeGame(title, core, romName, iconKey, size, element) {
+        function selectGame(id, element, updateUrl = true) {
+            if (!gamesData[id]) return;
+            
             stopAndCleanupEmulator();
 
+            currentGameId = id;
             document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
-            if (element) element.classList.add('active');
+            if (element) {
+                element.classList.add('active');
+            } else {
+                const target = document.querySelector(`.game-item[data-id="${id}"]`);
+                if (target) target.classList.add('active');
+            }
 
-            currentTitle = title;
-            currentCore = core;
-            currentRom = romName;
-            currentIconKey = iconKey;
-            currentSize = size;
+            if (updateUrl) {
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('game', id);
+                window.history.pushState({}, '', newUrl);
+            }
 
-            const iconSvg = gameIcons[currentIconKey];
+            updateStartScreen();
+        }
 
+        function updateStartScreen() {
+            const game = gamesData[currentGameId];
             const container = document.getElementById('game-holder');
+
             container.innerHTML = `
                 <div class="start-screen">
-                    <img src="${iconSvg}" class="bg-poster">
+                    <img src="${game.img}" class="bg-poster" onerror="this.src='${game.fallbackImg}'">
                     <div class="start-screen-content">
-                        <img src="${iconSvg}" class="game-poster-preview">
-                        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
-                        <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
+                        <img src="${game.img}" class="game-poster-preview" onerror="this.src='${game.fallbackImg}'">
+                        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${game.title}</h2>
+                        <p style="color: #64748b; font-size: 13px;">Consola: ${game.core.toUpperCase()} | Peso: ${game.size}</p>
                         <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
                         <div id="load-save-container" style="display: none;">
                             <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
@@ -807,13 +910,65 @@
                 </div>
             `;
             
-            checkExistingSave(currentRom);
+            checkExistingSave(game.rom);
+        }
+
+        /* Funcionalidad de Búsqueda y Favoritos */
+        function filterGames() {
+            const query = document.getElementById('game-search').value.toLowerCase();
+            document.querySelectorAll('.game-item').forEach(item => {
+                const id = item.getAttribute('data-id');
+                const game = gamesData[id];
+                const matchesQuery = game.title.toLowerCase().includes(query);
+                const matchesFav = !onlyFavsFilter || favorites.includes(id);
+
+                if (matchesQuery && matchesFav) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleFavorite(event, id) {
+            event.stopPropagation();
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(fav => fav !== id);
+                showToast('❌ Eliminado de favoritos');
+            } else {
+                favorites.push(id);
+                showToast('⭐ Agregado a favoritos');
+            }
+            localStorage.setItem('lahoz_favorites', JSON.stringify(favorites));
+            updateFavoritesUI();
+            filterGames();
+        }
+
+        function updateFavoritesUI() {
+            document.querySelectorAll('.game-item').forEach(item => {
+                const id = item.getAttribute('data-id');
+                const star = item.querySelector('.fav-star');
+                if (star) {
+                    if (favorites.includes(id)) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        function toggleFavFilter() {
+            onlyFavsFilter = !onlyFavsFilter;
+            const btn = document.getElementById('fav-filter-btn');
+            btn.classList.toggle('active', onlyFavsFilter);
+            filterGames();
         }
 
         function startEmulator(loadSave = false) {
             stopAndCleanupEmulator();
 
-            const iconSvg = gameIcons[currentIconKey];
+            const game = gamesData[currentGameId];
             const container = document.getElementById('game-holder');
 
             const vsync = document.getElementById('vsync-toggle').checked;
@@ -822,7 +977,7 @@
 
             container.innerHTML = `
                 <div class="loading-screen">
-                    <img src="${iconSvg}" class="bg-poster">
+                    <img src="${game.img}" class="bg-poster" onerror="this.src='${game.fallbackImg}'">
                     
                     <div class="logo-glow-wrapper">
                         <div class="spinner-ring"></div>
@@ -838,7 +993,7 @@
             `;
 
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const romAbsoluteUrl = baseUrl + 'roms/' + currentRom;
+            const romAbsoluteUrl = baseUrl + 'roms/' + game.rom;
 
             setTimeout(() => {
                 container.innerHTML = '';
@@ -846,7 +1001,7 @@
                 iframe.className = 'emulator-iframe';
                 iframe.allow = 'autoplay; gamepad; fullscreen';
 
-                const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
+                const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + game.rom) || '') : '';
 
                 iframe.srcdoc = `
                     <!DOCTYPE html>
@@ -861,14 +1016,13 @@
                         <div id="emulator"></div>
                         <script>
                             window.EJS_player = '#emulator';
-                            window.EJS_core = '${currentCore}';
+                            window.EJS_core = '${game.core}';
                             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
                             window.EJS_gameUrl = '${romAbsoluteUrl}'; 
-                            window.EJS_gameName = '${currentRom}';
+                            window.EJS_gameName = '${game.rom}';
                             window.EJS_startOnLoaded = true;
                             window.EJS_volume = 0.8;
                             
-                            // Opciones de fluidez máxima desactivadas por defecto
                             window.EJS_vsync = ${vsync};
                             window.EJS_smoothing = ${shaders};
                             window.EJS_frameSkip = ${frameskip ? 1 : 0};
@@ -883,13 +1037,12 @@
                                     reader.readAsDataURL(new Blob([data.save]));
                                     reader.onloadend = function() {
                                         const base64data = reader.result;
-                                        window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
+                                        window.parent.localStorage.setItem('emulatorjs_save_${game.rom}', base64data);
                                         window.parent.showToast('💾 Progreso guardado en tu navegador');
                                     };
                                 }
                             };
 
-                            // Evitar la navegación por teclado y scroll
                             window.addEventListener('keydown', function(e) {
                                 if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                                     e.preventDefault();
