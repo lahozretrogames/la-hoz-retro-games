@@ -163,7 +163,6 @@
             margin-top: 0;
         }
 
-        /* Buscador y filtro de favoritos */
         .search-box-wrapper {
             display: flex;
             gap: 6px;
@@ -644,7 +643,7 @@
             <ul class="game-list" id="gba-list">
                 <li class="game-item active" data-id="mario" onclick="selectGame('mario', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="gba/mario.png" alt="Super Mario Advance" onerror="this.src='gba/mario.jpg'">
+                        <img class="game-thumb-mini" src="gba/mario.png" alt="Super Mario Advance" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Super Mario Advance</span>
                             <span class="game-subtitle">GBA • 4.00 MB</span>
@@ -654,7 +653,7 @@
                 </li>
                 <li class="game-item" data-id="pokemon" onclick="selectGame('pokemon', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="gba/pokemon.png" alt="Pokémon Rojo Fuego" onerror="this.src='gba/pokemon.jpg'">
+                        <img class="game-thumb-mini" src="gba/pokemon.png" alt="Pokémon Rojo Fuego" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Pokémon Rojo Fuego</span>
                             <span class="game-subtitle">GBA • 16.00 MB</span>
@@ -664,7 +663,7 @@
                 </li>
                 <li class="game-item" data-id="sonic" onclick="selectGame('sonic', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="gba/sonic.png" alt="Sonic Advance" onerror="this.src='gba/sonic.jpg'">
+                        <img class="game-thumb-mini" src="gba/sonic.png" alt="Sonic Advance" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Sonic Advance</span>
                             <span class="game-subtitle">GBA • 8.00 MB</span>
@@ -674,7 +673,7 @@
                 </li>
                 <li class="game-item" data-id="zelda" onclick="selectGame('zelda', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="gba/zelda.png" alt="Zelda: Minish Cap" onerror="this.src='gba/zelda.jpg'">
+                        <img class="game-thumb-mini" src="gba/zelda.png" alt="Zelda: Minish Cap" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Zelda: Minish Cap</span>
                             <span class="game-subtitle">GBA • 16.00 MB</span>
@@ -684,7 +683,7 @@
                 </li>
                 <li class="game-item" data-id="mariokart" onclick="selectGame('mariokart', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="gba/mariokart.png" alt="Mario Kart Circuit" onerror="this.src='gba/mariokart.jpg'">
+                        <img class="game-thumb-mini" src="gba/mariokart.png" alt="Mario Kart Circuit" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Mario Kart Circuit</span>
                             <span class="game-subtitle">GBA • 4.00 MB</span>
@@ -698,7 +697,7 @@
             <ul class="game-list" id="n64-list">
                 <li class="game-item" data-id="mario64" onclick="selectGame('mario64', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="n64/mario64.png" alt="Super Mario 64" onerror="this.src='n64/mario64.jpg'">
+                        <img class="game-thumb-mini" src="n64/mario64.png" alt="Super Mario 64" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Super Mario 64</span>
                             <span class="game-subtitle">N64 • 8.00 MB</span>
@@ -708,7 +707,7 @@
                 </li>
                 <li class="game-item" data-id="mariokart64" onclick="selectGame('mariokart64', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="n64/mariokart64.png" alt="Mario Kart 64" onerror="this.src='n64/mariokart64.jpg'">
+                        <img class="game-thumb-mini" src="n64/mariokart64.png" alt="Mario Kart 64" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Mario Kart 64</span>
                             <span class="game-subtitle">N64 • 12.00 MB</span>
@@ -718,7 +717,7 @@
                 </li>
                 <li class="game-item" data-id="zelda_oot" onclick="selectGame('zelda_oot', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="n64/zelda_oot.png" alt="Zelda: Ocarina of Time" onerror="this.src='n64/zelda_oot.jpg'">
+                        <img class="game-thumb-mini" src="n64/zelda_oot.png" alt="Zelda: Ocarina of Time" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Zelda: Ocarina of Time</span>
                             <span class="game-subtitle">N64 • 16.00 MB</span>
@@ -728,7 +727,7 @@
                 </li>
                 <li class="game-item" data-id="smashbros" onclick="selectGame('smashbros', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="n64/smashbros.png" alt="Super Smash Bros." onerror="this.src='n64/smashbros.jpg'">
+                        <img class="game-thumb-mini" src="n64/smashbros.png" alt="Super Smash Bros." onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Super Smash Bros.</span>
                             <span class="game-subtitle">N64 • 12.00 MB</span>
@@ -738,7 +737,7 @@
                 </li>
                 <li class="game-item" data-id="paper_mario" onclick="selectGame('paper_mario', this)">
                     <div class="game-item-content">
-                        <img class="game-thumb-mini" src="n64/paper_mario.png" alt="Paper Mario" onerror="this.src='n64/paper_mario.jpg'">
+                        <img class="game-thumb-mini" src="n64/paper_mario.png" alt="Paper Mario" onerror="handleImgError(this)">
                         <div class="game-info">
                             <span class="game-title">Paper Mario</span>
                             <span class="game-subtitle">N64 • 20.00 MB</span>
@@ -780,19 +779,18 @@
     <div id="toast-container"></div>
 
     <script>
-        // Catálogo centralizado de juegos con rutas locales
         const gamesData = {
-            mario: { title: "Super Mario Advance", core: "gba", rom: "mario_advance.gba", img: "gba/mario.png", fallbackImg: "gba/mario.jpg", size: "4.00 MB" },
-            pokemon: { title: "Pokémon Rojo Fuego", core: "gba", rom: "pokemon_rojo_fuego.gba", img: "gba/pokemon.png", fallbackImg: "gba/pokemon.jpg", size: "16.00 MB" },
-            sonic: { title: "Sonic Advance", core: "gba", rom: "sonic_advance.gba", img: "gba/sonic.png", fallbackImg: "gba/sonic.jpg", size: "8.00 MB" },
-            zelda: { title: "Zelda: Minish Cap", core: "gba", rom: "zelda_minish_cap.gba", img: "gba/zelda.png", fallbackImg: "gba/zelda.jpg", size: "16.00 MB" },
-            mariokart: { title: "Mario Kart Circuit", core: "gba", rom: "mario_kart.gba", img: "gba/mariokart.png", fallbackImg: "gba/mariokart.jpg", size: "4.00 MB" },
+            mario: { title: "Super Mario Advance", core: "gba", rom: "mario_advance.gba", img: "gba/mario.png", size: "4.00 MB" },
+            pokemon: { title: "Pokémon Rojo Fuego", core: "gba", rom: "pokemon_rojo_fuego.gba", img: "gba/pokemon.png", size: "16.00 MB" },
+            sonic: { title: "Sonic Advance", core: "gba", rom: "sonic_advance.gba", img: "gba/sonic.png", size: "8.00 MB" },
+            zelda: { title: "Zelda: Minish Cap", core: "gba", rom: "zelda_minish_cap.gba", img: "gba/zelda.png", size: "16.00 MB" },
+            mariokart: { title: "Mario Kart Circuit", core: "gba", rom: "mario_kart.gba", img: "gba/mariokart.png", size: "4.00 MB" },
             
-            mario64: { title: "Super Mario 64", core: "n64", rom: "n64/mario64.z64", img: "n64/mario64.png", fallbackImg: "n64/mario64.jpg", size: "8.00 MB" },
-            mariokart64: { title: "Mario Kart 64", core: "n64", rom: "n64/mariokart64.z64", img: "n64/mariokart64.png", fallbackImg: "n64/mariokart64.jpg", size: "12.00 MB" },
-            zelda_oot: { title: "Zelda: Ocarina of Time", core: "n64", rom: "n64/zelda_oot.zip", img: "n64/zelda_oot.png", fallbackImg: "n64/zelda_oot.jpg", size: "16.00 MB" },
-            smashbros: { title: "Super Smash Bros.", core: "n64", rom: "n64/smashbros.zip", img: "n64/smashbros.png", fallbackImg: "n64/smashbros.jpg", size: "12.00 MB" },
-            paper_mario: { title: "Paper Mario", core: "n64", rom: "n64/paper_mario.zip", img: "n64/paper_mario.png", fallbackImg: "n64/paper_mario.jpg", size: "20.00 MB" }
+            mario64: { title: "Super Mario 64", core: "n64", rom: "n64/mario64.z64", img: "n64/mario64.png", size: "8.00 MB" },
+            mariokart64: { title: "Mario Kart 64", core: "n64", rom: "n64/mariokart64.z64", img: "n64/mariokart64.png", size: "12.00 MB" },
+            zelda_oot: { title: "Zelda: Ocarina of Time", core: "n64", rom: "n64/zelda_oot.zip", img: "n64/zelda_oot.png", size: "16.00 MB" },
+            smashbros: { title: "Super Smash Bros.", core: "n64", rom: "n64/smashbros.zip", img: "n64/smashbros.png", size: "12.00 MB" },
+            paper_mario: { title: "Paper Mario", core: "n64", rom: "n64/paper_mario.zip", img: "n64/paper_mario.png", size: "20.00 MB" }
         };
 
         const keyMap = {
@@ -815,6 +813,16 @@
         let onlyFavsFilter = false;
         let currentXHR = null;
 
+        function handleImgError(img) {
+            if (img.dataset.tried) return;
+            img.dataset.tried = "true";
+            if (img.src.endsWith('.png')) {
+                img.src = img.src.replace('.png', '.jpg');
+            } else if (img.src.endsWith('.jpg')) {
+                img.src = img.src.replace('.jpg', '.jpeg');
+            }
+        }
+
         window.addEventListener('keydown', function(e) {
             if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                 e.preventDefault();
@@ -831,7 +839,6 @@
 
             updateFavoritesUI();
 
-            // Cargar juego por URL dinámica si existe el parámetro ?game=ID
             const urlParams = new URLSearchParams(window.location.search);
             const gameParam = urlParams.get('game');
             if (gameParam && gamesData[gameParam]) {
@@ -897,9 +904,9 @@
 
             container.innerHTML = `
                 <div class="start-screen">
-                    <img src="${game.img}" class="bg-poster" onerror="this.src='${game.fallbackImg}'">
+                    <img src="${game.img}" class="bg-poster" onerror="handleImgError(this)">
                     <div class="start-screen-content">
-                        <img src="${game.img}" class="game-poster-preview" onerror="this.src='${game.fallbackImg}'">
+                        <img src="${game.img}" class="game-poster-preview" onerror="handleImgError(this)">
                         <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${game.title}</h2>
                         <p style="color: #64748b; font-size: 13px;">Consola: ${game.core.toUpperCase()} | Peso: ${game.size}</p>
                         <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
@@ -913,7 +920,6 @@
             checkExistingSave(game.rom);
         }
 
-        /* Funcionalidad de Búsqueda y Favoritos */
         function filterGames() {
             const query = document.getElementById('game-search').value.toLowerCase();
             document.querySelectorAll('.game-item').forEach(item => {
@@ -977,7 +983,7 @@
 
             container.innerHTML = `
                 <div class="loading-screen">
-                    <img src="${game.img}" class="bg-poster" onerror="this.src='${game.fallbackImg}'">
+                    <img src="${game.img}" class="bg-poster" onerror="handleImgError(this)">
                     
                     <div class="logo-glow-wrapper">
                         <div class="spinner-ring"></div>
@@ -993,7 +999,7 @@
             `;
 
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const romAbsoluteUrl = baseUrl + 'roms/' + game.rom;
+            const romAbsoluteUrl = baseUrl + (game.rom.includes('/') ? game.rom : 'roms/' + game.rom);
 
             setTimeout(() => {
                 container.innerHTML = '';
