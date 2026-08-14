@@ -271,10 +271,9 @@
             width: 38px;
             height: 38px;
             border-radius: 8px;
-            object-fit: contain;
+            object-fit: cover;
             border: 1px solid rgba(0, 240, 255, 0.3);
             background: #11121d;
-            padding: 3px;
         }
 
         .game-info {
@@ -356,11 +355,10 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             opacity: 0.15;
-            filter: blur(2px) scale(1.05);
+            filter: blur(4px) scale(1.05);
             transition: opacity 0.3s ease;
-            padding: 40px;
         }
 
         .start-screen-content {
@@ -381,12 +379,11 @@
             width: 130px;
             height: 130px;
             border-radius: 16px;
-            object-fit: contain;
+            object-fit: cover;
             margin-bottom: 20px;
             border: 2px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
             background: #11121d;
-            padding: 10px;
         }
 
         .loading-screen {
@@ -567,36 +564,36 @@
 
             <h3>Game Boy Advance</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'gba/mario_advance.gba', 'mario', '4.00 MB', this)">
-                    <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'roms/mario_advance.gba', 'gba/super-mario-advance.jpg', '4.00 MB', this)">
+                    <img src="gba/super-mario-advance.jpg" class="game-thumb-mini" alt="Super Mario Advance">
                     <div class="game-info">
                         <span class="game-title">Super Mario Advance</span>
                         <span class="game-subtitle">GBA • 4.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'gba/pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
-                    <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'roms/pokemon_rojo_fuego.gba', 'gba/pokemon-rojo-fuego.jpg', '16.00 MB', this)">
+                    <img src="gba/pokemon-rojo-fuego.jpg" class="game-thumb-mini" alt="Pokemon Rojo Fuego">
                     <div class="game-info">
                         <span class="game-title">Pokémon Rojo Fuego</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'gba/sonic_advance.gba', 'sonic', '8.00 MB', this)">
-                    <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'roms/sonic_advance.gba', 'gba/sonic-advance.jpg', '8.00 MB', this)">
+                    <img src="gba/sonic-advance.jpg" class="game-thumb-mini" alt="Sonic Advance">
                     <div class="game-info">
                         <span class="game-title">Sonic Advance</span>
                         <span class="game-subtitle">GBA • 8.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'gba/zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
-                    <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'roms/zelda_minish_cap.gba', 'gba/zelda-minish-cap.jpg', '16.00 MB', this)">
+                    <img src="gba/zelda-minish-cap.jpg" class="game-thumb-mini" alt="Zelda Minish Cap">
                     <div class="game-info">
                         <span class="game-title">Zelda: Minish Cap</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'gba/mario_kart.gba', 'mariokart', '4.00 MB', this)">
-                    <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'roms/mario_kart.gba', 'gba/mario-kart-circuit.jpg', '4.00 MB', this)">
+                    <img src="gba/mario-kart-circuit.jpg" class="game-thumb-mini" alt="Mario Kart Super Circuit">
                     <div class="game-info">
                         <span class="game-title">Mario Kart Circuit</span>
                         <span class="game-subtitle">GBA • 4.00 MB</span>
@@ -606,36 +603,36 @@
 
             <h3>Nintendo 64</h3>
             <ul class="game-list">
-                <li class="game-item" onclick="changeGame('Super Mario 64', 'n64', 'n64/mario64.z64', 'mario64', '8.00 MB', this)">
-                    <img id="thumb-mario64" class="game-thumb-mini" alt="Super Mario 64">
+                <li class="game-item" onclick="changeGame('Super Mario 64', 'n64', 'roms/n64/super-mario-64.zip', 'n64/super-mario-64.jpg', '8.00 MB', this)">
+                    <img src="n64/super-mario-64.jpg" class="game-thumb-mini" alt="Super Mario 64">
                     <div class="game-info">
                         <span class="game-title">Super Mario 64</span>
                         <span class="game-subtitle">N64 • 8.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart 64', 'n64', 'n64/mariokart64.z64', 'mariokart64', '12.00 MB', this)">
-                    <img id="thumb-mariokart64" class="game-thumb-mini" alt="Mario Kart 64">
+                <li class="game-item" onclick="changeGame('Mario Kart 64', 'n64', 'roms/n64/mario-kart-64.zip', 'n64/mario-kart-64.jpg', '12.00 MB', this)">
+                    <img src="n64/mario-kart-64.jpg" class="game-thumb-mini" alt="Mario Kart 64">
                     <div class="game-info">
                         <span class="game-title">Mario Kart 64</span>
                         <span class="game-subtitle">N64 • 12.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'n64/zelda_oot.zip', 'zelda_oot', '16.00 MB', this)">
-                    <img id="thumb-zelda_oot" class="game-thumb-mini" alt="Zelda Ocarina of Time">
+                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'roms/n64/zelda-ocarina-of-time.zip', 'n64/zelda-ocarina-of-time.jpg', '16.00 MB', this)">
+                    <img src="n64/zelda-ocarina-of-time.jpg" class="game-thumb-mini" alt="Zelda Ocarina of Time">
                     <div class="game-info">
                         <span class="game-title">Zelda: Ocarina of Time</span>
                         <span class="game-subtitle">N64 • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'n64/smashbros.zip', 'smashbros', '12.00 MB', this)">
-                    <img id="thumb-smashbros" class="game-thumb-mini" alt="Super Smash Bros.">
+                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'roms/n64/super-smash-bros.zip', 'n64/super-smash-bros.jpg', '12.00 MB', this)">
+                    <img src="n64/super-smash-bros.jpg" class="game-thumb-mini" alt="Super Smash Bros.">
                     <div class="game-info">
                         <span class="game-title">Super Smash Bros.</span>
                         <span class="game-subtitle">N64 • 12.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'n64/paper_mario.zip', 'paper_mario', '20.00 MB', this)">
-                    <img id="thumb-paper_mario" class="game-thumb-mini" alt="Paper Mario">
+                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'roms/n64/paper-mario.zip', 'n64/paper-mario.jpg', '20.00 MB', this)">
+                    <img src="n64/paper-mario.jpg" class="game-thumb-mini" alt="Paper Mario">
                     <div class="game-info">
                         <span class="game-title">Paper Mario</span>
                         <span class="game-subtitle">N64 • 20.00 MB</span>
@@ -649,9 +646,9 @@
                 <div class="emulator-frame" id="emulator-frame">
                     <div id="game-holder">
                         <div class="start-screen">
-                            <img id="poster-bg" class="bg-poster">
+                            <img id="poster-bg" class="bg-poster" src="gba/super-mario-advance.jpg">
                             <div class="start-screen-content">
-                                <img id="poster-preview" class="game-poster-preview">
+                                <img id="poster-preview" class="game-poster-preview" src="gba/super-mario-advance.jpg">
                                 <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
                                 <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
                                 <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
@@ -675,19 +672,6 @@
     <div id="toast-container"></div>
 
     <script>
-        const gameIcons = {
-            mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 52 C10 25 30 18 50 18 C70 18 90 25 90 52 C90 60 10 60 10 52 Z' fill='%23e53e3e'/><path d='M 12 52 Q 50 42 88 52 C 92 68 8 68 12 52 Z' fill='%23c53030'/><circle cx='50' cy='36' r='14' fill='%23ffffff'/><text x='50' y='42' font-size='17' font-weight='900' text-anchor='middle' fill='%23e53e3e' font-family='Arial'>M</text></svg>",
-            pokemon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e53e3e'/><path d='M 8 50 A 42 42 0 0 0 92 50 Z' fill='%23ffffff'/><line x1='8' y1='50' x2='92' y2='50' stroke='%231a202c' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%23ffffff' stroke='%231a202c' stroke-width='7'/><circle cx='50' cy='50' r='6' fill='%231a202c'/></svg>",
-            sonic: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M20 75 Q15 45 35 35 Q30 20 50 20 Q50 35 60 30 Q65 15 85 25 Q70 45 80 50 Q85 52 80 65 C65 80 35 85 20 75 Z' fill='%233182ce'/><circle cx='55' cy='42' r='7' fill='%23ffffff'/><circle cx='57' cy='42' r='3.5' fill='%23000000'/></svg>",
-            zelda: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 30,50 70,50' fill='%23f6e05e'/><polygon points='30,50 10,85 50,85' fill='%23f6e05e'/><polygon points='70,50 50,85 90,85' fill='%23f6e05e'/><polygon points='50,50 30,85 70,85' fill='%231a202c'/></svg>",
-            mariokart: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23ff0055' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%2300f0ff'/><path d='M 18 50 L 38 50 M 62 50 L 82 50 M 50 62 L 50 88' stroke='%23ffffff' stroke-width='8' stroke-linecap='round'/></svg>",
-            mario64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 50 C10 25 30 18 50 18 C70 18 90 25 90 50 C90 60 10 60 10 50 Z' fill='%23ff0055'/><path d='M 12 50 Q 50 40 88 50 C 92 65 8 65 12 50 Z' fill='%23c53030'/><circle cx='50' cy='35' r='13' fill='%23ffffff'/><text x='50' y='41' font-size='16' font-weight='900' text-anchor='middle' fill='%23ff0055' font-family='Arial'>M</text><text x='82' y='82' font-size='20' font-weight='900' fill='%2300f0ff' font-family='Arial'>64</text></svg>",
-            mariokart64: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%2300f0ff' stroke-width='12'/><circle cx='50' cy='50' r='12' fill='%23ff0055'/><path d='M 18 50 L 38 50 M 62 50 L 82 50 M 50 62 L 50 88' stroke='%23ffffff' stroke-width='8' stroke-linecap='round'/><text x='50' y='36' font-size='12' font-weight='900' text-anchor='middle' fill='%23ffffff' font-family='Arial'>64</text></svg>",
-            zelda_oot: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,15 45,65 55,65' fill='%23e2e8f0'/><polygon points='50,15 50,65 55,65' fill='%23cbd5e1'/><path d='M32 65 C40 60 60 60 68 65 L65 72 C55 68 45 68 35 72 Z' fill='%2300f0ff'/><rect x='46' y='72' width='8' height='18' rx='2' fill='%23ff0055'/><circle cx='50' cy='93' r='6' fill='%23f6e05e'/><polygon points='50,38 46,45 54,45' fill='%23f6e05e'/></svg>",
-            smashbros: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ff0055' stroke='%2300f0ff' stroke-width='4'/><rect x='10' y='42' width='80' height='16' fill='%23050508'/><rect x='34' y='10' width='12' height='80' fill='%23050508'/></svg>",
-            paper_mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M15 30 Q50 20 85 30 L85 75 Q50 65 15 75 Z' fill='%23ffffff' stroke='%2300f0ff' stroke-width='4'/><line x1='50' y1='23' x2='50' y2='68' stroke='%2300f0ff' stroke-width='3'/><polygon points='50,32 53,40 62,40 55,45 57,53 50,48 43,53 45,45 38,40 47,40' fill='%23f6e05e' stroke='%23ff0055' stroke-width='1.5'/></svg>"
-        };
-
         const keyMap = {
             "0": { "code": "ArrowUp" },
             "1": { "code": "ArrowDown" },
@@ -705,8 +689,8 @@
 
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
-        let currentRom = "gba/mario_advance.gba";
-        let currentIconKey = "mario";
+        let currentRom = "roms/mario_advance.gba";
+        let currentImg = "gba/super-mario-advance.jpg";
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
@@ -723,21 +707,6 @@
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
-
-            document.getElementById('thumb-mario').src = gameIcons.mario;
-            document.getElementById('thumb-pokemon').src = gameIcons.pokemon;
-            document.getElementById('thumb-sonic').src = gameIcons.sonic;
-            document.getElementById('thumb-zelda').src = gameIcons.zelda;
-            document.getElementById('thumb-mariokart').src = gameIcons.mariokart;
-
-            document.getElementById('thumb-mario64').src = gameIcons.mario64;
-            document.getElementById('thumb-mariokart64').src = gameIcons.mariokart64;
-            document.getElementById('thumb-zelda_oot').src = gameIcons.zelda_oot;
-            document.getElementById('thumb-smashbros').src = gameIcons.smashbros;
-            document.getElementById('thumb-paper_mario').src = gameIcons.paper_mario;
-
-            document.getElementById('poster-bg').src = gameIcons.mario;
-            document.getElementById('poster-preview').src = gameIcons.mario;
 
             checkExistingSave(currentRom);
         });
@@ -774,7 +743,7 @@
             }
         }
 
-        function changeGame(title, core, romName, iconKey, size, element) {
+        function changeGame(title, core, romName, imgPath, size, element) {
             stopAndCleanupEmulator();
 
             document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
@@ -783,17 +752,15 @@
             currentTitle = title;
             currentCore = core;
             currentRom = romName;
-            currentIconKey = iconKey;
+            currentImg = imgPath;
             currentSize = size;
-
-            const iconSvg = gameIcons[currentIconKey];
 
             const container = document.getElementById('game-holder');
             container.innerHTML = `
                 <div class="start-screen">
-                    <img src="${iconSvg}" class="bg-poster">
+                    <img src="${currentImg}" class="bg-poster">
                     <div class="start-screen-content">
-                        <img src="${iconSvg}" class="game-poster-preview">
+                        <img src="${currentImg}" class="game-poster-preview">
                         <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
                         <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
                         <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
@@ -810,7 +777,6 @@
         function startEmulator(loadSave = false) {
             stopAndCleanupEmulator();
 
-            const iconSvg = gameIcons[currentIconKey];
             const container = document.getElementById('game-holder');
 
             const vsync = document.getElementById('vsync-toggle').checked;
@@ -819,7 +785,7 @@
 
             container.innerHTML = `
                 <div class="loading-screen">
-                    <img src="${iconSvg}" class="bg-poster">
+                    <img src="${currentImg}" class="bg-poster">
                     
                     <div class="logo-glow-wrapper">
                         <div class="spinner-ring"></div>
