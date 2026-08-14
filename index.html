@@ -617,21 +617,21 @@
                         <span class="game-subtitle">N64 • 12.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'roms/n64/zelda-ocarina-of-time.zip', 'n64/zelda-ocarina-of-time.webp', '16.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'roms/n64/zelda-ocarina-of-time.z64', 'n64/zelda-ocarina-of-time.webp', '16.00 MB', this)">
                     <img src="n64/zelda-ocarina-of-time.webp" class="game-thumb-mini" alt="Zelda Ocarina of Time" loading="lazy">
                     <div class="game-info">
                         <span class="game-title">Zelda: Ocarina of Time</span>
                         <span class="game-subtitle">N64 • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'roms/n64/super-smash-bros.zip', 'n64/super-smash-bros.webp', '12.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'roms/n64/super-smash-bros.z64', 'n64/super-smash-bros.webp', '12.00 MB', this)">
                     <img src="n64/super-smash-bros.webp" class="game-thumb-mini" alt="Super Smash Bros." loading="lazy">
                     <div class="game-info">
                         <span class="game-title">Super Smash Bros.</span>
                         <span class="game-subtitle">N64 • 12.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'roms/n64/paper-mario.zip', 'n64/paper-mario.webp', '20.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'roms/n64/paper-mario.z64', 'n64/paper-mario.webp', '20.00 MB', this)">
                     <img src="n64/paper-mario.webp" class="game-thumb-mini" alt="Paper Mario" loading="lazy">
                     <div class="game-info">
                         <span class="game-title">Paper Mario</span>
@@ -800,8 +800,8 @@
                 </div>
             `;
 
-            // Construir URL de forma segura evitando problemas de rutas/query string
-            const romAbsoluteUrl = new URL(currentRom, window.location.href).href;
+            // Construir URL absoluta apuntando a la CDN directa de jsDelivr para evitar errores de CORS / red en GitHub Pages
+            const romAbsoluteUrl = `https://cdn.jsdelivr.net/gh/lahozretrogames/la-hoz-retro-games@main/${currentRom}`;
 
             setTimeout(() => {
                 container.innerHTML = '';
