@@ -28,6 +28,9 @@
     }
     </script>
 
+    <!-- Carga directa de EmulatorJS -->
+    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+
     <style>
         :root {
             --bg-dark: #050508;
@@ -321,13 +324,6 @@
             position: relative;
         }
 
-        .emulator-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
         .start-screen {
             width: 100%;
             height: 100%;
@@ -395,34 +391,6 @@
             transform: scale(1.05);
             box-shadow: 0 0 30px var(--neon-cyan);
         }
-
-        .loading-screen {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #07070e;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .spinner-ring {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: var(--neon-cyan);
-            border-right-color: var(--neon-magenta);
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -444,9 +412,9 @@
             
             <h3>Controles 🎮</h3>
             <div class="controls-card">
-                <div class="control-box"><b>Moverse:</b> Flechas / Tactil</div>
-                <div class="control-box"><b>Boton A:</b> Espacio</div>
-                <div class="control-box"><b>Boton B:</b> Z</div>
+                <div class="control-box"><b>Moverse:</b> Flechas / Táctil</div>
+                <div class="control-box"><b>Botón A:</b> Espacio</div>
+                <div class="control-box"><b>Botón B:</b> Z</div>
                 <div class="control-box"><b>Gatillos L / R:</b> A / S</div>
                 <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
                 <div class="p2-note">📱 En móvil los controles táctiles aparecen en pantalla al iniciar.</div>
@@ -535,7 +503,6 @@
         let currentSize = "4.00 MB";
 
         document.addEventListener("DOMContentLoaded", () => {
-            // V-Sync desactivado por defecto para maximo rendimiento sin lag
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
@@ -572,58 +539,28 @@
             const shaders = document.getElementById('shader-toggle').checked;
             const frameskip = document.getElementById('frameskip-toggle').checked;
 
-            container.innerHTML = `
-                <div class="loading-screen">
-                    <div class="spinner-ring"></div>
-                    <p style="color: white; font-weight: bold; font-size: 14px;">Cargando emulador...</p>
-                </div>
-            `;
+            container.innerHTML = '<div id="emulator" style="width:100%;height:100%;"></div>';
 
-            const romAbsoluteUrl = `https://cdn.jsdelivr.net/gh/lahozretrogames/la-hoz-retro-games@main/${currentRom}`;
+            window.EJS_player = '#emulator';
+            window.EJS_core = currentCore;
+            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+            window.EJS_gameUrl = currentRom; 
+            window.EJS_gameName = currentTitle;
+            window.EJS_startOnLoaded = true;
+            window.EJS_volume = 0.9;
+            
+            // Opciones de Rendimiento
+            window.EJS_vsync = vsync;
+            window.EJS_smoothing = shaders;
+            window.EJS_frameSkip = frameskip ? 1 : 0;
+            window.EJS_threads = true;
+            
+            // Guardado automático y directo en la memoria local (LocalStorage)
+            window.EJS_cacheSave = true;
 
-            setTimeout(() => {
-                container.innerHTML = '';
-                const iframe = document.createElement('iframe');
-                iframe.className = 'emulator-iframe';
-                iframe.allow = 'autoplay; gamepad; fullscreen; accelerometer; gyroscope';
-
-                iframe.srcdoc = `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-                        <style>
-                            html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; touch-action:none; }
-                            #emulator { width:100%; height:100%; }
-                        </style>
-                    </head>
-                    <body>
-                        <div id="emulator"></div>
-                        <script>
-                            window.EJS_player = '#emulator';
-                            window.EJS_core = '${currentCore}';
-                            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-                            window.EJS_gameUrl = '${romAbsoluteUrl}'; 
-                            window.EJS_gameName = '${currentTitle}';
-                            window.EJS_startOnLoaded = true;
-                            window.EJS_volume = 0.9;
-                            
-                            // Rendimiento optimizado
-                            window.EJS_vsync = ${vsync};
-                            window.EJS_smoothing = ${shaders};
-                            window.EJS_frameSkip = ${frameskip ? 1 : 0};
-                            window.EJS_threads = true;
-                            
-                            // Guardado automatico y nativo directo y liviano
-                            window.EJS_cacheSave = true;
-                        <\/script>
-                        <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
-                    </body>
-                    </html>
-                `;
-
-                container.appendChild(iframe);
-            }, 300); 
+            if (typeof window.EJS_load === 'function') {
+                window.EJS_load();
+            }
         }
     </script>
 </body>
