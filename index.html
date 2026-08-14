@@ -800,8 +800,8 @@
                 </div>
             `;
 
-            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const romAbsoluteUrl = baseUrl + currentRom;
+            // Construir URL de forma segura evitando problemas de rutas/query string
+            const romAbsoluteUrl = new URL(currentRom, window.location.href).href;
 
             setTimeout(() => {
                 container.innerHTML = '';
@@ -827,7 +827,7 @@
                             window.EJS_core = '${currentCore}';
                             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
                             window.EJS_gameUrl = '${romAbsoluteUrl}'; 
-                            window.EJS_gameName = '${currentRom}';
+                            window.EJS_gameName = '${currentTitle}';
                             window.EJS_startOnLoaded = true;
                             window.EJS_volume = 0.8;
                             
