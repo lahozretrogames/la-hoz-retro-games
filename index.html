@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>La Hoz Retro Games - Emulador GBA Online Gratis</title>
 
     <link rel="canonical" href="https://lahozretrogames.github.io/la-hoz-retro-games/" />
@@ -13,7 +13,7 @@
     <meta name="author" content="La Hoz Retro Games">
 
     <meta property="og:title" content="La Hoz Retro Games - Emulador GBA Online Gratis">
-    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance en tu navegador con guardado automático.">
+    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance en tu navegador sin lag.">
     <meta property="og:type" content="website">
 
     <script type="application/ld+json">
@@ -22,7 +22,7 @@
       "@type": "WebApplication",
       "name": "La Hoz Retro Games",
       "url": "https://lahozretrogames.github.io/la-hoz-retro-games/",
-      "description": "Emulador online de juegos retro de Game Boy Advance para jugar directamente en el navegador.",
+      "description": "Emulador online fluido de juegos retro de Game Boy Advance.",
       "applicationCategory": "GameApplication",
       "operatingSystem": "Any"
     }
@@ -43,15 +43,16 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+            touch-action: manipulation;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-x: hidden;
             background-image: 
                 radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
                 radial-gradient(circle at 85% 80%, rgba(255, 0, 85, 0.08) 0%, transparent 45%);
@@ -60,7 +61,7 @@
         header {
             background: rgba(12, 13, 20, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 30px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -72,16 +73,15 @@
         .brand-container {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .hoz-logo-svg {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             filter: drop-shadow(0 0 10px var(--neon-cyan));
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            will-change: transform;
         }
 
         .hoz-logo-svg:hover {
@@ -90,7 +90,7 @@
         }
 
         .logo-text {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 900;
             letter-spacing: 2px;
             color: #fff;
@@ -101,7 +101,6 @@
             color: var(--neon-magenta);
             text-shadow: 0 0 12px var(--neon-magenta);
             animation: neonPulse 2s infinite alternate;
-            will-change: opacity, text-shadow;
         }
 
         @keyframes neonPulse {
@@ -113,8 +112,13 @@
             display: flex;
             flex: 1;
             position: relative;
-            height: calc(100vh - 73px);
-            overflow: hidden;
+            min-height: calc(100vh - 65px);
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                flex-direction: column-reverse;
+            }
         }
 
         .sidebar {
@@ -130,17 +134,12 @@
             overflow-y: auto;
         }
 
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(5, 5, 8, 0.5);
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(0, 240, 255, 0.3);
-            border-radius: 3px;
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-top: 1px solid rgba(0, 240, 255, 0.15);
+            }
         }
 
         .sidebar h3 {
@@ -154,8 +153,6 @@
             text-shadow: 0 0 8px rgba(0,240,255,0.4);
             border-bottom: 1px solid rgba(0, 240, 255, 0.2);
             padding-bottom: 4px;
-            display: flex;
-            justify-content: space-between;
         }
 
         .sidebar h3:first-of-type {
@@ -249,14 +246,12 @@
             align-items: center;
             gap: 12px;
             user-select: none;
-            will-change: transform;
         }
 
         .game-item:hover {
             background: rgba(0, 240, 255, 0.1);
             border-color: rgba(0, 240, 255, 0.5);
             transform: translateX(4px);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
         }
 
         .game-item.active {
@@ -264,7 +259,6 @@
             border-color: var(--neon-cyan);
             color: #fff;
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);
-            transform: translateX(5px);
         }
 
         .game-thumb-mini {
@@ -298,9 +292,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 25px;
+            padding: 15px;
             position: relative;
-            overflow: hidden;
         }
 
         .emulator-container-wrapper {
@@ -320,7 +313,6 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 240, 255, 0.15);
             position: relative;
             overflow: hidden;
-            transform: translateZ(0);
         }
 
         #game-holder {
@@ -334,8 +326,6 @@
             height: 100%;
             border: none;
             display: block;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         .start-screen {
@@ -346,7 +336,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 30px;
+            padding: 20px;
             position: relative;
             overflow: hidden;
         }
@@ -358,7 +348,6 @@
             object-fit: cover;
             opacity: 0.15;
             filter: blur(4px) scale(1.05);
-            transition: opacity 0.3s ease;
         }
 
         .start-screen-content {
@@ -369,21 +358,42 @@
             align-items: center;
             background: rgba(7, 7, 14, 0.85);
             backdrop-filter: blur(12px);
-            padding: 30px 45px;
+            padding: 25px 35px;
             border-radius: 20px;
             border: 1px solid rgba(0, 240, 255, 0.3);
             box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            max-width: 90%;
         }
 
         .game-poster-preview {
-            width: 130px;
-            height: 130px;
+            width: 110px;
+            height: 110px;
             border-radius: 16px;
             object-fit: cover;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 2px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
             background: #11121d;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, var(--neon-cyan), #00a2ff);
+            color: #000;
+            border: none;
+            padding: 12px 32px;
+            font-size: 15px;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--neon-cyan);
         }
 
         .loading-screen {
@@ -398,123 +408,21 @@
             z-index: 10;
         }
 
-        .logo-glow-wrapper {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
         .spinner-ring {
-            position: absolute;
-            width: 140px;
-            height: 140px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            border: 3px solid transparent;
+            border: 4px solid transparent;
             border-top-color: var(--neon-cyan);
             border-right-color: var(--neon-magenta);
-            animation: spin 1.2s linear infinite;
-            will-change: transform;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 15px;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .loading-hoz-animation {
-            width: 90px;
-            height: 90px;
-            filter: drop-shadow(0 0 20px var(--neon-cyan));
-            animation: scytheSlash 2.2s infinite ease-in-out;
-            z-index: 2;
-            will-change: transform;
-        }
-
-        @keyframes scytheSlash {
-            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
-            35% { transform: rotate(-25deg) scale(1.1); filter: drop-shadow(0 0 25px var(--neon-cyan)); }
-            50% { transform: rotate(20deg) scale(1.15); filter: drop-shadow(0 0 30px var(--neon-magenta)); }
-            75% { transform: rotate(-10deg) scale(1.05); }
-            100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
-        }
-
-        .play-btn {
-            background: linear-gradient(135deg, var(--neon-cyan), #00a2ff);
-            color: #000;
-            border: none;
-            padding: 14px 38px;
-            font-size: 16px;
-            font-weight: 800;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            will-change: transform;
-        }
-
-        .play-btn:hover {
-            transform: scale(1.06);
-            box-shadow: 0 0 30px var(--neon-cyan);
-        }
-
-        .play-btn.load {
-            background: linear-gradient(135deg, var(--neon-magenta), #ff00c8);
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            margin-top: 10px;
-            color: #fff;
-        }
-        
-        .play-btn.load:hover {
-            box-shadow: 0 0 30px var(--neon-magenta);
-        }
-
-        .ad-skyscraper {
-            width: 300px;
-            height: 600px;
-            background-color: #090a10;
-            border: 1px dashed rgba(0, 240, 255, 0.25);
-            border-radius: 12px;
-            margin-left: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            transition: border-color 0.3s;
-        }
-
-        .ad-skyscraper:hover { border-color: var(--neon-cyan); }
-
-        #toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast-msg {
-            background: rgba(12, 13, 20, 0.9);
-            border: 1px solid var(--neon-cyan);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-            animation: fadeIn 0.3s forwards, fadeOut 0.3s 2.7s forwards;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
     </style>
 </head>
 <body>
@@ -524,45 +432,43 @@
             <svg class="hoz-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
                 <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
-                <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
-                <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
+                <path d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
             </svg>
             <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
         </div>
-        <div style="color: #64748b; font-size: 13px; font-weight: 600;">Espacio Jugador Arcade v5.0 🕹️</div>
+        <div style="color: #64748b; font-size: 12px; font-weight: 600;">Modo Ultra Fluido ⚡</div>
     </header>
 
     <div class="main-layout">
         <aside class="sidebar">
             
-            <h3>Controles de PC 🎮</h3>
+            <h3>Controles 🎮</h3>
             <div class="controls-card">
-                <div class="control-box"><b>Moverse / Palanca:</b> Flechas (▲▼◄►)</div>
-                <div class="control-box"><b>Saltar / Acc. A:</b> Espacio</div>
-                <div class="control-box"><b>Atacar / Acc. B:</b> Z</div>
-                <div class="control-box"><b>Botón X / Y:</b> X / C</div>
+                <div class="control-box"><b>Moverse:</b> Flechas / Tactil</div>
+                <div class="control-box"><b>Boton A:</b> Espacio</div>
+                <div class="control-box"><b>Boton B:</b> Z</div>
                 <div class="control-box"><b>Gatillos L / R:</b> A / S</div>
                 <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
-                <div class="p2-note">👥 <b>Jugador 2:</b> WASD | Botones: F, G, H, T</div>
+                <div class="p2-note">📱 En móvil los controles táctiles aparecen en pantalla al iniciar.</div>
             </div>
 
-            <h3>Modo Fluido / Gráficos ⚙️</h3>
+            <h3>Rendimiento / Gráficos ⚙️</h3>
             <div class="graphic-options">
                 <div class="setting-row">
-                    <span>Activar V-Sync</span>
+                    <span>V-Sync (Sincronización)</span>
                     <label class="switch"><input type="checkbox" id="vsync-toggle"><span class="slider"></span></label>
                 </div>
                 <div class="setting-row">
-                    <span>Suavizado / Shaders</span>
+                    <span>Suavizado Gráfico</span>
                     <label class="switch"><input type="checkbox" id="shader-toggle"><span class="slider"></span></label>
                 </div>
                 <div class="setting-row">
-                    <span>Salto de Frames (Frame Skip)</span>
+                    <span>Salto de Frames (Anti-Lag)</span>
                     <label class="switch"><input type="checkbox" id="frameskip-toggle"><span class="slider"></span></label>
                 </div>
             </div>
 
-            <h3>Game Boy Advance</h3>
+            <h3>Juegos de Game Boy Advance</h3>
             <ul class="game-list">
                 <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'roms/mario_advance.gba', 'gba/super-mario-advance.webp', '4.00 MB', this)">
                     <img src="gba/super-mario-advance.webp" class="game-thumb-mini" alt="Super Mario Advance" loading="lazy">
@@ -610,103 +516,32 @@
                             <img id="poster-bg" class="bg-poster" src="gba/super-mario-advance.webp">
                             <div class="start-screen-content">
                                 <img id="poster-preview" class="game-poster-preview" src="gba/super-mario-advance.webp">
-                                <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
-                                <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
-                                <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
-                                <div id="load-save-container" style="display: none;">
-                                    <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
-                                </div>
+                                <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
+                                <p style="color: #64748b; font-size: 13px;">GBA | Peso: 4.00 MB</p>
+                                <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="ad-skyscraper">
-                <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
-                    <p>Espacio Publicitario</p>
-                </div>
-            </div>
         </main>
     </div>
 
-    <div id="toast-container"></div>
-
     <script>
-        const keyMap = {
-            "0": { "code": "ArrowUp" },
-            "1": { "code": "ArrowDown" },
-            "2": { "code": "ArrowLeft" },
-            "3": { "code": "ArrowRight" },
-            "4": { "code": "Space" },
-            "5": { "code": "KeyZ" },
-            "6": { "code": "KeyX" },
-            "7": { "code": "KeyC" },
-            "8": { "code": "KeyA" },
-            "9": { "code": "KeyS" },
-            "10": { "code": "Enter" },
-            "11": { "code": "ShiftLeft" }
-        };
-
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
         let currentRom = "roms/mario_advance.gba";
         let currentImg = "gba/super-mario-advance.webp";
         let currentSize = "4.00 MB";
-        let currentXHR = null;
-
-        window.addEventListener('keydown', function(e) {
-            if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
-                e.preventDefault();
-                if (document.activeElement && document.activeElement.tagName === 'BUTTON') {
-                    document.activeElement.blur();
-                }
-            }
-        }, true);
 
         document.addEventListener("DOMContentLoaded", () => {
+            // V-Sync desactivado por defecto para maximo rendimiento sin lag
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
-
-            checkExistingSave(currentRom);
         });
 
-        function showToast(msg) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast-msg';
-            toast.innerText = msg;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        function stopAndCleanupEmulator() {
-            if (currentXHR) {
-                currentXHR.abort();
-                currentXHR = null;
-            }
-
-            const holder = document.getElementById('game-holder');
-            if (holder) {
-                holder.innerHTML = '';
-            }
-        }
-
-        function checkExistingSave(romName) {
-            const saveContainer = document.getElementById('load-save-container');
-            const saveKey = 'emulatorjs_save_' + romName;
-            
-            if (localStorage.getItem(saveKey)) {
-                if (saveContainer) saveContainer.style.display = 'block';
-            } else {
-                if (saveContainer) saveContainer.style.display = 'none';
-            }
-        }
-
         function changeGame(title, core, romName, imgPath, size, element) {
-            stopAndCleanupEmulator();
-
             document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
             if (element) element.classList.add('active');
 
@@ -722,22 +557,15 @@
                     <img src="${currentImg}" class="bg-poster">
                     <div class="start-screen-content">
                         <img src="${currentImg}" class="game-poster-preview">
-                        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
-                        <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
-                        <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
-                        <div id="load-save-container" style="display: none;">
-                            <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
-                        </div>
+                        <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
+                        <p style="color: #64748b; font-size: 13px;">GBA | Peso: ${currentSize}</p>
+                        <button class="play-btn" onclick="startEmulator()">Iniciar Juego</button>
                     </div>
                 </div>
             `;
-            
-            checkExistingSave(currentRom);
         }
 
-        function startEmulator(loadSave = false) {
-            stopAndCleanupEmulator();
-
+        function startEmulator() {
             const container = document.getElementById('game-holder');
 
             const vsync = document.getElementById('vsync-toggle').checked;
@@ -746,18 +574,8 @@
 
             container.innerHTML = `
                 <div class="loading-screen">
-                    <img src="${currentImg}" class="bg-poster">
-                    
-                    <div class="logo-glow-wrapper">
-                        <div class="spinner-ring"></div>
-                        <svg class="loading-hoz-animation" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
-                            <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
-                            <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
-                            <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
-                        </svg>
-                    </div>
-                    <p style="color: white; font-weight: bold;">Cargando motor de juego...</p>
+                    <div class="spinner-ring"></div>
+                    <p style="color: white; font-weight: bold; font-size: 14px;">Cargando emulador...</p>
                 </div>
             `;
 
@@ -767,16 +585,15 @@
                 container.innerHTML = '';
                 const iframe = document.createElement('iframe');
                 iframe.className = 'emulator-iframe';
-                iframe.allow = 'autoplay; gamepad; fullscreen';
-
-                const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
+                iframe.allow = 'autoplay; gamepad; fullscreen; accelerometer; gyroscope';
 
                 iframe.srcdoc = `
                     <!DOCTYPE html>
                     <html>
                     <head>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
                         <style>
-                            html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }
+                            html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; touch-action:none; }
                             #emulator { width:100%; height:100%; }
                         </style>
                     </head>
@@ -789,33 +606,16 @@
                             window.EJS_gameUrl = '${romAbsoluteUrl}'; 
                             window.EJS_gameName = '${currentTitle}';
                             window.EJS_startOnLoaded = true;
-                            window.EJS_volume = 0.8;
+                            window.EJS_volume = 0.9;
                             
+                            // Rendimiento optimizado
                             window.EJS_vsync = ${vsync};
                             window.EJS_smoothing = ${shaders};
                             window.EJS_frameSkip = ${frameskip ? 1 : 0};
+                            window.EJS_threads = true;
                             
-                            window.EJS_buttons = ${JSON.stringify(keyMap)};
-
-                            ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
-
-                            window.EJS_onSave = function(data) {
-                                if (data && data.save) {
-                                    const reader = new FileReader();
-                                    reader.readAsDataURL(new Blob([data.save]));
-                                    reader.onloadend = function() {
-                                        const base64data = reader.result;
-                                        window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
-                                        window.parent.showToast('💾 Progreso guardado en tu navegador');
-                                    };
-                                }
-                            };
-
-                            window.addEventListener('keydown', function(e) {
-                                if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
-                                    e.preventDefault();
-                                }
-                            });
+                            // Guardado automatico y nativo directo y liviano
+                            window.EJS_cacheSave = true;
                         <\/script>
                         <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
                     </body>
@@ -823,15 +623,7 @@
                 `;
 
                 container.appendChild(iframe);
-
-                if (document.activeElement) {
-                    document.activeElement.blur();
-                }
-
-                iframe.onload = () => {
-                    iframe.contentWindow.focus();
-                };
-            }, 600); 
+            }, 300); 
         }
     </script>
 </body>
