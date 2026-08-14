@@ -615,7 +615,7 @@
                     <div class="control-box"><b>Boton B:</b> Z</div>
                     <div class="control-box"><b>Gatillos L / R:</b> X / S</div>
                     <div class="control-box"><b>Volver / Menú:</b> Q</div>
-                    <div class="control-box"><b>Acción C:</b> C</div>
+                    <div class="control-box"><b>Acción C:</b> C / E</div>
                     <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
                     <div class="p2-note">👥 <b>Jugador 2:</b> WASD | Botones: F, G, H, T</div>
                 </div>
@@ -701,30 +701,30 @@
                     <div class="touch-container">
                         <div class="dpad">
                             <div></div>
-                            <div class="touch-btn" data-key="ArrowUp">▲</div>
+                            <div class="touch-btn" data-key="ArrowUp" data-code="ArrowUp" data-keycode="38">▲</div>
                             <div></div>
-                            <div class="touch-btn" data-key="ArrowLeft">◄</div>
+                            <div class="touch-btn" data-key="ArrowLeft" data-code="ArrowLeft" data-keycode="37">◄</div>
                             <div></div>
-                            <div class="touch-btn" data-key="ArrowRight">►</div>
+                            <div class="touch-btn" data-key="ArrowRight" data-code="ArrowRight" data-keycode="39">►</div>
                             <div></div>
-                            <div class="touch-btn" data-key="ArrowDown">▼</div>
+                            <div class="touch-btn" data-key="ArrowDown" data-code="ArrowDown" data-keycode="40">▼</div>
                             <div></div>
                         </div>
 
                         <div class="shoulder-center">
                             <div style="display: flex; gap: 6px;">
-                                <div class="touch-btn btn-small" data-key="KeyX">L</div>
-                                <div class="touch-btn btn-small" data-key="KeyS">R</div>
+                                <div class="touch-btn btn-small" data-key="x" data-code="KeyX" data-keycode="88">L</div>
+                                <div class="touch-btn btn-small" data-key="s" data-code="KeyS" data-keycode="83">R</div>
                             </div>
                             <div style="display: flex; gap: 6px; margin-top: 5px;">
-                                <div class="touch-btn btn-small" data-key="ShiftLeft">SELECT</div>
-                                <div class="touch-btn btn-small" data-key="Enter">START</div>
+                                <div class="touch-btn btn-small" data-key="Shift" data-code="ShiftLeft" data-keycode="16">SELECT</div>
+                                <div class="touch-btn btn-small" data-key="Enter" data-code="Enter" data-keycode="13">START</div>
                             </div>
                         </div>
 
                         <div class="action-btns">
-                            <div class="touch-btn btn-ab" data-key="KeyZ">B</div>
-                            <div class="touch-btn btn-ab" data-key="Space">A</div>
+                            <div class="touch-btn btn-ab" data-key="z" data-code="KeyZ" data-keycode="90">B</div>
+                            <div class="touch-btn btn-ab" data-key=" " data-code="Space" data-keycode="32">A</div>
                         </div>
                     </div>
                 </div>
@@ -741,7 +741,6 @@
     <div id="toast-container"></div>
 
     <script>
-        // Almacenamiento Ultra-rápido IndexedDB
         const SaveDB = {
             dbName: "HozRetroGamesDB",
             dbVersion: 1,
@@ -793,11 +792,60 @@
         let currentSize = "4.00 MB";
         let activeIframeWindow = null;
 
-        // Prevenir scroll en la web al presionar teclas de juego
+        // Función auxiliar para remapear 'e' / 'KeyE' a 'c' / 'KeyC'
+        function mapKeyData(eKey, eCode, eKeyCode) {
+            let key = eKey || '';
+            let code = eCode || '';
+            let keyCode = eKeyCode || 0;
+
+            if (code === 'KeyE' || key.toLowerCase() === 'e') {
+                key = 'c';
+                code = 'KeyC';
+                keyCode = 67;
+            }
+
+            return { key, code, keyCode };
+        }
+
+        // Capturar eventos de teclado globales y prevenirlos si corresponden a teclas de juego
         window.addEventListener('keydown', function(e) {
-            if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+            const gameCodes = ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyZ', 'KeyX', 'KeyS', 'Enter', 'ShiftLeft', 'ShiftRight', 'KeyQ', 'KeyC', 'KeyE'];
+            const gameKeys = [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'z', 'x', 's', 'Enter', 'Shift', 'q', 'c', 'e', 'E'];
+            
+            if (gameCodes.includes(e.code) || gameKeys.includes(e.key)) {
                 if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
                     e.preventDefault();
+                    if (activeIframeWindow) {
+                        const mapped = mapKeyData(e.key, e.code, e.keyCode);
+                        activeIframeWindow.postMessage({
+                            type: 'EMU_KEY_EVENT',
+                            evtType: 'keydown',
+                            key: mapped.key,
+                            code: mapped.code,
+                            keyCode: mapped.keyCode
+                        }, '*');
+                    }
+                }
+            }
+        }, true);
+
+        window.addEventListener('keyup', function(e) {
+            const gameCodes = ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyZ', 'KeyX', 'KeyS', 'Enter', 'ShiftLeft', 'ShiftRight', 'KeyQ', 'KeyC', 'KeyE'];
+            const gameKeys = [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'z', 'x', 's', 'Enter', 'Shift', 'q', 'c', 'e', 'E'];
+            
+            if (gameCodes.includes(e.code) || gameKeys.includes(e.key)) {
+                if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                    e.preventDefault();
+                    if (activeIframeWindow) {
+                        const mapped = mapKeyData(e.key, e.code, e.keyCode);
+                        activeIframeWindow.postMessage({
+                            type: 'EMU_KEY_EVENT',
+                            evtType: 'keyup',
+                            key: mapped.key,
+                            code: mapped.code,
+                            keyCode: mapped.keyCode
+                        }, '*');
+                    }
                 }
             }
         }, true);
@@ -820,15 +868,24 @@
             setupTouchEvents();
         });
 
-        // Controles Táctiles (Envío Seguro de Eventos mediante postMessage)
+        // Controles Táctiles
         function setupTouchEvents() {
             const touchBtns = document.querySelectorAll('.touch-btn');
             touchBtns.forEach(btn => {
-                const key = btn.getAttribute('data-key');
+                const rawKey = btn.getAttribute('data-key') || '';
+                const rawCode = btn.getAttribute('data-code') || '';
+                const rawKeyCode = parseInt(btn.getAttribute('data-keycode') || '0', 10);
 
                 const sendKey = (type) => {
                     if (activeIframeWindow) {
-                        activeIframeWindow.postMessage({ type: 'EMU_KEY_EVENT', evtType: type, key: key }, '*');
+                        const mapped = mapKeyData(rawKey, rawCode, rawKeyCode);
+                        activeIframeWindow.postMessage({
+                            type: 'EMU_KEY_EVENT',
+                            evtType: type,
+                            key: mapped.key,
+                            code: mapped.code,
+                            keyCode: mapped.keyCode
+                        }, '*');
                     }
                 };
 
@@ -980,15 +1037,25 @@
                                 }
                             };
 
+                            // Despacho de eventos de teclado dentro del emulador con objeto completo
                             window.addEventListener('message', function(e) {
                                 if (e.data && e.data.type === 'EMU_KEY_EVENT') {
-                                    const evt = new KeyboardEvent(e.data.evtType, { code: e.data.key, bubbles: true });
+                                    const evtProps = {
+                                        key: e.data.key || '',
+                                        code: e.data.code || '',
+                                        keyCode: e.data.keyCode || 0,
+                                        which: e.data.keyCode || 0,
+                                        bubbles: true,
+                                        cancelable: true
+                                    };
+                                    const evt = new KeyboardEvent(e.data.evtType, evtProps);
                                     document.dispatchEvent(evt);
+                                    if (document.body) document.body.dispatchEvent(evt);
                                 }
                             });
 
                             window.addEventListener('keydown', function(e) {
-                                if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+                                if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) || [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
                                     e.preventDefault();
                                 }
                             });
@@ -1009,7 +1076,6 @@
             }, 400); 
         }
 
-        // Auto-guardado transparente en segundo plano cada 2 minutos
         setInterval(() => {
             if (activeIframeWindow && activeIframeWindow.EJS_emulator && typeof activeIframeWindow.EJS_emulator.getSaveState === 'function') {
                 try {
