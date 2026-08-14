@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Hoz Retro Games - Emulador Online Gratis</title>
+    <title>La Hoz Retro Games - Emulador GBA Online Gratis</title>
 
     <link rel="canonical" href="https://lahozretrogames.github.io/la-hoz-retro-games/" />
 
-    <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) y Nintendo 64 (N64) online y gratis en tu navegador.">
-    <meta name="keywords" content="juegos retro, emulador online, gba online, n64 online, super mario 64, zelda ocarina of time, la hoz retro games">
+    <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) online y gratis en tu navegador.">
+    <meta name="keywords" content="juegos retro, emulador online, gba online, super mario advance, pokemon rojo fuego, la hoz retro games">
     <meta name="robots" content="index, follow">
     <meta name="author" content="La Hoz Retro Games">
 
-    <meta property="og:title" content="La Hoz Retro Games - Emulador GBA y N64 Online Gratis">
-    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance y Nintendo 64 en tu navegador con guardado automático.">
+    <meta property="og:title" content="La Hoz Retro Games - Emulador GBA Online Gratis">
+    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance en tu navegador con guardado automático.">
     <meta property="og:type" content="website">
 
     <script type="application/ld+json">
@@ -22,7 +22,7 @@
       "@type": "WebApplication",
       "name": "La Hoz Retro Games",
       "url": "https://lahozretrogames.github.io/la-hoz-retro-games/",
-      "description": "Emulador online de juegos retro de Game Boy Advance y Nintendo 64 para jugar directamente en el navegador.",
+      "description": "Emulador online de juegos retro de Game Boy Advance para jugar directamente en el navegador.",
       "applicationCategory": "GameApplication",
       "operatingSystem": "Any"
     }
@@ -600,45 +600,6 @@
                     </div>
                 </li>
             </ul>
-
-            <h3>Nintendo 64</h3>
-            <ul class="game-list">
-                <li class="game-item" onclick="changeGame('Super Mario 64', 'n64', 'roms/n64/super-mario-64.z64', 'n64/super-mario-64.webp', '8.00 MB', this)">
-                    <img src="n64/super-mario-64.webp" class="game-thumb-mini" alt="Super Mario 64" loading="lazy">
-                    <div class="game-info">
-                        <span class="game-title">Super Mario 64</span>
-                        <span class="game-subtitle">N64 • 8.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Mario Kart 64', 'n64', 'roms/n64/mario-kart-64.z64', 'n64/mario-kart-64.webp', '12.00 MB', this)">
-                    <img src="n64/mario-kart-64.webp" class="game-thumb-mini" alt="Mario Kart 64" loading="lazy">
-                    <div class="game-info">
-                        <span class="game-title">Mario Kart 64</span>
-                        <span class="game-subtitle">N64 • 12.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Zelda: Ocarina of Time', 'n64', 'roms/n64/zelda-ocarina-of-time.z64', 'n64/zelda-ocarina-of-time.webp', '16.00 MB', this)">
-                    <img src="n64/zelda-ocarina-of-time.webp" class="game-thumb-mini" alt="Zelda Ocarina of Time" loading="lazy">
-                    <div class="game-info">
-                        <span class="game-title">Zelda: Ocarina of Time</span>
-                        <span class="game-subtitle">N64 • 16.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Super Smash Bros.', 'n64', 'roms/n64/super-smash-bros.z64', 'n64/super-smash-bros.webp', '12.00 MB', this)">
-                    <img src="n64/super-smash-bros.webp" class="game-thumb-mini" alt="Super Smash Bros." loading="lazy">
-                    <div class="game-info">
-                        <span class="game-title">Super Smash Bros.</span>
-                        <span class="game-subtitle">N64 • 12.00 MB</span>
-                    </div>
-                </li>
-                <li class="game-item" onclick="changeGame('Paper Mario', 'n64', 'roms/n64/paper-mario.z64', 'n64/paper-mario.webp', '20.00 MB', this)">
-                    <img src="n64/paper-mario.webp" class="game-thumb-mini" alt="Paper Mario" loading="lazy">
-                    <div class="game-info">
-                        <span class="game-title">Paper Mario</span>
-                        <span class="game-subtitle">N64 • 20.00 MB</span>
-                    </div>
-                </li>
-            </ul>
         </aside>
 
         <main class="game-zone">
@@ -800,7 +761,6 @@
                 </div>
             `;
 
-            // Construir URL absoluta apuntando a la CDN directa de jsDelivr para evitar errores de CORS / red en GitHub Pages
             const romAbsoluteUrl = `https://cdn.jsdelivr.net/gh/lahozretrogames/la-hoz-retro-games@main/${currentRom}`;
 
             setTimeout(() => {
