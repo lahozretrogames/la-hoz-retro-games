@@ -28,9 +28,6 @@
     }
     </script>
 
-    <!-- Carga directa de EmulatorJS -->
-    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
-
     <style>
         :root {
             --bg-dark: #050508;
@@ -324,6 +321,13 @@
             position: relative;
         }
 
+        .emulator-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
         .start-screen {
             width: 100%;
             height: 100%;
@@ -390,6 +394,33 @@
         .play-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+        /* Pantalla de carga con el Logo Girando */
+        .loading-screen {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #050508;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .hoz-logo-spinner {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 15px var(--neon-cyan));
+            animation: spinLogo 1.2s infinite ease-in-out;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spinLogo {
+            0% { transform: rotate(0deg) scale(0.9); filter: drop-shadow(0 0 10px var(--neon-cyan)); }
+            50% { transform: rotate(180deg) scale(1.15); filter: drop-shadow(0 0 20px var(--neon-magenta)); }
+            100% { transform: rotate(360deg) scale(0.9); filter: drop-shadow(0 0 10px var(--neon-cyan)); }
         }
     </style>
 </head>
@@ -539,28 +570,61 @@
             const shaders = document.getElementById('shader-toggle').checked;
             const frameskip = document.getElementById('frameskip-toggle').checked;
 
-            container.innerHTML = '<div id="emulator" style="width:100%;height:100%;"></div>';
+            // Pantalla de carga con Tu Logo dando vueltas y brillando
+            container.innerHTML = `
+                <div class="loading-screen">
+                    <svg class="hoz-logo-spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
+                        <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
+                    </svg>
+                    <p style="color: #00f0ff; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Cargando juego...</p>
+                </div>
+            `;
 
-            window.EJS_player = '#emulator';
-            window.EJS_core = currentCore;
-            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-            window.EJS_gameUrl = currentRom; 
-            window.EJS_gameName = currentTitle;
-            window.EJS_startOnLoaded = true;
-            window.EJS_volume = 0.9;
-            
-            // Opciones de Rendimiento
-            window.EJS_vsync = vsync;
-            window.EJS_smoothing = shaders;
-            window.EJS_frameSkip = frameskip ? 1 : 0;
-            window.EJS_threads = true;
-            
-            // Guardado automático y directo en la memoria local (LocalStorage)
-            window.EJS_cacheSave = true;
+            setTimeout(() => {
+                container.innerHTML = '';
 
-            if (typeof window.EJS_load === 'function') {
-                window.EJS_load();
-            }
+                const iframe = document.createElement('iframe');
+                iframe.className = 'emulator-iframe';
+                iframe.allow = 'autoplay; gamepad; fullscreen';
+
+                container.appendChild(iframe);
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+                        <style>
+                            html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }
+                            #emulator { width:100%; height:100%; }
+                        </style>
+                    </head>
+                    <body>
+                        <div id="emulator"></div>
+                        <script>
+                            window.EJS_player = '#emulator';
+                            window.EJS_core = '${currentCore}';
+                            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+                            window.EJS_gameUrl = window.location.origin + window.location.pathname.replace('index.html', '') + '${currentRom}';
+                            window.EJS_gameName = '${currentTitle}';
+                            window.EJS_startOnLoaded = true;
+                            window.EJS_volume = 0.9;
+                            window.EJS_vsync = ${vsync};
+                            window.EJS_smoothing = ${shaders};
+                            window.EJS_frameSkip = ${frameskip ? 1 : 0};
+                            window.EJS_threads = true;
+                            window.EJS_cacheSave = true;
+                        <\/script>
+                        <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
+                    </body>
+                    </html>
+                `);
+                doc.close();
+            }, 600);
         }
     </script>
 </body>
