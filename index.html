@@ -613,7 +613,9 @@
                     <div class="control-box"><b>Moverse / D-Pad:</b> Flechas (▲▼◄►)</div>
                     <div class="control-box"><b>Boton A:</b> Espacio</div>
                     <div class="control-box"><b>Boton B:</b> Z</div>
-                    <div class="control-box"><b>Gatillos L / R:</b> A / S</div>
+                    <div class="control-box"><b>Gatillos L / R:</b> X / S</div>
+                    <div class="control-box"><b>Volver / Menú:</b> Q</div>
+                    <div class="control-box"><b>Acción C:</b> C</div>
                     <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
                     <div class="p2-note">👥 <b>Jugador 2:</b> WASD | Botones: F, G, H, T</div>
                 </div>
@@ -711,7 +713,7 @@
 
                         <div class="shoulder-center">
                             <div style="display: flex; gap: 6px;">
-                                <div class="touch-btn btn-small" data-key="KeyA">L</div>
+                                <div class="touch-btn btn-small" data-key="KeyX">L</div>
                                 <div class="touch-btn btn-small" data-key="KeyS">R</div>
                             </div>
                             <div style="display: flex; gap: 6px; margin-top: 5px;">
@@ -739,7 +741,7 @@
     <div id="toast-container"></div>
 
     <script>
-        // Módulos de Almacenamiento Ultra-rápido IndexedDB
+        // Almacenamiento Ultra-rápido IndexedDB
         const SaveDB = {
             dbName: "HozRetroGamesDB",
             dbVersion: 1,
@@ -784,25 +786,11 @@
             mariokart: "gba/mario-kart-circuit.webp"
         };
 
-        const keyMap = {
-            "0": { "code": "ArrowUp" },
-            "1": { "code": "ArrowDown" },
-            "2": { "code": "ArrowLeft" },
-            "3": { "code": "ArrowRight" },
-            "4": { "code": "Space" },
-            "5": { "code": "KeyZ" },
-            "8": { "code": "KeyA" },
-            "9": { "code": "KeyS" },
-            "10": { "code": "Enter" },
-            "11": { "code": "ShiftLeft" }
-        };
-
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
         let currentRom = "mario_advance.gba";
         let currentImgFile = "super-mario-advance.webp";
         let currentSize = "4.00 MB";
-        let currentXHR = null;
         let activeIframeWindow = null;
 
         // Prevenir scroll en la web al presionar teclas de juego
@@ -815,7 +803,6 @@
         }, true);
 
         document.addEventListener("DOMContentLoaded", () => {
-            // VSync y mejoras pesadas desactivadas por defecto
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
@@ -833,7 +820,7 @@
             setupTouchEvents();
         });
 
-        // Configuración de Controles Táctiles Ultra-Rápidos (0ms Lag)
+        // Controles Táctiles (Envío Seguro de Eventos mediante postMessage)
         function setupTouchEvents() {
             const touchBtns = document.querySelectorAll('.touch-btn');
             touchBtns.forEach(btn => {
@@ -841,8 +828,7 @@
 
                 const sendKey = (type) => {
                     if (activeIframeWindow) {
-                        const evt = new KeyboardEvent(type, { code: key, bubbles: true });
-                        activeIframeWindow.dispatchEvent(evt);
+                        activeIframeWindow.postMessage({ type: 'EMU_KEY_EVENT', evtType: type, key: key }, '*');
                     }
                 };
 
@@ -870,10 +856,6 @@
         }
 
         function stopAndCleanupEmulator() {
-            if (currentXHR) {
-                currentXHR.abort();
-                currentXHR = null;
-            }
             activeIframeWindow = null;
             const holder = document.getElementById('game-holder');
             if (holder) holder.innerHTML = '';
@@ -882,10 +864,8 @@
         async function checkExistingSave(romName) {
             const saveContainer = document.getElementById('load-save-container');
             const saveData = await SaveDB.getSave('emulatorjs_save_' + romName);
-            if (saveData && saveContainer) {
-                saveContainer.style.display = 'block';
-            } else if (saveContainer) {
-                saveContainer.style.display = 'none';
+            if (saveContainer) {
+                saveContainer.style.display = saveData ? 'block' : 'none';
             }
         }
 
@@ -953,7 +933,7 @@
                 </div>
             `;
 
-            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+            const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
             const romAbsoluteUrl = baseUrl + 'roms/' + currentRom;
 
             setTimeout(() => {
@@ -982,16 +962,12 @@
                             window.EJS_startOnLoaded = true;
                             window.EJS_volume = 0.8;
                             
-                            // Ajustes Rendimiento
                             window.EJS_vsync = ${vsync};
                             window.EJS_smoothing = ${shaders};
                             window.EJS_frameSkip = ${frameskip ? 1 : 0};
-                            
-                            window.EJS_buttons = ${JSON.stringify(keyMap)};
 
                             ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
 
-                            // Guardado Asíncrono en IndexedDB (Sin trasbar la pantalla)
                             window.EJS_onSave = function(data) {
                                 if (data && data.save) {
                                     const blob = new Blob([data.save]);
@@ -1003,6 +979,13 @@
                                     };
                                 }
                             };
+
+                            window.addEventListener('message', function(e) {
+                                if (e.data && e.data.type === 'EMU_KEY_EVENT') {
+                                    const evt = new KeyboardEvent(e.data.evtType, { code: e.data.key, bubbles: true });
+                                    document.dispatchEvent(evt);
+                                }
+                            });
 
                             window.addEventListener('keydown', function(e) {
                                 if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
@@ -1019,7 +1002,9 @@
 
                 iframe.onload = () => {
                     activeIframeWindow = iframe.contentWindow;
-                    iframe.contentWindow.focus();
+                    setTimeout(() => {
+                        if (iframe.contentWindow) iframe.contentWindow.focus();
+                    }, 100);
                 };
             }, 400); 
         }
