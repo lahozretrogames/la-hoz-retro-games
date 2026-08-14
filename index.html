@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>La Hoz Retro Games - Emulador GBA Online Gratis</title>
 
     <link rel="canonical" href="https://lahozretrogames.github.io/la-hoz-retro-games/" />
@@ -43,15 +43,16 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+            touch-action: manipulation;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-x: hidden;
             background-image: 
                 radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
                 radial-gradient(circle at 85% 80%, rgba(255, 0, 85, 0.08) 0%, transparent 45%);
@@ -67,6 +68,7 @@
             border-bottom: 2px solid rgba(0, 240, 255, 0.3);
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9);
             z-index: 20;
+            flex-shrink: 0;
         }
 
         .brand-container {
@@ -113,8 +115,7 @@
             display: flex;
             flex: 1;
             position: relative;
-            height: calc(100vh - 73px);
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .sidebar {
@@ -128,20 +129,12 @@
             z-index: 15;
             box-shadow: 5px 0 25px rgba(0,0,0,0.6);
             overflow-y: auto;
+            flex-shrink: 0;
         }
 
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(5, 5, 8, 0.5);
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(0, 240, 255, 0.3);
-            border-radius: 3px;
-        }
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-track { background: rgba(5, 5, 8, 0.5); }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 3px; }
 
         .sidebar h3 {
             font-size: 11px;
@@ -158,9 +151,7 @@
             justify-content: space-between;
         }
 
-        .sidebar h3:first-of-type {
-            margin-top: 0;
-        }
+        .sidebar h3:first-of-type { margin-top: 0; }
 
         .controls-card {
             background: var(--card-bg);
@@ -180,16 +171,17 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .control-box b {
-            color: var(--neon-cyan);
-            display: block;
-        }
+        .control-box b { color: var(--neon-cyan); display: block; }
 
         .p2-note {
             grid-column: span 2;
-            color: var(--neon-magenta);
-            font-size: 9.5px;
+            color: #ffffff;
+            background: rgba(255, 0, 85, 0.25);
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 10px;
             margin-top: 2px;
+            border: 1px solid rgba(255, 0, 85, 0.4);
         }
 
         .graphic-options {
@@ -281,24 +273,15 @@
             flex-direction: column;
         }
 
-        .game-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .game-subtitle {
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 2px;
-        }
+        .game-title { font-size: 13px; font-weight: 700; color: #fff; }
+        .game-subtitle { font-size: 10px; color: #64748b; margin-top: 2px; }
 
         .game-zone {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 25px;
+            padding: 20px;
             position: relative;
             overflow: hidden;
         }
@@ -418,10 +401,7 @@
             will-change: transform;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .loading-hoz-animation {
             width: 90px;
@@ -469,9 +449,7 @@
             color: #fff;
         }
         
-        .play-btn.load:hover {
-            box-shadow: 0 0 30px var(--neon-magenta);
-        }
+        .play-btn.load:hover { box-shadow: 0 0 30px var(--neon-magenta); }
 
         .ad-skyscraper {
             width: 300px;
@@ -487,6 +465,7 @@
             position: relative;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             transition: border-color 0.3s;
+            flex-shrink: 0;
         }
 
         .ad-skyscraper:hover { border-color: var(--neon-cyan); }
@@ -502,7 +481,7 @@
         }
 
         .toast-msg {
-            background: rgba(12, 13, 20, 0.9);
+            background: rgba(12, 13, 20, 0.95);
             border: 1px solid var(--neon-cyan);
             color: #fff;
             padding: 12px 20px;
@@ -515,6 +494,99 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
+
+        /* --- CONTROLES TÁCTILES MÓVIL --- */
+        .mobile-controls {
+            display: none;
+            width: 100%;
+            padding: 10px 5px;
+            background: rgba(12, 13, 20, 0.9);
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+            touch-action: none;
+            user-select: none;
+        }
+
+        .touch-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .dpad {
+            display: grid;
+            grid-template-columns: repeat(3, 45px);
+            grid-template-rows: repeat(3, 45px);
+            gap: 3px;
+        }
+
+        .touch-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: #fff;
+            border-radius: 8px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .touch-btn:active, .touch-btn.active {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 12px var(--neon-cyan);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-ab {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            font-size: 16px;
+            border-color: var(--neon-magenta);
+        }
+
+        .btn-ab:active, .btn-ab.active {
+            background: var(--neon-magenta);
+            color: #fff;
+            box-shadow: 0 0 12px var(--neon-magenta);
+        }
+
+        .shoulder-center {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 10px;
+            border-radius: 12px;
+        }
+
+        /* --- ADAPTABILIDAD RESPONSIVE (MÓVIL) --- */
+        @media (max-width: 900px) {
+            header { padding: 10px 15px; }
+            .logo-text { font-size: 18px; }
+            .main-layout { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; order: 2; border-right: none; border-top: 1px solid rgba(0,240,255,0.2); }
+            .game-zone { order: 1; padding: 10px; flex-direction: column; }
+            .emulator-container-wrapper { width: 100%; }
+            .ad-skyscraper { width: 100%; height: 120px; margin-left: 0; margin-top: 15px; order: 3; }
+            .mobile-controls { display: block; }
+            .desktop-controls-info { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -535,14 +607,16 @@
     <div class="main-layout">
         <aside class="sidebar">
             
-            <h3>Controles de PC 🎮</h3>
-            <div class="controls-card">
-                <div class="control-box"><b>Moverse / D-Pad:</b> Flechas (▲▼◄►)</div>
-                <div class="control-box"><b>Boton A:</b> Espacio</div>
-                <div class="control-box"><b>Boton B:</b> Z</div>
-                <div class="control-box"><b>Gatillos L / R:</b> A / S</div>
-                <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
-                <div class="p2-note">👥 <b>Jugador 2:</b> WASD | Botones: F, G, H, T</div>
+            <div class="desktop-controls-info">
+                <h3>Controles de PC 🎮</h3>
+                <div class="controls-card">
+                    <div class="control-box"><b>Moverse / D-Pad:</b> Flechas (▲▼◄►)</div>
+                    <div class="control-box"><b>Boton A:</b> Espacio</div>
+                    <div class="control-box"><b>Boton B:</b> Z</div>
+                    <div class="control-box"><b>Gatillos L / R:</b> A / S</div>
+                    <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
+                    <div class="p2-note">👥 <b>Jugador 2:</b> WASD | Botones: F, G, H, T</div>
+                </div>
             </div>
 
             <h3>Modo Fluido / Gráficos ⚙️</h3>
@@ -619,6 +693,39 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- CONTROLES TÁCTILES EN PANTALLA -->
+                <div class="mobile-controls">
+                    <div class="touch-container">
+                        <div class="dpad">
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowUp">▲</div>
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowLeft">◄</div>
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowRight">►</div>
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowDown">▼</div>
+                            <div></div>
+                        </div>
+
+                        <div class="shoulder-center">
+                            <div style="display: flex; gap: 6px;">
+                                <div class="touch-btn btn-small" data-key="KeyA">L</div>
+                                <div class="touch-btn btn-small" data-key="KeyS">R</div>
+                            </div>
+                            <div style="display: flex; gap: 6px; margin-top: 5px;">
+                                <div class="touch-btn btn-small" data-key="ShiftLeft">SELECT</div>
+                                <div class="touch-btn btn-small" data-key="Enter">START</div>
+                            </div>
+                        </div>
+
+                        <div class="action-btns">
+                            <div class="touch-btn btn-ab" data-key="KeyZ">B</div>
+                            <div class="touch-btn btn-ab" data-key="Space">A</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="ad-skyscraper">
@@ -632,7 +739,43 @@
     <div id="toast-container"></div>
 
     <script>
-        // Mapeo exacto con los nombres de tus archivos en la carpeta gba/
+        // Módulos de Almacenamiento Ultra-rápido IndexedDB
+        const SaveDB = {
+            dbName: "HozRetroGamesDB",
+            dbVersion: 1,
+            async getDB() {
+                return new Promise((resolve, reject) => {
+                    const req = indexedDB.open(this.dbName, this.dbVersion);
+                    req.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains("saves")) {
+                            db.createObjectStore("saves");
+                        }
+                    };
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+            },
+            async setSave(key, val) {
+                const db = await this.getDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction("saves", "readwrite");
+                    tx.objectStore("saves").put(val, key);
+                    tx.oncomplete = () => resolve(true);
+                    tx.onerror = () => reject(tx.error);
+                });
+            },
+            async getSave(key) {
+                const db = await this.getDB();
+                return new Promise((resolve) => {
+                    const tx = db.transaction("saves", "readonly");
+                    const req = tx.objectStore("saves").get(key);
+                    req.onsuccess = () => resolve(req.result || null);
+                    req.onerror = () => resolve(null);
+                });
+            }
+        };
+
         const gameImages = {
             mario: "gba/super-mario-advance.webp",
             pokemon: "gba/pokemon-rojo-fuego.webp",
@@ -660,17 +803,19 @@
         let currentImgFile = "super-mario-advance.webp";
         let currentSize = "4.00 MB";
         let currentXHR = null;
+        let activeIframeWindow = null;
 
+        // Prevenir scroll en la web al presionar teclas de juego
         window.addEventListener('keydown', function(e) {
             if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
-                e.preventDefault();
-                if (document.activeElement && document.activeElement.tagName === 'BUTTON') {
-                    document.activeElement.blur();
+                if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                    e.preventDefault();
                 }
             }
         }, true);
 
         document.addEventListener("DOMContentLoaded", () => {
+            // VSync y mejoras pesadas desactivadas por defecto
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
@@ -685,7 +830,35 @@
             document.getElementById('poster-preview').src = gameImages.mario;
 
             checkExistingSave(currentRom);
+            setupTouchEvents();
         });
+
+        // Configuración de Controles Táctiles Ultra-Rápidos (0ms Lag)
+        function setupTouchEvents() {
+            const touchBtns = document.querySelectorAll('.touch-btn');
+            touchBtns.forEach(btn => {
+                const key = btn.getAttribute('data-key');
+
+                const sendKey = (type) => {
+                    if (activeIframeWindow) {
+                        const evt = new KeyboardEvent(type, { code: key, bubbles: true });
+                        activeIframeWindow.dispatchEvent(evt);
+                    }
+                };
+
+                btn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    btn.classList.add('active');
+                    sendKey('keydown');
+                }, { passive: false });
+
+                btn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    btn.classList.remove('active');
+                    sendKey('keyup');
+                }, { passive: false });
+            });
+        }
 
         function showToast(msg) {
             const container = document.getElementById('toast-container');
@@ -701,21 +874,18 @@
                 currentXHR.abort();
                 currentXHR = null;
             }
-
+            activeIframeWindow = null;
             const holder = document.getElementById('game-holder');
-            if (holder) {
-                holder.innerHTML = '';
-            }
+            if (holder) holder.innerHTML = '';
         }
 
-        function checkExistingSave(romName) {
+        async function checkExistingSave(romName) {
             const saveContainer = document.getElementById('load-save-container');
-            const saveKey = 'emulatorjs_save_' + romName;
-            
-            if (localStorage.getItem(saveKey)) {
-                if (saveContainer) saveContainer.style.display = 'block';
-            } else {
-                if (saveContainer) saveContainer.style.display = 'none';
+            const saveData = await SaveDB.getSave('emulatorjs_save_' + romName);
+            if (saveData && saveContainer) {
+                saveContainer.style.display = 'block';
+            } else if (saveContainer) {
+                saveContainer.style.display = 'none';
             }
         }
 
@@ -732,8 +902,8 @@
             currentSize = size;
 
             const imgPath = 'gba/' + currentImgFile;
-
             const container = document.getElementById('game-holder');
+
             container.innerHTML = `
                 <div class="start-screen">
                     <img src="${imgPath}" class="bg-poster" alt="${currentTitle}">
@@ -752,7 +922,7 @@
             checkExistingSave(currentRom);
         }
 
-        function startEmulator(loadSave = false) {
+        async function startEmulator(loadSave = false) {
             stopAndCleanupEmulator();
 
             const imgPath = 'gba/' + currentImgFile;
@@ -762,10 +932,14 @@
             const shaders = document.getElementById('shader-toggle').checked;
             const frameskip = document.getElementById('frameskip-toggle').checked;
 
+            let savedData = '';
+            if (loadSave) {
+                savedData = await SaveDB.getSave('emulatorjs_save_' + currentRom) || '';
+            }
+
             container.innerHTML = `
                 <div class="loading-screen">
                     <img src="${imgPath}" class="bg-poster">
-                    
                     <div class="logo-glow-wrapper">
                         <div class="spinner-ring"></div>
                         <svg class="loading-hoz-animation" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -775,7 +949,7 @@
                             <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
                         </svg>
                     </div>
-                    <p style="color: white; font-weight: bold;">Cargando motor de juego...</p>
+                    <p style="color: white; font-weight: bold;">Cargando juego sin lag...</p>
                 </div>
             `;
 
@@ -787,8 +961,6 @@
                 const iframe = document.createElement('iframe');
                 iframe.className = 'emulator-iframe';
                 iframe.allow = 'autoplay; gamepad; fullscreen';
-
-                const savedData = loadSave ? (localStorage.getItem('emulatorjs_save_' + currentRom) || '') : '';
 
                 iframe.srcdoc = `
                     <!DOCTYPE html>
@@ -810,6 +982,7 @@
                             window.EJS_startOnLoaded = true;
                             window.EJS_volume = 0.8;
                             
+                            // Ajustes Rendimiento
                             window.EJS_vsync = ${vsync};
                             window.EJS_smoothing = ${shaders};
                             window.EJS_frameSkip = ${frameskip ? 1 : 0};
@@ -818,14 +991,15 @@
 
                             ${savedData ? `window.EJS_loadUrl = '${savedData}';` : ''}
 
+                            // Guardado Asíncrono en IndexedDB (Sin trasbar la pantalla)
                             window.EJS_onSave = function(data) {
                                 if (data && data.save) {
+                                    const blob = new Blob([data.save]);
                                     const reader = new FileReader();
-                                    reader.readAsDataURL(new Blob([data.save]));
+                                    reader.readAsDataURL(blob);
                                     reader.onloadend = function() {
-                                        const base64data = reader.result;
-                                        window.parent.localStorage.setItem('emulatorjs_save_${currentRom}', base64data);
-                                        window.parent.showToast('💾 Progreso guardado en tu navegador');
+                                        window.parent.SaveDB.setSave('emulatorjs_save_${currentRom}', reader.result);
+                                        window.parent.showToast('💾 Partida guardada correctamente');
                                     };
                                 }
                             };
@@ -843,15 +1017,28 @@
 
                 container.appendChild(iframe);
 
-                if (document.activeElement) {
-                    document.activeElement.blur();
-                }
-
                 iframe.onload = () => {
+                    activeIframeWindow = iframe.contentWindow;
                     iframe.contentWindow.focus();
                 };
-            }, 600); 
+            }, 400); 
         }
+
+        // Auto-guardado transparente en segundo plano cada 2 minutos
+        setInterval(() => {
+            if (activeIframeWindow && activeIframeWindow.EJS_emulator && typeof activeIframeWindow.EJS_emulator.getSaveState === 'function') {
+                try {
+                    const saveState = activeIframeWindow.EJS_emulator.getSaveState();
+                    if (saveState) {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(new Blob([saveState]));
+                        reader.onloadend = function() {
+                            SaveDB.setSave('emulatorjs_save_' + currentRom, reader.result);
+                        };
+                    }
+                } catch(e) {}
+            }
+        }, 120000);
     </script>
 </body>
 </html>
