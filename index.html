@@ -567,35 +567,35 @@
 
             <h3>Game Boy Advance</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario', '4.00 MB', this)">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'gba/mario_advance.gba', 'mario', '4.00 MB', this)">
                     <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
                     <div class="game-info">
                         <span class="game-title">Super Mario Advance</span>
                         <span class="game-subtitle">GBA • 4.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'gba/pokemon_rojo_fuego.gba', 'pokemon', '16.00 MB', this)">
                     <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
                     <div class="game-info">
                         <span class="game-title">Pokémon Rojo Fuego</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic', '8.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'gba/sonic_advance.gba', 'sonic', '8.00 MB', this)">
                     <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
                     <div class="game-info">
                         <span class="game-title">Sonic Advance</span>
                         <span class="game-subtitle">GBA • 8.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'gba/zelda_minish_cap.gba', 'zelda', '16.00 MB', this)">
                     <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
                     <div class="game-info">
                         <span class="game-title">Zelda: Minish Cap</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mariokart', '4.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'gba/mario_kart.gba', 'mariokart', '4.00 MB', this)">
                     <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
                     <div class="game-info">
                         <span class="game-title">Mario Kart Circuit</span>
@@ -688,30 +688,28 @@
             paper_mario: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M15 30 Q50 20 85 30 L85 75 Q50 65 15 75 Z' fill='%23ffffff' stroke='%2300f0ff' stroke-width='4'/><line x1='50' y1='23' x2='50' y2='68' stroke='%2300f0ff' stroke-width='3'/><polygon points='50,32 53,40 62,40 55,45 57,53 50,48 43,53 45,45 38,40 47,40' fill='%23f6e05e' stroke='%23ff0055' stroke-width='1.5'/></svg>"
         };
 
-        // Mapeo detallado de teclas
         const keyMap = {
-            "0": { "code": "ArrowUp" },      // Arriba
-            "1": { "code": "ArrowDown" },    // Abajo
-            "2": { "code": "ArrowLeft" },    // Izquierda (Doblar)
-            "3": { "code": "ArrowRight" },   // Derecha (Doblar)
-            "4": { "code": "Space" },        // Botón A
-            "5": { "code": "KeyZ" },         // Botón B
-            "6": { "code": "KeyX" },         // Botón X
-            "7": { "code": "KeyC" },         // Botón Y
-            "8": { "code": "KeyA" },         // Gatillo L
-            "9": { "code": "KeyS" },         // Gatillo R
-            "10": { "code": "Enter" },       // Start
-            "11": { "code": "ShiftLeft" }    // Select
+            "0": { "code": "ArrowUp" },
+            "1": { "code": "ArrowDown" },
+            "2": { "code": "ArrowLeft" },
+            "3": { "code": "ArrowRight" },
+            "4": { "code": "Space" },
+            "5": { "code": "KeyZ" },
+            "6": { "code": "KeyX" },
+            "7": { "code": "KeyC" },
+            "8": { "code": "KeyA" },
+            "9": { "code": "KeyS" },
+            "10": { "code": "Enter" },
+            "11": { "code": "ShiftLeft" }
         };
 
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
-        let currentRom = "mario_advance.gba";
+        let currentRom = "gba/mario_advance.gba";
         let currentIconKey = "mario";
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
-        // Evitar desplazamientos no deseados de la página
         window.addEventListener('keydown', function(e) {
             if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                 e.preventDefault();
@@ -722,7 +720,6 @@
         }, true);
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Inicializar checkboxes desmarcados por defecto para rendimiento fluido
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
@@ -838,7 +835,7 @@
             `;
 
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const romAbsoluteUrl = baseUrl + 'roms/' + currentRom;
+            const romAbsoluteUrl = baseUrl + currentRom;
 
             setTimeout(() => {
                 container.innerHTML = '';
@@ -868,7 +865,6 @@
                             window.EJS_startOnLoaded = true;
                             window.EJS_volume = 0.8;
                             
-                            // Opciones de fluidez máxima desactivadas por defecto
                             window.EJS_vsync = ${vsync};
                             window.EJS_smoothing = ${shaders};
                             window.EJS_frameSkip = ${frameskip ? 1 : 0};
@@ -889,7 +885,6 @@
                                 }
                             };
 
-                            // Evitar la navegación por teclado y scroll
                             window.addEventListener('keydown', function(e) {
                                 if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                                     e.preventDefault();
