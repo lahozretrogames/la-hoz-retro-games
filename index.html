@@ -563,35 +563,35 @@
 
             <h3>Game Boy Advance</h3>
             <ul class="game-list">
-                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'mario_advance.webp', '4.00 MB', this)">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'super-mario-advance.webp', '4.00 MB', this)">
                     <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
                     <div class="game-info">
                         <span class="game-title">Super Mario Advance</span>
                         <span class="game-subtitle">GBA • 4.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon_rojo_fuego.webp', '16.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon-rojo-fuego.webp', '16.00 MB', this)">
                     <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
                     <div class="game-info">
                         <span class="game-title">Pokémon Rojo Fuego</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic_advance.webp', '8.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic-advance.webp', '8.00 MB', this)">
                     <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
                     <div class="game-info">
                         <span class="game-title">Sonic Advance</span>
                         <span class="game-subtitle">GBA • 8.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda_minish_cap.webp', '16.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda-minish-cap.webp', '16.00 MB', this)">
                     <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
                     <div class="game-info">
                         <span class="game-title">Zelda: Minish Cap</span>
                         <span class="game-subtitle">GBA • 16.00 MB</span>
                     </div>
                 </li>
-                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario_kart.webp', '4.00 MB', this)">
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario-kart-circuit.webp', '4.00 MB', this)">
                     <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
                     <div class="game-info">
                         <span class="game-title">Mario Kart Circuit</span>
@@ -632,37 +632,35 @@
     <div id="toast-container"></div>
 
     <script>
-        // Mapeo de imágenes desde la carpeta local 'gba/'
+        // Mapeo exacto con los nombres de tus archivos en la carpeta gba/
         const gameImages = {
-            mario: "gba/mario_advance.webp",
-            pokemon: "gba/pokemon_rojo_fuego.webp",
-            sonic: "gba/sonic_advance.webp",
-            zelda: "gba/zelda_minish_cap.webp",
-            mariokart: "gba/mario_kart.webp"
+            mario: "gba/super-mario-advance.webp",
+            pokemon: "gba/pokemon-rojo-fuego.webp",
+            sonic: "gba/sonic-advance.webp",
+            zelda: "gba/zelda-minish-cap.webp",
+            mariokart: "gba/mario-kart-circuit.webp"
         };
 
-        // Mapeo detallado de teclas
         const keyMap = {
-            "0": { "code": "ArrowUp" },      // Arriba
-            "1": { "code": "ArrowDown" },    // Abajo
-            "2": { "code": "ArrowLeft" },    // Izquierda
-            "3": { "code": "ArrowRight" },   // Derecha
-            "4": { "code": "Space" },        // Botón A
-            "5": { "code": "KeyZ" },         // Botón B
-            "8": { "code": "KeyA" },         // Gatillo L
-            "9": { "code": "KeyS" },         // Gatillo R
-            "10": { "code": "Enter" },       // Start
-            "11": { "code": "ShiftLeft" }    // Select
+            "0": { "code": "ArrowUp" },
+            "1": { "code": "ArrowDown" },
+            "2": { "code": "ArrowLeft" },
+            "3": { "code": "ArrowRight" },
+            "4": { "code": "Space" },
+            "5": { "code": "KeyZ" },
+            "8": { "code": "KeyA" },
+            "9": { "code": "KeyS" },
+            "10": { "code": "Enter" },
+            "11": { "code": "ShiftLeft" }
         };
 
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
         let currentRom = "mario_advance.gba";
-        let currentImgFile = "mario_advance.webp";
+        let currentImgFile = "super-mario-advance.webp";
         let currentSize = "4.00 MB";
         let currentXHR = null;
 
-        // Evitar desplazamientos no deseados de la página
         window.addEventListener('keydown', function(e) {
             if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
                 e.preventDefault();
@@ -673,7 +671,6 @@
         }, true);
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Inicializar checkboxes desmarcados por defecto para rendimiento fluido
             document.getElementById('vsync-toggle').checked = false;
             document.getElementById('shader-toggle').checked = false;
             document.getElementById('frameskip-toggle').checked = false;
@@ -739,9 +736,9 @@
             const container = document.getElementById('game-holder');
             container.innerHTML = `
                 <div class="start-screen">
-                    <img src="${imgPath}" class="bg-poster">
+                    <img src="${imgPath}" class="bg-poster" alt="${currentTitle}">
                     <div class="start-screen-content">
-                        <img src="${imgPath}" class="game-poster-preview">
+                        <img src="${imgPath}" class="game-poster-preview" alt="${currentTitle}">
                         <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">${currentTitle}</h2>
                         <p style="color: #64748b; font-size: 13px;">Consola: ${currentCore.toUpperCase()} | Peso: ${currentSize}</p>
                         <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
