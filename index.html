@@ -321,13 +321,6 @@
             position: relative;
         }
 
-        .emulator-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
         .start-screen {
             width: 100%;
             height: 100%;
@@ -570,7 +563,7 @@
             const shaders = document.getElementById('shader-toggle').checked;
             const frameskip = document.getElementById('frameskip-toggle').checked;
 
-            // Pantalla de carga con Tu Logo dando vueltas y brillando
+            // Mostrar pantalla de carga
             container.innerHTML = `
                 <div class="loading-screen">
                     <svg class="hoz-logo-spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -583,48 +576,32 @@
             `;
 
             setTimeout(() => {
-                container.innerHTML = '';
+                container.innerHTML = '<div id="emulator" style="width:100%;height:100%;"></div>';
 
-                const iframe = document.createElement('iframe');
-                iframe.className = 'emulator-iframe';
-                iframe.allow = 'autoplay; gamepad; fullscreen';
+                // Variables globales para EmulatorJS ejecutándose en la misma página
+                window.EJS_player = '#emulator';
+                window.EJS_core = currentCore;
+                window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+                window.EJS_gameUrl = currentRom;
+                window.EJS_gameName = currentTitle;
+                window.EJS_startOnLoaded = true;
+                window.EJS_volume = 0.9;
+                window.EJS_vsync = vsync;
+                window.EJS_smoothing = shaders;
+                window.EJS_frameSkip = frameskip ? 1 : 0;
+                window.EJS_threads = true;
+                window.EJS_cacheSave = true;
 
-                container.appendChild(iframe);
+                // Eliminar script anterior si existía para evitar conflictos
+                const existingScript = document.getElementById('ejs-loader-script');
+                if (existingScript) existingScript.remove();
 
-                const doc = iframe.contentWindow.document;
-                doc.open();
-                doc.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-                        <style>
-                            html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }
-                            #emulator { width:100%; height:100%; }
-                        </style>
-                    </head>
-                    <body>
-                        <div id="emulator"></div>
-                        <script>
-                            window.EJS_player = '#emulator';
-                            window.EJS_core = '${currentCore}';
-                            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-                            window.EJS_gameUrl = window.location.origin + window.location.pathname.replace('index.html', '') + '${currentRom}';
-                            window.EJS_gameName = '${currentTitle}';
-                            window.EJS_startOnLoaded = true;
-                            window.EJS_volume = 0.9;
-                            window.EJS_vsync = ${vsync};
-                            window.EJS_smoothing = ${shaders};
-                            window.EJS_frameSkip = ${frameskip ? 1 : 0};
-                            window.EJS_threads = true;
-                            window.EJS_cacheSave = true;
-                        <\/script>
-                        <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
-                    </body>
-                    </html>
-                `);
-                doc.close();
-            }, 600);
+                // Cargar el loader de EmulatorJS
+                const script = document.createElement('script');
+                script.id = 'ejs-loader-script';
+                script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+                document.body.appendChild(script);
+            }, 500);
         }
     </script>
 </body>
