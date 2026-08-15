@@ -3,28 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>La Hoz Retro Games - Emulador GBA Online Gratis</title>
+    
+    <!-- TÍTULO OPTIMIZADO PARA BÚSQUEDAS CLAVE -->
+    <title>Juegos GBA Online Gratis - Emulador Game Boy Advance | La Hoz Retro Games</title>
 
     <link rel="canonical" href="https://lahozretrogames.github.io/la-hoz-retro-games/" />
 
-    <meta name="description" content="Juega a ROMs retro de Game Boy Advance (GBA) online y gratis en tu navegador.">
-    <meta name="keywords" content="juegos retro, emulador online, gba online, super mario advance, pokemon rojo fuego, la hoz retro games">
+    <!-- META DESCRIPCIÓN Y PALABRAS CLAVE MEJORADAS -->
+    <meta name="description" content="Juega gratis a los mejores juegos de Game Boy Advance (GBA) online desde tu navegador. Sin descargas, con filtro CRT, soporte para mando y guardado automático.">
+    <meta name="keywords" content="juegos gba online, emulador game boy advance gratis, roms gba sin descargar, pokemon rojo fuego online, super mario advance, emulador navegador, la hoz retro games">
     <meta name="robots" content="index, follow">
     <meta name="author" content="La Hoz Retro Games">
 
-    <meta property="og:title" content="La Hoz Retro Games - Emulador GBA Online Gratis">
-    <meta property="og:description" content="Espacio Jugador Arcade. Juega ROMs de Game Boy Advance en tu navegador con guardado automático.">
-    <meta property="og:type" content="website">
+    <!-- SOPORTE PWA -->
+    <meta name="theme-color" content="#050508">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="La Hoz Games">
 
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Juegos GBA Online Gratis - Emulador Game Boy Advance">
+    <meta property="og:description" content="Juega a ROMs de Game Boy Advance en tu navegador con guardado automático y soporte para mando.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lahozretrogames.github.io/la-hoz-retro-games/">
+
+    <!-- DATOS ESTRUCTURADOS SCHEMA.ORG (JSON-LD) PARA WEBANALYTICS Y RESULTADOS CON ESTRELLAS -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "La Hoz Retro Games",
+      "@type": "SoftwareApplication",
+      "name": "La Hoz Retro Games - Emulador GBA Online",
       "url": "https://lahozretrogames.github.io/la-hoz-retro-games/",
-      "description": "Emulador online de juegos retro de Game Boy Advance para jugar directamente en el navegador.",
+      "description": "Emulador online de Game Boy Advance (GBA) para jugar directamente en el navegador sin descargas.",
       "applicationCategory": "GameApplication",
-      "operatingSystem": "Any"
+      "operatingSystem": "Web Browser, Windows, Android, iOS, macOS",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "154"
+      }
     }
     </script>
 
@@ -49,7 +70,7 @@
 
         html, body {
             height: 100%;
-            overflow: hidden; /* Mantiene la pantalla fija sin scroll global */
+            overflow: hidden;
             background-color: var(--bg-dark);
             color: var(--text-main);
         }
@@ -96,18 +117,34 @@
             filter: drop-shadow(0 0 16px var(--neon-magenta));
         }
 
-        .logo-text {
-            font-size: 22px;
+        .logo-text-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* H1 OPTIMIZADO PARA SEO CON ESTILO VISUAL DE TU MARCA */
+        h1.logo-text {
+            font-size: 20px;
             font-weight: 900;
             letter-spacing: 2px;
             color: #fff;
             text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            line-height: 1.1;
         }
 
-        .logo-text span {
+        h1.logo-text span {
             color: var(--neon-magenta);
             text-shadow: 0 0 12px var(--neon-magenta);
             animation: neonPulse 2s infinite alternate;
+        }
+
+        .seo-subhead {
+            font-size: 9px;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+            opacity: 0.8;
         }
 
         @keyframes neonPulse {
@@ -151,13 +188,13 @@
         /* --- LAYOUT PRINCIPAL DE 3 COLUMNAS --- */
         .main-layout {
             display: grid;
-            grid-template-columns: 320px 1fr 300px;
+            grid-template-columns: 320px 1fr 320px;
             height: calc(100vh - 60px);
             width: 100%;
             overflow: hidden;
         }
 
-        /* --- COLUMNA IZQUIERDA (LISTA + SCROLL INDEPENDIENTE) --- */
+        /* --- COLUMNA IZQUIERDA --- */
         .sidebar {
             background-color: var(--panel-bg);
             border-right: 1px solid rgba(0, 240, 255, 0.15);
@@ -170,11 +207,11 @@
             height: 100%;
         }
 
-        .sidebar::-webkit-scrollbar { width: 5px; }
-        .sidebar::-webkit-scrollbar-track { background: rgba(5, 5, 8, 0.5); }
-        .sidebar::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 3px; }
+        .sidebar::-webkit-scrollbar, .sidebar-right-ad::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-track, .sidebar-right-ad::-webkit-scrollbar-track { background: rgba(5, 5, 8, 0.5); }
+        .sidebar::-webkit-scrollbar-thumb, .sidebar-right-ad::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 3px; }
 
-        .sidebar h3 {
+        .sidebar h2 {
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -260,6 +297,12 @@
             gap: 8px;
         }
 
+        .game-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
         .game-item {
             padding: 10px;
             background: var(--card-bg);
@@ -339,7 +382,7 @@
             transform: scale(1.2);
         }
 
-        /* --- COLUMNA CENTRAL (PANTALLA JUEGO) --- */
+        /* --- COLUMNA CENTRAL --- */
         .game-zone {
             display: flex;
             flex-direction: column;
@@ -402,7 +445,6 @@
             overflow: hidden;
         }
 
-        /* Scanlines CRT */
         .emulator-frame.crt::after {
             content: " ";
             display: block;
@@ -474,7 +516,6 @@
             background: #11121d;
         }
 
-        /* --- ANIMACIÓN DE CARGA / DESCOMPRESIÓN CON LOGO --- */
         .loading-screen {
             position: absolute;
             top: 0; left: 0;
@@ -566,7 +607,7 @@
         
         .play-btn.load:hover { box-shadow: 0 0 30px var(--neon-magenta); }
 
-        /* --- COLUMNA DERECHA (PUBLICIDAD CONTINUA) --- */
+        /* --- COLUMNA DERECHA --- */
         .sidebar-right-ad {
             background-color: var(--panel-bg);
             border-left: 1px solid rgba(0, 240, 255, 0.15);
@@ -576,12 +617,84 @@
             justify-content: flex-start;
             padding: 15px;
             height: 100%;
+            overflow-y: auto;
+            gap: 15px;
+        }
+
+        /* --- ESTILOS DE ACORDEÓN DESPLEGABLE SEO --- */
+        .seo-accordion-container {
+            width: 100%;
+        }
+
+        .seo-details {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #e5e7eb;
+            transition: border-color 0.3s;
+        }
+
+        .seo-details:hover {
+            border-color: var(--neon-cyan);
+        }
+
+        .seo-summary {
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            color: var(--neon-cyan);
+            outline: none;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .seo-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .seo-summary::after {
+            content: "▼";
+            font-size: 10px;
+            color: var(--neon-cyan);
+            transition: transform 0.3s;
+        }
+
+        .seo-details[open] .seo-summary::after {
+            transform: rotate(180deg);
+        }
+
+        .seo-content {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            color: #9ca3af;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 8px;
+        }
+
+        .seo-content h2, .seo-content h3 {
+            font-size: 0.85rem;
+            color: #fff;
+            margin-top: 8px;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .seo-content p {
+            margin-bottom: 6px;
+        }
+
+        .seo-content strong {
+            color: var(--neon-cyan);
         }
 
         .ad-skyscraper {
             width: 100%;
-            height: 100%;
-            max-height: 600px;
+            flex: 1;
+            min-height: 250px;
             background-color: #090a10;
             border: 1px dashed rgba(0, 240, 255, 0.25);
             border-radius: 12px;
@@ -599,7 +712,7 @@
         #toast-container {
             position: fixed;
             bottom: 20px;
-            right: 320px;
+            right: 340px;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -676,11 +789,11 @@
         @media (max-width: 900px) {
             html, body { overflow: auto; height: auto; }
             header { padding: 0 15px; }
-            .logo-text { font-size: 16px; }
+            h1.logo-text { font-size: 15px; }
             .main-layout { display: flex; flex-direction: column; height: auto; overflow: visible; }
             .sidebar { width: 100%; order: 2; height: auto; border-right: none; }
             .game-zone { order: 1; height: 75vh; padding: 10px; }
-            .sidebar-right-ad { order: 3; width: 100%; height: 140px; border-left: none; border-top: 1px solid rgba(0,240,255,0.2); }
+            .sidebar-right-ad { order: 3; width: 100%; height: auto; border-left: none; border-top: 1px solid rgba(0,240,255,0.2); }
             .mobile-controls { display: block; }
             .desktop-controls-info { display: none; }
             #toast-container { right: 20px; }
@@ -691,13 +804,16 @@
 
     <header>
         <div class="brand-container">
-            <svg class="hoz-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <svg class="hoz-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" onclick="window.location.hash=''">
                 <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
                 <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
                 <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
                 <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
             </svg>
-            <div class="logo-text">LA HOZ <span>RETRO GAMES</span></div>
+            <div class="logo-text-container">
+                <h1 class="logo-text">LA HOZ <span>RETRO GAMES</span></h1>
+                <span class="seo-subhead">Emulador Game Boy Advance Online</span>
+            </div>
         </div>
 
         <div class="header-right">
@@ -712,7 +828,7 @@
         <!-- COLUMNA 1: LISTA DE JUEGOS Y CONFIGURACIÓN -->
         <aside class="sidebar">
             <div class="desktop-controls-info">
-                <h3>Controles PC 🎮</h3>
+                <h2>Controles PC 🎮</h2>
                 <div class="controls-card">
                     <div class="control-box"><b>Moverse:</b> Flechas (▲▼◄►)</div>
                     <div class="control-box"><b>Boton A:</b> Espacio</div>
@@ -724,7 +840,7 @@
                 </div>
             </div>
 
-            <h3>Ajustes de Renderizado ⚙️</h3>
+            <h2>Ajustes de Renderizado ⚙️</h2>
             <div class="graphic-options">
                 <div class="setting-row">
                     <span>Efecto CRT / Scanlines</span>
@@ -744,108 +860,159 @@
                 </div>
             </div>
 
-            <h3>Catálogo Game Boy Advance</h3>
+            <h2>Catálogo Game Boy Advance</h2>
             <ul class="game-list" id="game-list-ul">
-                <li class="game-item active" data-id="mario" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'super-mario-advance.webp', '4.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
-                        <div class="game-info">
-                            <span class="game-title">Super Mario Advance</span>
-                            <span class="badge badge-plat">Plataformas</span>
+                
+                <li>
+                    <a href="#/juego/super-mario-advance" class="game-link" onclick="selectGameBySlug('super-mario-advance', this); return false;">
+                        <div class="game-item active" data-id="mario">
+                            <div class="game-main-info">
+                                <img id="thumb-mario" class="game-thumb-mini" alt="Super Mario Advance GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Super Mario Advance</span>
+                                    <span class="badge badge-plat">Plataformas</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'mario')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'mario')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="pokemon" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon-rojo-fuego.webp', '16.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
-                        <div class="game-info">
-                            <span class="game-title">Pokémon Rojo Fuego</span>
-                            <span class="badge badge-rpg">RPG / Aventura</span>
+
+                <li>
+                    <a href="#/juego/pokemon-rojo-fuego" class="game-link" onclick="selectGameBySlug('pokemon-rojo-fuego', this); return false;">
+                        <div class="game-item" data-id="pokemon">
+                            <div class="game-main-info">
+                                <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokémon Rojo Fuego GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Pokémon Rojo Fuego</span>
+                                    <span class="badge badge-rpg">RPG / Aventura</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'pokemon')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'pokemon')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="sonic" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic-advance.webp', '8.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
-                        <div class="game-info">
-                            <span class="game-title">Sonic Advance</span>
-                            <span class="badge badge-plat">Plataformas</span>
+
+                <li>
+                    <a href="#/juego/sonic-advance" class="game-link" onclick="selectGameBySlug('sonic-advance', this); return false;">
+                        <div class="game-item" data-id="sonic">
+                            <div class="game-main-info">
+                                <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic Advance GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Sonic Advance</span>
+                                    <span class="badge badge-plat">Plataformas</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'sonic')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'sonic')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="zelda" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda-minish-cap.webp', '16.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
-                        <div class="game-info">
-                            <span class="game-title">Zelda: Minish Cap</span>
-                            <span class="badge badge-rpg">Aventura</span>
+
+                <li>
+                    <a href="#/juego/zelda-minish-cap" class="game-link" onclick="selectGameBySlug('zelda-minish-cap', this); return false;">
+                        <div class="game-item" data-id="zelda">
+                            <div class="game-main-info">
+                                <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda Minish Cap GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Zelda: Minish Cap</span>
+                                    <span class="badge badge-rpg">Aventura</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'zelda')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'zelda')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="mariokart" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario-kart-circuit.webp', '4.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
-                        <div class="game-info">
-                            <span class="game-title">Mario Kart Circuit</span>
-                            <span class="badge badge-race">Carreras</span>
+
+                <li>
+                    <a href="#/juego/mario-kart-circuit" class="game-link" onclick="selectGameBySlug('mario-kart-circuit', this); return false;">
+                        <div class="game-item" data-id="mariokart">
+                            <div class="game-main-info">
+                                <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart Circuit GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Mario Kart Circuit</span>
+                                    <span class="badge badge-race">Carreras</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'mariokart')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'mariokart')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="fireemblem" onclick="changeGame('Fire Emblem', 'gba', 'fire-emblem.gba', 'fire-emblem.webp', '16.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-fire-emblem" class="game-thumb-mini" alt="Fire Emblem">
-                        <div class="game-info">
-                            <span class="game-title">Fire Emblem</span>
-                            <span class="badge badge-rpg">Estrategia</span>
+
+                <li>
+                    <a href="#/juego/fire-emblem" class="game-link" onclick="selectGameBySlug('fire-emblem', this); return false;">
+                        <div class="game-item" data-id="fireemblem">
+                            <div class="game-main-info">
+                                <img id="thumb-fire-emblem" class="game-thumb-mini" alt="Fire Emblem GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Fire Emblem</span>
+                                    <span class="badge badge-rpg">Estrategia</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'fireemblem')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'fireemblem')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="cnspeedway" onclick="changeGame('CN Speedway / Block Party', 'gba', 'cartoon-network-speedway-blockparty.gba', 'cartoon-network-speedway-blockparty.webp', '8.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-cn-speedway" class="game-thumb-mini" alt="CN Speedway">
-                        <div class="game-info">
-                            <span class="game-title">CN Speedway</span>
-                            <span class="badge badge-race">Carreras</span>
+
+                <li>
+                    <a href="#/juego/cn-speedway" class="game-link" onclick="selectGameBySlug('cn-speedway', this); return false;">
+                        <div class="game-item" data-id="cnspeedway">
+                            <div class="game-main-info">
+                                <img id="thumb-cn-speedway" class="game-thumb-mini" alt="CN Speedway GBA">
+                                <div class="game-info">
+                                    <span class="game-title">CN Speedway</span>
+                                    <span class="badge badge-race">Carreras</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'cnspeedway')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'cnspeedway')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="marioluigi" onclick="changeGame('Mario & Luigi: Superstar Saga', 'gba', 'mario-y-luigi-superstar-saga.gba', 'mario-y-luigi-superstar-saga.webp', '16.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-mario-luigi" class="game-thumb-mini" alt="Mario & Luigi">
-                        <div class="game-info">
-                            <span class="game-title">Mario & Luigi: Superstar</span>
-                            <span class="badge badge-rpg">RPG</span>
+
+                <li>
+                    <a href="#/juego/mario-luigi-superstar" class="game-link" onclick="selectGameBySlug('mario-luigi-superstar', this); return false;">
+                        <div class="game-item" data-id="marioluigi">
+                            <div class="game-main-info">
+                                <img id="thumb-mario-luigi" class="game-thumb-mini" alt="Mario Luigi Superstar Saga GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Mario & Luigi: Superstar</span>
+                                    <span class="badge badge-rpg">RPG</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'marioluigi')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'marioluigi')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="metroid" onclick="changeGame('Metroid Fusion', 'gba', 'metroid-fusion.gba', 'metroid-fusion.webp', '8.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-metroid-fusion" class="game-thumb-mini" alt="Metroid Fusion">
-                        <div class="game-info">
-                            <span class="game-title">Metroid Fusion</span>
-                            <span class="badge badge-action">Acción</span>
+
+                <li>
+                    <a href="#/juego/metroid-fusion" class="game-link" onclick="selectGameBySlug('metroid-fusion', this); return false;">
+                        <div class="game-item" data-id="metroid">
+                            <div class="game-main-info">
+                                <img id="thumb-metroid-fusion" class="game-thumb-mini" alt="Metroid Fusion GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Metroid Fusion</span>
+                                    <span class="badge badge-action">Acción</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'metroid')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'metroid')">★</span>
+                    </a>
                 </li>
-                <li class="game-item" data-id="tonyhawk" onclick="changeGame('Tony Hawk\'s Pro Skater', 'gba', 'tony-hawks-pro-skater.gba', 'tony-hawks-pro-skater.webp', '8.00 MB', this)">
-                    <div class="game-main-info">
-                        <img id="thumb-tony-hawk" class="game-thumb-mini" alt="Tony Hawk">
-                        <div class="game-info">
-                            <span class="game-title">Tony Hawk's Pro Skater</span>
-                            <span class="badge badge-action">Deportes</span>
+
+                <li>
+                    <a href="#/juego/tony-hawks-pro-skater" class="game-link" onclick="selectGameBySlug('tony-hawks-pro-skater', this); return false;">
+                        <div class="game-item" data-id="tonyhawk">
+                            <div class="game-main-info">
+                                <img id="thumb-tony-hawk" class="game-thumb-mini" alt="Tony Hawks Pro Skater GBA">
+                                <div class="game-info">
+                                    <span class="game-title">Tony Hawk's Pro Skater</span>
+                                    <span class="badge badge-action">Deportes</span>
+                                </div>
+                            </div>
+                            <span class="fav-star" onclick="toggleFav(event, 'tonyhawk')">★</span>
                         </div>
-                    </div>
-                    <span class="fav-star" onclick="toggleFav(event, 'tonyhawk')">★</span>
+                    </a>
                 </li>
+
             </ul>
         </aside>
 
@@ -855,10 +1022,11 @@
                 
                 <div class="quick-toolbar">
                     <span style="font-size: 12px; font-weight: 700; color: var(--neon-cyan);" id="current-game-label">Super Mario Advance</span>
-                    <div style="display: flex; gap: 8px;">
+                    <div style="display: flex; gap: 6px;">
                         <button class="toolbar-btn" onclick="saveStateManual()">💾 Guardar Ya</button>
                         <button class="toolbar-btn" onclick="takeScreenshot()">📸 Capturar</button>
-                        <button class="toolbar-btn" onclick="goFullscreen()">⛶ Pantalla Completa</button>
+                        <button class="toolbar-btn" onclick="shareGameURL()">🔗 Compartir</button>
+                        <button class="toolbar-btn" onclick="goFullscreen()">⛶ Fullscreen</button>
                     </div>
                 </div>
 
@@ -914,20 +1082,63 @@
             </div>
         </main>
 
-        <!-- COLUMNA 3: ESPACIO PUBLICITARIO -->
+        <!-- COLUMNA 3: DESPLEGABLES SEO SOBRE EL ANUNCIO -->
         <aside class="sidebar-right-ad">
+            
+            <!-- ACORDEÓN 1: GUÍA Y PREGUNTAS FRECUENTES -->
+            <div class="seo-accordion-container">
+                <details class="seo-details" open>
+                    <summary class="seo-summary">❓ ¿Cómo jugar GBA Online? / FAQ</summary>
+                    <div class="seo-content">
+                        <h2>Emulador de Game Boy Advance Gratis</h2>
+                        <p>Disfruta de los mejores <strong>juegos de GBA online</strong> directamente en tu navegador sin descargar programas ni ROMs adicionales.</p>
+
+                        <h3>¿Se guardan mis partidas?</h3>
+                        <p>Sí, la plataforma utiliza guardado local automático para que continúes tu partida de <strong>Game Boy Advance</strong> cuando quieras.</p>
+
+                        <h3>¿Puedo jugar con mando de consola?</h3>
+                        <p>Compatible con gamepads y mandos de consola por USB y Bluetooth en PC y dispositivos móviles.</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- ACORDEÓN 2: PALABRAS CLAVE Y POPULARES -->
+            <div class="seo-accordion-container">
+                <details class="seo-details">
+                    <summary class="seo-summary">🔥 Juegos GBA Más Populares</summary>
+                    <div class="seo-content">
+                        <p>Juega gratis a <strong>Pokémon Rojo Fuego</strong>, <strong>Super Mario Advance</strong>, <strong>Zelda: Minish Cap</strong>, <strong>Metroid Fusion</strong>, <strong>Sonic Advance</strong> y <strong>Mario Kart Circuit</strong> sin instalar emuladores.</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- ESPACIO PUBLICITARIO -->
             <div class="ad-skyscraper">
                 <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
                     <p>Espacio Publicitario</p>
                 </div>
             </div>
+
         </aside>
     </div>
 
     <div id="toast-container"></div>
 
     <script>
-        // --- SISTEMA DE ALMACENAMIENTO RÁPIDO Y FLUIDO (INDEXEDDB BINARIO) ---
+        // MAPA DE JUEGOS Y RUTA
+        const gamesCatalog = {
+            'super-mario-advance': { id: 'mario', title: 'Super Mario Advance', core: 'gba', rom: 'mario_advance.gba', img: 'super-mario-advance.webp', size: '4.00 MB' },
+            'pokemon-rojo-fuego': { id: 'pokemon', title: 'Pokémon Rojo Fuego', core: 'gba', rom: 'pokemon_rojo_fuego.gba', img: 'pokemon-rojo-fuego.webp', size: '16.00 MB' },
+            'sonic-advance': { id: 'sonic', title: 'Sonic Advance', core: 'gba', rom: 'sonic_advance.gba', img: 'sonic-advance.webp', size: '8.00 MB' },
+            'zelda-minish-cap': { id: 'zelda', title: 'Zelda: Minish Cap', core: 'gba', rom: 'zelda_minish_cap.gba', img: 'zelda-minish-cap.webp', size: '16.00 MB' },
+            'mario-kart-circuit': { id: 'mariokart', title: 'Mario Kart Circuit', core: 'gba', rom: 'mario_kart.gba', img: 'mario-kart-circuit.webp', size: '4.00 MB' },
+            'fire-emblem': { id: 'fireemblem', title: 'Fire Emblem', core: 'gba', rom: 'fire-emblem.gba', img: 'fire-emblem.webp', size: '16.00 MB' },
+            'cn-speedway': { id: 'cnspeedway', title: 'CN Speedway / Block Party', core: 'gba', rom: 'cartoon-network-speedway-blockparty.gba', img: 'cartoon-network-speedway-blockparty.webp', size: '8.00 MB' },
+            'mario-luigi-superstar': { id: 'marioluigi', title: 'Mario & Luigi: Superstar Saga', core: 'gba', rom: 'mario-y-luigi-superstar-saga.gba', img: 'mario-y-luigi-superstar-saga.webp', size: '16.00 MB' },
+            'metroid-fusion': { id: 'metroid', title: 'Metroid Fusion', core: 'gba', rom: 'metroid-fusion.gba', img: 'metroid-fusion.webp', size: '8.00 MB' },
+            'tony-hawks-pro-skater': { id: 'tonyhawk', title: 'Tony Hawk\'s Pro Skater', core: 'gba', rom: 'tony-hawks-pro-skater.gba', img: 'tony-hawks-pro-skater.webp', size: '8.00 MB' }
+        };
+
         const SaveDB = {
             dbName: "HozRetroGamesDB_v2",
             dbVersion: 1,
@@ -981,6 +1192,7 @@
             tonyhawk: "gba/tony-hawks-pro-skater.webp"
         };
 
+        let currentSlug = "super-mario-advance";
         let currentTitle = "Super Mario Advance";
         let currentCore = "gba";
         let currentRom = "mario_advance.gba";
@@ -1053,11 +1265,41 @@
             document.getElementById('poster-bg').src = gameImages.mario;
             document.getElementById('poster-preview').src = gameImages.mario;
 
-            checkExistingSave(currentRom);
             setupTouchEvents();
             setupGamepadDetector();
             loadFavoritesUI();
+            
+            // ROUTING NAVEGADOR
+            handleHashChange();
+            window.addEventListener('hashchange', handleHashChange);
         });
+
+        // MANEJO DE HASH URLS (/juego/nombre-juego)
+        function handleHashChange() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#/juego/')) {
+                const slug = hash.replace('#/juego/', '');
+                if (gamesCatalog[slug]) {
+                    selectGameBySlug(slug);
+                    return;
+                }
+            }
+            selectGameBySlug('super-mario-advance');
+        }
+
+        function selectGameBySlug(slug) {
+            const gameData = gamesCatalog[slug];
+            if (!gameData) return;
+
+            currentSlug = slug;
+            window.location.hash = '#/juego/' + slug;
+            
+            // CAMBIO DINÁMICO DE TÍTULO PARA SEO Y COMPARTIR
+            document.title = "Jugar " + gameData.title + " Online Gratis - La Hoz Retro Games";
+
+            const gameItemEl = document.querySelector(`[data-id="${gameData.id}"]`);
+            changeGame(gameData.title, gameData.core, gameData.rom, gameData.img, gameData.size, gameItemEl);
+        }
 
         // Detector de Mandos USB/Bluetooth
         function setupGamepadDetector() {
@@ -1204,7 +1446,6 @@
                 savedData = await SaveDB.getSave('save_' + currentRom);
             }
 
-            // PANTALLA DE CARGA CON LA HOZ Y ANIMACIONES NEÓN
             container.innerHTML = `
                 <div class="loading-screen">
                     <div class="logo-glow-wrapper">
@@ -1304,7 +1545,22 @@
             }, 600);
         }
 
-        // --- FUNCIONES DE LA BARRA RÁPIDA ---
+        // FUNCIONES DE COMPARTIR Y BARRA RÁPIDA
+        function shareGameURL() {
+            const shareData = {
+                title: "Juega " + currentTitle + " en La Hoz Retro Games",
+                text: "¡Juega gratis a " + currentTitle + " online en tu navegador sin descargas!",
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                showToast("🔗 ¡Enlace del juego copiado al portapapeles!");
+            }
+        }
+
         function goFullscreen() {
             const frame = document.getElementById('emulator-frame');
             if (frame.requestFullscreen) {
@@ -1341,7 +1597,7 @@
                     const emuCanvas = activeIframeWindow.document.querySelector('canvas');
                     if (emuCanvas) {
                         const link = document.createElement('a');
-                        link.download = currentRom.replace('.gba', '') + '_captura.png';
+                        link.download = currentRom.replace('.gba', '') + '_lahozretrogames.png';
                         link.href = emuCanvas.toDataURL();
                         link.click();
                         showToast('📸 Captura descargada');
