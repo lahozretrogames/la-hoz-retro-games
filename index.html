@@ -280,10 +280,11 @@
             flex: 1;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             padding: 20px;
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
+            gap: 20px;
         }
 
         .emulator-container-wrapper {
@@ -291,7 +292,78 @@
             max-width: 850px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        /* --- ESTILOS TARJETAS FRIV --- */
+        .friv-grid-container {
+            width: 100%;
+            background: rgba(12, 13, 20, 0.6);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        .friv-grid-container h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--neon-cyan);
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .friv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+        }
+
+        .friv-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .friv-card:hover {
+            transform: scale(1.05);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+        }
+
+        .friv-card img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+
+        .friv-card span {
+            font-size: 9px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .sidebar-right {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 300px;
+            flex-shrink: 0;
         }
 
         .emulator-frame {
@@ -453,11 +525,10 @@
 
         .ad-skyscraper {
             width: 300px;
-            height: 600px;
+            height: 400px;
             background-color: #090a10;
             border: 1px dashed rgba(0, 240, 255, 0.25);
             border-radius: 12px;
-            margin-left: 25px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -583,7 +654,8 @@
             .sidebar { width: 100%; order: 2; border-right: none; border-top: 1px solid rgba(0,240,255,0.2); }
             .game-zone { order: 1; padding: 10px; flex-direction: column; }
             .emulator-container-wrapper { width: 100%; }
-            .ad-skyscraper { width: 100%; height: 120px; margin-left: 0; margin-top: 15px; order: 3; }
+            .sidebar-right { width: 100%; order: 3; }
+            .ad-skyscraper { width: 100%; height: 120px; margin-top: 0; }
             .mobile-controls { display: block; }
             .desktop-controls-info { display: none; }
         }
@@ -714,6 +786,47 @@
 
         <main class="game-zone">
             <div class="emulator-container-wrapper">
+                
+                <!-- ZONA SUPERIOR CENTRAL (8 JUEGOS WEB) -->
+                <div class="friv-grid-container">
+                    <h4>🕹️ Arcade Hits Superiores</h4>
+                    <div class="friv-grid">
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/rvvAS30867e34f664a7c88b0292723c7/', 'Pac-Man Arcade')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Pacman_Title_Screen.png" alt="Pac-Man">
+                            <span>Pac-Man</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/624b5dfd4f644837a28e8fbf384358fa/', 'Space Invaders')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Space_Invaders_arcade_flyer_side_a.png" alt="Space Invaders">
+                            <span>Space Invaders</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/a64f51e330f6437d97b91bd670396fb1/', 'Street Fighter II')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/1/10/Street_Fighter_II_Arcade_Flyer.jpg" alt="Street Fighter II">
+                            <span>Street Fighter II</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/3c834a36254449859f77f98d4948a391/', 'Galaga')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/2/21/Galaga_arcade_flyer.jpg" alt="Galaga">
+                            <span>Galaga</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/264b9dd888024250a29023194a2e55a2/', 'Tetris')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Tetris_arcade_logo.png" alt="Tetris">
+                            <span>Tetris</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/f0406db822fb4e68bd0a56e676100c50/', 'Frogger')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/8/82/Frogger_arcade_flyer.jpg" alt="Frogger">
+                            <span>Frogger</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/e2f3d6bb6c1b4b57973ebfcf3e8e19bb/', 'Asteroids')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Asteroids_arcade_flyer.jpg" alt="Asteroids">
+                            <span>Asteroids</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/d281ef56dd9e46a7be7e38e12d46e01a/', 'Bubble Bobble')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/a/a2/Bubble_Bobble_flyer.jpg" alt="Bubble Bobble">
+                            <span>Bubble Bobble</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANTALLA PRINCIPAL DE JUEGO -->
                 <div class="emulator-frame" id="emulator-frame">
                     <div id="game-holder">
                         <div class="start-screen">
@@ -763,11 +876,92 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- ZONA INFERIOR CENTRAL (10 JUEGOS WEB) -->
+                <div class="friv-grid-container">
+                    <h4>👾 Clásicos Retro Inferiores</h4>
+                    <div class="friv-grid">
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/9788d7fb2b134bb48530ec394f9b8830/', 'Donkey Kong')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/7/76/Donkey_Kong_flyer.jpg" alt="Donkey Kong">
+                            <span>Donkey Kong</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/15291e1d0f8d4e9b98ec34e568bbdcd2/', 'Dig Dug')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/1/15/Dig_Dug_arcade_flyer.jpg" alt="Dig Dug">
+                            <span>Dig Dug</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/b919d38580554c9ea9f1311b5ff854df/', 'Arkanoid')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Arkanoid_flyer.jpg" alt="Arkanoid">
+                            <span>Arkanoid</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/264b3837e29141b790d9ec006e8ef26c/', 'Pinball Retro')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Space_Cadet_Pinball_Icon.png" alt="Pinball">
+                            <span>Pinball Retro</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/c102a061eb0d4f55b9e28f32bc6bf72b/', 'Metal Slug')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/e/eb/Metal_slug_box.jpg" alt="Metal Slug">
+                            <span>Metal Slug</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/d949ec308e2f41bb923055eec143891d/', '1942 Air Combat')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/7/73/1942_arcade_flyer.jpg" alt="1942">
+                            <span>1942 Combat</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/e58f0012e84e493e83917a94ec3bc72a/', 'Ms Pac-Man')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Ms_Pac_Man_flyer.jpg" alt="Ms Pac-Man">
+                            <span>Ms. Pac-Man</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/0d99bc323f49480b957e84a2754e0c38/', 'OutRun')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/b/b3/OutRun_Arcade_Flyer.png" alt="OutRun">
+                            <span>OutRun</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/f04bc292415d487f9e8a8b8159bb84c0/', 'Contra')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/2/23/Contra_flyer.jpg" alt="Contra">
+                            <span>Contra</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/832822a106e24dbca8d2495b281f6eb1/', 'Bomberman')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/f/f0/Bomberman_NES.jpg" alt="Bomberman">
+                            <span>Bomberman</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="ad-skyscraper">
-                <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
-                    <p>Espacio Publicitario</p>
+            <!-- COLUMNA DERECHA (6 JUEGOS WEB + PUBLICIDAD) -->
+            <div class="sidebar-right">
+                <div class="friv-grid-container">
+                    <h4>🎯 Más Seleccionados</h4>
+                    <div class="friv-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/3931441c2c3143c7b39f1c7128fefd8e/', 'Rampage')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Rampage_arcade_flyer.jpg" alt="Rampage">
+                            <span>Rampage</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/981b2e2f38d348a7be7c09341eb20a28/', 'Track & Field')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/7/77/Track_%26_Field_flyer.jpg" alt="Track Field">
+                            <span>Track & Field</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/652f1401f8e244b29bb888915b0266e1/', 'Snake 8-bit')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Nokia_3310_Snake.png" alt="Snake">
+                            <span>Snake 8-bit</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/3d22e0e98031440fb3bc8834458f28d1/', 'Pong Classic')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Ata_pong.jpg" alt="Pong">
+                            <span>Pong Classic</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/4b732e49c0c14f05a10948e5898bd8c1/', 'Centipede')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/e/e0/Centipede_arcade_flyer.jpg" alt="Centipede">
+                            <span>Centipede</span>
+                        </div>
+                        <div class="friv-card" onclick="cargarJuegoWeb('https://html5.gamedistribution.com/79183ec98bb14c7793d5628b0301ef2b/', 'Paperboy')">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Paperboy_arcade_flyer.jpg" alt="Paperboy">
+                            <span>Paperboy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ad-skyscraper">
+                    <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
+                        <p>Espacio Publicitario</p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -832,7 +1026,6 @@
         let currentSize = "4.00 MB";
         let activeIframeWindow = null;
 
-        // Función auxiliar para remapear 'e' / 'KeyE' a 'c' / 'KeyC'
         function mapKeyData(eKey, eCode, eKeyCode) {
             let key = eKey || '';
             let code = eCode || '';
@@ -847,7 +1040,6 @@
             return { key, code, keyCode };
         }
 
-        // Capturar eventos de teclado globales y prevenirlos si corresponden a teclas de juego
         window.addEventListener('keydown', function(e) {
             const gameCodes = ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyZ', 'KeyX', 'KeyS', 'Enter', 'ShiftLeft', 'ShiftRight', 'KeyQ', 'KeyC', 'KeyE'];
             const gameKeys = [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'z', 'x', 's', 'Enter', 'Shift', 'q', 'c', 'e', 'E'];
@@ -913,7 +1105,6 @@
             setupTouchEvents();
         });
 
-        // Controles Táctiles
         function setupTouchEvents() {
             const touchBtns = document.querySelectorAll('.touch-btn');
             touchBtns.forEach(btn => {
@@ -1082,7 +1273,6 @@
                                 }
                             };
 
-                            // Despacho de eventos de teclado dentro del emulador con objeto completo
                             window.addEventListener('message', function(e) {
                                 if (e.data && e.data.type === 'EMU_KEY_EVENT') {
                                     const evtProps = {
@@ -1119,6 +1309,39 @@
                     }, 100);
                 };
             }, 400); 
+        }
+
+        // --- FUNCIÓN PARA CARGAR JUEGOS WEB CON LOGO ANIMADO DE LA HOZ ---
+        function cargarJuegoWeb(urlJuego, titulo) {
+            stopAndCleanupEmulator();
+            
+            document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
+
+            const container = document.getElementById('game-holder');
+
+            container.innerHTML = `
+                <div class="loading-screen" id="web-loader">
+                    <div class="logo-glow-wrapper">
+                        <div class="spinner-ring"></div>
+                        <svg class="loading-hoz-animation" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
+                            <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
+                            <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
+                            <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <p style="color: var(--neon-cyan); font-weight: bold; letter-spacing: 1px;">CARGANDO ${titulo.toUpperCase()}...</p>
+                </div>
+                <iframe id="iframe-juego-web" src="${urlJuego}" class="emulator-iframe" style="opacity: 0; transition: opacity 0.5s ease;" allow="autoplay; gamepad; fullscreen"></iframe>
+            `;
+
+            const iframe = document.getElementById('iframe-juego-web');
+            iframe.onload = () => {
+                const loader = document.getElementById('web-loader');
+                if (loader) loader.style.display = 'none';
+                iframe.style.opacity = '1';
+                iframe.focus();
+            };
         }
 
         setInterval(() => {
