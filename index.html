@@ -78,8 +78,8 @@
         }
 
         .hoz-logo-svg {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             filter: drop-shadow(0 0 10px var(--neon-cyan));
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
@@ -111,30 +111,192 @@
             50% { opacity: 0.75; text-shadow: 0 0 4px var(--neon-magenta); }
         }
 
-        /* --- CONTENEDOR PRINCIPAL DE 2 COLUMNAS --- */
         .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 25px;
-            max-width: 1500px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 25px;
+            display: flex;
             flex: 1;
+            position: relative;
+            overflow-y: auto;
         }
 
-        .content-left {
+        .sidebar {
+            width: 320px;
+            background-color: var(--panel-bg);
+            border-right: 1px solid rgba(0, 240, 255, 0.15);
+            padding: 16px 14px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
-            min-width: 0;
+            gap: 12px;
+            z-index: 15;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.6);
+            overflow-y: auto;
+            flex-shrink: 0;
         }
 
-        /* --- PANTALLA Y EMULADOR --- */
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-track { background: rgba(5, 5, 8, 0.5); }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 3px; }
+
+        .sidebar h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--neon-cyan);
+            margin-top: 6px;
+            margin-bottom: 4px;
+            font-weight: 800;
+            text-shadow: 0 0 8px rgba(0,240,255,0.4);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .sidebar h3:first-of-type { margin-top: 0; }
+
+        .controls-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            font-size: 10px;
+        }
+
+        .control-box {
+            background: rgba(5, 5, 8, 0.6);
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .control-box b { color: var(--neon-cyan); display: block; }
+
+        .p2-note {
+            grid-column: span 2;
+            color: #ffffff;
+            background: rgba(255, 0, 85, 0.25);
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-top: 2px;
+            border: 1px solid rgba(255, 0, 85, 0.4);
+        }
+
+        .graphic-options {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 18px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #2d3748; transition: .3s; border-radius: 18px;
+        }
+
+        .slider:before {
+            position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--neon-cyan); }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        .game-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .game-item {
+            padding: 10px 12px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            will-change: transform;
+        }
+
+        .game-item:hover {
+            background: rgba(0, 240, 255, 0.1);
+            border-color: rgba(0, 240, 255, 0.5);
+            transform: translateX(4px);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+        }
+
+        .game-item.active {
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.2) 0%, rgba(255, 0, 85, 0.08) 100%);
+            border-color: var(--neon-cyan);
+            color: #fff;
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .game-thumb-mini {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: #11121d;
+        }
+
+        .game-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title { font-size: 13px; font-weight: 700; color: #fff; }
+        .game-subtitle { font-size: 10px; color: #64748b; margin-top: 2px; }
+
+        .game-zone {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emulator-container-wrapper {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
         .emulator-frame {
             width: 100%;
-            aspect-ratio: 16 / 9;
-            max-height: 520px;
+            aspect-ratio: 4 / 3;
             background-color: #000;
             border-radius: 16px;
             border: 2px solid rgba(0, 240, 255, 0.4);
@@ -197,14 +359,65 @@
         }
 
         .game-poster-preview {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 16px;
             object-fit: cover;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             border: 2px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
             background: #11121d;
+        }
+
+        .loading-screen {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #07070e;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo-glow-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .spinner-ring {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--neon-cyan);
+            border-right-color: var(--neon-magenta);
+            animation: spin 1.2s linear infinite;
+            will-change: transform;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .loading-hoz-animation {
+            width: 90px;
+            height: 90px;
+            filter: drop-shadow(0 0 20px var(--neon-cyan));
+            animation: scytheSlash 2.2s infinite ease-in-out;
+            z-index: 2;
+            will-change: transform;
+        }
+
+        @keyframes scytheSlash {
+            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
+            35% { transform: rotate(-25deg) scale(1.1); filter: drop-shadow(0 0 25px var(--neon-cyan)); }
+            50% { transform: rotate(20deg) scale(1.15); filter: drop-shadow(0 0 30px var(--neon-magenta)); }
+            75% { transform: rotate(-10deg) scale(1.05); }
+            100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
         }
 
         .play-btn {
@@ -235,259 +448,62 @@
             margin-top: 10px;
             color: #fff;
         }
-
-        .loading-screen {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #07070e;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .logo-glow-wrapper {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .spinner-ring {
-            position: absolute;
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: var(--neon-cyan);
-            border-right-color: var(--neon-magenta);
-            animation: spin 1.2s linear infinite;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .loading-hoz-animation {
-            width: 80px;
-            height: 80px;
-            filter: drop-shadow(0 0 20px var(--neon-cyan));
-            animation: scytheSlash 2.2s infinite ease-in-out;
-            z-index: 2;
-        }
-
-        @keyframes scytheSlash {
-            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
-            35% { transform: rotate(-25deg) scale(1.1); filter: drop-shadow(0 0 25px var(--neon-cyan)); }
-            50% { transform: rotate(20deg) scale(1.15); filter: drop-shadow(0 0 30px var(--neon-magenta)); }
-            75% { transform: rotate(-10deg) scale(1.05); }
-            100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 15px var(--neon-cyan)); }
-        }
-
-        /* --- CONTROLES DE PC Y CONFIGURACIÓN --- */
-        .settings-panel {
-            background: var(--panel-bg);
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            border-radius: 14px;
-            padding: 16px;
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .section-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--neon-cyan);
-            margin-bottom: 10px;
-            font-weight: 800;
-            text-shadow: 0 0 8px rgba(0,240,255,0.4);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            padding-bottom: 4px;
-        }
-
-        .controls-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            font-size: 10px;
-        }
-
-        .control-box {
-            background: rgba(5, 5, 8, 0.6);
-            padding: 5px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .control-box b { color: var(--neon-cyan); display: block; }
-
-        .p2-note {
-            grid-column: span 2;
-            color: #ffffff;
-            background: rgba(255, 0, 85, 0.25);
-            padding: 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            border: 1px solid rgba(255, 0, 85, 0.4);
-        }
-
-        .graphic-options {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            font-size: 11px;
-        }
-
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 34px;
-            height: 18px;
-        }
-
-        .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #2d3748; transition: .3s; border-radius: 18px;
-        }
-
-        .slider:before {
-            position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px;
-            background-color: white; transition: .3s; border-radius: 50%;
-        }
-
-        input:checked + .slider { background-color: var(--neon-cyan); }
-        input:checked + .slider:before { transform: translateX(16px); }
-
-        /* --- REJILLA DE JUEGOS GBA --- */
-        .gba-collection-container {
-            background: var(--panel-bg);
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            border-radius: 14px;
-            padding: 18px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 14px;
-            margin-top: 12px;
-        }
-
-        .game-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            user-select: none;
-        }
-
-        .game-card:hover {
-            background: rgba(0, 240, 255, 0.12);
-            border-color: var(--neon-cyan);
-            transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.25);
-        }
-
-        .game-card.active {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.25) 0%, rgba(255, 0, 85, 0.12) 100%);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
-        }
-
-        .game-card img {
-            width: 52px;
-            height: 52px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            background: #11121d;
-            flex-shrink: 0;
-        }
-
-        .game-card-info {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .game-card-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .game-card-sub {
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 3px;
-        }
-
-        /* --- COLUMNA DERECHA: PUBLICIDAD LATERAL COMPLETA --- */
-        .sidebar-right {
-            display: flex;
-            flex-direction: column;
-            width: 320px;
-            flex-shrink: 0;
-        }
+        
+        .play-btn.load:hover { box-shadow: 0 0 30px var(--neon-magenta); }
 
         .ad-skyscraper {
-            width: 100%;
-            height: 100%;
-            min-height: 600px;
+            width: 300px;
+            height: 600px;
             background-color: #090a10;
             border: 1px dashed rgba(0, 240, 255, 0.25);
-            border-radius: 14px;
+            border-radius: 12px;
+            margin-left: 25px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             transition: border-color 0.3s;
-            padding: 20px;
+            flex-shrink: 0;
         }
 
         .ad-skyscraper:hover { border-color: var(--neon-cyan); }
+
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast-msg {
+            background: rgba(12, 13, 20, 0.95);
+            border: 1px solid var(--neon-cyan);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            animation: fadeIn 0.3s forwards, fadeOut 0.3s 2.7s forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
 
         /* --- CONTROLES TÁCTILES MÓVIL --- */
         .mobile-controls {
             display: none;
             width: 100%;
-            padding: 12px 5px;
-            background: rgba(12, 13, 20, 0.95);
+            padding: 10px 5px;
+            background: rgba(12, 13, 20, 0.9);
             border-top: 1px solid rgba(0, 240, 255, 0.2);
-            border-radius: 12px;
             touch-action: none;
             user-select: none;
-            margin-top: 10px;
         }
 
         .touch-container {
@@ -559,62 +575,17 @@
             border-radius: 12px;
         }
 
-        #toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast-msg {
-            background: rgba(12, 13, 20, 0.95);
-            border: 1px solid var(--neon-cyan);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-            animation: fadeIn 0.3s forwards, fadeOut 0.3s 2.7s forwards;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
-
-        /* --- ADAPTABILIDAD RESPONSIVE MÓVIL --- */
-        @media (max-width: 992px) {
-            header { padding: 10px 16px; }
+        /* --- ADAPTABILIDAD RESPONSIVE (MÓVIL) --- */
+        @media (max-width: 900px) {
+            header { padding: 10px 15px; }
             .logo-text { font-size: 18px; }
-            .main-layout {
-                grid-template-columns: 1fr;
-                padding: 12px;
-                gap: 16px;
-            }
-            .sidebar-right {
-                width: 100%;
-            }
-            .ad-skyscraper {
-                min-height: 120px;
-                height: 120px;
-            }
-            .settings-panel {
-                grid-template-columns: 1fr;
-            }
-            .desktop-controls-info {
-                display: none;
-            }
-            .mobile-controls {
-                display: block;
-            }
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-            .emulator-frame {
-                aspect-ratio: 4 / 3;
-            }
+            .main-layout { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; order: 2; border-right: none; border-top: 1px solid rgba(0,240,255,0.2); }
+            .game-zone { order: 1; padding: 10px; flex-direction: column; }
+            .emulator-container-wrapper { width: 100%; }
+            .ad-skyscraper { width: 100%; height: 120px; margin-left: 0; margin-top: 15px; order: 3; }
+            .mobile-controls { display: block; }
+            .desktop-controls-info { display: none; }
         }
     </style>
 </head>
@@ -634,194 +605,172 @@
     </header>
 
     <div class="main-layout">
-        
-        <!-- COLUMNA PRINCIPAL (EMULADOR + AJUSTES + COLECCIÓN GBA) -->
-        <div class="content-left">
+        <aside class="sidebar">
             
-            <!-- PANTALLA PRINCIPAL DEL EMULADOR -->
-            <div class="emulator-frame" id="emulator-frame">
-                <div id="game-holder">
-                    <div class="start-screen">
-                        <img id="poster-bg" class="bg-poster">
-                        <div class="start-screen-content">
-                            <img id="poster-preview" class="game-poster-preview">
-                            <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
-                            <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
-                            <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
-                            <div id="load-save-container" style="display: none;">
-                                <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
+            <div class="desktop-controls-info">
+                <h3>Controles de PC 🎮</h3>
+                <div class="controls-card">
+                    <div class="control-box"><b>Moverse / D-Pad:</b> Flechas (▲▼◄►)</div>
+                    <div class="control-box"><b>Boton A:</b> Espacio</div>
+                    <div class="control-box"><b>Boton B:</b> Z</div>
+                    <div class="control-box"><b>Gatillos L / R:</b> X / S</div>
+                    <div class="control-box"><b>Volver / Menú:</b> Q / X</div>
+                    <div class="control-box"><b>Acción C:</b> C / E</div>
+                    <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
+                    <div class="p2-note">👥 <b>Jugador 2:</b> WASD | Botones: F, G, H, T</div>
+                </div>
+            </div>
+
+            <h3>Modo Fluido / Gráficos ⚙️</h3>
+            <div class="graphic-options">
+                <div class="setting-row">
+                    <span>Activar V-Sync</span>
+                    <label class="switch"><input type="checkbox" id="vsync-toggle"><span class="slider"></span></label>
+                </div>
+                <div class="setting-row">
+                    <span>Suavizado / Shaders</span>
+                    <label class="switch"><input type="checkbox" id="shader-toggle"><span class="slider"></span></label>
+                </div>
+                <div class="setting-row">
+                    <span>Salto de Frames (Frame Skip)</span>
+                    <label class="switch"><input type="checkbox" id="frameskip-toggle"><span class="slider"></span></label>
+                </div>
+            </div>
+
+            <h3>Game Boy Advance</h3>
+            <ul class="game-list">
+                <li class="game-item active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'super-mario-advance.webp', '4.00 MB', this)">
+                    <img id="thumb-mario" class="game-thumb-mini" alt="Mario">
+                    <div class="game-info">
+                        <span class="game-title">Super Mario Advance</span>
+                        <span class="game-subtitle">GBA • 4.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon-rojo-fuego.webp', '16.00 MB', this)">
+                    <img id="thumb-pokemon" class="game-thumb-mini" alt="Pokemon">
+                    <div class="game-info">
+                        <span class="game-title">Pokémon Rojo Fuego</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic-advance.webp', '8.00 MB', this)">
+                    <img id="thumb-sonic" class="game-thumb-mini" alt="Sonic">
+                    <div class="game-info">
+                        <span class="game-title">Sonic Advance</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda-minish-cap.webp', '16.00 MB', this)">
+                    <img id="thumb-zelda" class="game-thumb-mini" alt="Zelda">
+                    <div class="game-info">
+                        <span class="game-title">Zelda: Minish Cap</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario-kart-circuit.webp', '4.00 MB', this)">
+                    <img id="thumb-mariokart" class="game-thumb-mini" alt="Mario Kart">
+                    <div class="game-info">
+                        <span class="game-title">Mario Kart Circuit</span>
+                        <span class="game-subtitle">GBA • 4.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Fire Emblem', 'gba', 'fire-emblem.gba', 'fire-emblem.webp', '16.00 MB', this)">
+                    <img id="thumb-fire-emblem" class="game-thumb-mini" alt="Fire Emblem">
+                    <div class="game-info">
+                        <span class="game-title">Fire Emblem</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Cartoon Network Speedway / Block Party', 'gba', 'cartoon-network-speedway-blockparty.gba', 'cartoon-network-speedway-blockparty.webp', '8.00 MB', this)">
+                    <img id="thumb-cn-speedway" class="game-thumb-mini" alt="Cartoon Network Speedway">
+                    <div class="game-info">
+                        <span class="game-title">CN Speedway / Block Party</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Mario & Luigi: Superstar Saga', 'gba', 'mario-y-luigi-superstar-saga.gba', 'mario-y-luigi-superstar-saga.webp', '16.00 MB', this)">
+                    <img id="thumb-mario-luigi" class="game-thumb-mini" alt="Mario & Luigi Superstar Saga">
+                    <div class="game-info">
+                        <span class="game-title">Mario & Luigi: Superstar Saga</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Metroid Fusion', 'gba', 'metroid-fusion.gba', 'metroid-fusion.webp', '8.00 MB', this)">
+                    <img id="thumb-metroid-fusion" class="game-thumb-mini" alt="Metroid Fusion">
+                    <div class="game-info">
+                        <span class="game-title">Metroid Fusion</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Tony Hawk\'s Pro Skater', 'gba', 'tony-hawks-pro-skater.gba', 'tony-hawks-pro-skater.webp', '8.00 MB', this)">
+                    <img id="thumb-tony-hawk" class="game-thumb-mini" alt="Tony Hawk Pro Skater">
+                    <div class="game-info">
+                        <span class="game-title">Tony Hawk's Pro Skater</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                    </div>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="game-zone">
+            <div class="emulator-container-wrapper">
+                <div class="emulator-frame" id="emulator-frame">
+                    <div id="game-holder">
+                        <div class="start-screen">
+                            <img id="poster-bg" class="bg-poster">
+                            <div class="start-screen-content">
+                                <img id="poster-preview" class="game-poster-preview">
+                                <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="display-title">Super Mario Advance</h2>
+                                <p style="color: #64748b; font-size: 13px;">Consola: GBA | Peso: 4.00 MB</p>
+                                <button class="play-btn" onclick="startEmulator(false)">Iniciar Juego</button>
+                                <div id="load-save-container" style="display: none;">
+                                    <button class="play-btn load" onclick="startEmulator(true)">Continuar Partida Guardada</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- CONTROLES TÁCTILES EN PANTALLA (MÓVIL) -->
-            <div class="mobile-controls">
-                <div class="touch-container">
-                    <div class="dpad">
-                        <div></div>
-                        <div class="touch-btn" data-key="ArrowUp" data-code="ArrowUp" data-keycode="38">▲</div>
-                        <div></div>
-                        <div class="touch-btn" data-key="ArrowLeft" data-code="ArrowLeft" data-keycode="37">◄</div>
-                        <div></div>
-                        <div class="touch-btn" data-key="ArrowRight" data-code="ArrowRight" data-keycode="39">►</div>
-                        <div></div>
-                        <div class="touch-btn" data-key="ArrowDown" data-code="ArrowDown" data-keycode="40">▼</div>
-                        <div></div>
-                    </div>
-
-                    <div class="shoulder-center">
-                        <div style="display: flex; gap: 6px;">
-                            <div class="touch-btn btn-small" data-key="x" data-code="KeyX" data-keycode="88">L</div>
-                            <div class="touch-btn btn-small" data-key="s" data-code="KeyS" data-keycode="83">R</div>
+                <!-- CONTROLES TÁCTILES EN PANTALLA -->
+                <div class="mobile-controls">
+                    <div class="touch-container">
+                        <div class="dpad">
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowUp" data-code="ArrowUp" data-keycode="38">▲</div>
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowLeft" data-code="ArrowLeft" data-keycode="37">◄</div>
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowRight" data-code="ArrowRight" data-keycode="39">►</div>
+                            <div></div>
+                            <div class="touch-btn" data-key="ArrowDown" data-code="ArrowDown" data-keycode="40">▼</div>
+                            <div></div>
                         </div>
-                        <div style="display: flex; gap: 6px; margin-top: 5px;">
-                            <div class="touch-btn btn-small" data-key="Shift" data-code="ShiftLeft" data-keycode="16">SELECT</div>
-                            <div class="touch-btn btn-small" data-key="Enter" data-code="Enter" data-keycode="13">START</div>
-                        </div>
-                    </div>
 
-                    <div class="action-btns">
-                        <div class="touch-btn btn-ab" data-key="z" data-code="KeyZ" data-keycode="90">B</div>
-                        <div class="touch-btn btn-ab" data-key=" " data-code="Space" data-keycode="32">A</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PANEL DE CONFIGURACIÓN Y CONTROLES PC -->
-            <div class="settings-panel">
-                <div class="desktop-controls-info">
-                    <div class="section-title">Controles de PC 🎮</div>
-                    <div class="controls-card">
-                        <div class="control-box"><b>Moverse / D-Pad:</b> Flechas (▲▼◄►)</div>
-                        <div class="control-box"><b>Boton A:</b> Espacio</div>
-                        <div class="control-box"><b>Boton B:</b> Z</div>
-                        <div class="control-box"><b>Gatillos L / R:</b> X / S</div>
-                        <div class="control-box"><b>Volver / Menú:</b> Q / X</div>
-                        <div class="control-box"><b>Acción C:</b> C / E</div>
-                        <div class="control-box"><b>Start / Select:</b> Enter / Shift</div>
-                        <div class="p2-note">👥 <b>Jugador 2:</b> WASD | Botones: F, G, H, T</div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="section-title">Modo Fluido / Gráficos ⚙️</div>
-                    <div class="graphic-options">
-                        <div class="setting-row">
-                            <span>Activar V-Sync</span>
-                            <label class="switch"><input type="checkbox" id="vsync-toggle"><span class="slider"></span></label>
+                        <div class="shoulder-center">
+                            <div style="display: flex; gap: 6px;">
+                                <div class="touch-btn btn-small" data-key="x" data-code="KeyX" data-keycode="88">L</div>
+                                <div class="touch-btn btn-small" data-key="s" data-code="KeyS" data-keycode="83">R</div>
+                            </div>
+                            <div style="display: flex; gap: 6px; margin-top: 5px;">
+                                <div class="touch-btn btn-small" data-key="Shift" data-code="ShiftLeft" data-keycode="16">SELECT</div>
+                                <div class="touch-btn btn-small" data-key="Enter" data-code="Enter" data-keycode="13">START</div>
+                            </div>
                         </div>
-                        <div class="setting-row">
-                            <span>Suavizado / Shaders</span>
-                            <label class="switch"><input type="checkbox" id="shader-toggle"><span class="slider"></span></label>
-                        </div>
-                        <div class="setting-row">
-                            <span>Salto de Frames (Frame Skip)</span>
-                            <label class="switch"><input type="checkbox" id="frameskip-toggle"><span class="slider"></span></label>
+
+                        <div class="action-btns">
+                            <div class="touch-btn btn-ab" data-key="z" data-code="KeyZ" data-keycode="90">B</div>
+                            <div class="touch-btn btn-ab" data-key=" " data-code="Space" data-keycode="32">A</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECCIÓN EXCLUSIVA DE JUEGOS GAME BOY ADVANCE -->
-            <div class="gba-collection-container">
-                <div class="section-title">🎮 Colección Game Boy Advance</div>
-                
-                <div class="games-grid">
-                    <div class="game-card active" onclick="changeGame('Super Mario Advance', 'gba', 'mario_advance.gba', 'super-mario-advance.webp', '4.00 MB', this)">
-                        <img id="thumb-mario" alt="Mario">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Super Mario Advance</span>
-                            <span class="game-card-sub">GBA • 4.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Pokémon Rojo Fuego', 'gba', 'pokemon_rojo_fuego.gba', 'pokemon-rojo-fuego.webp', '16.00 MB', this)">
-                        <img id="thumb-pokemon" alt="Pokemon">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Pokémon Rojo Fuego</span>
-                            <span class="game-card-sub">GBA • 16.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Sonic Advance', 'gba', 'sonic_advance.gba', 'sonic-advance.webp', '8.00 MB', this)">
-                        <img id="thumb-sonic" alt="Sonic">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Sonic Advance</span>
-                            <span class="game-card-sub">GBA • 8.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Zelda: Minish Cap', 'gba', 'zelda_minish_cap.gba', 'zelda-minish-cap.webp', '16.00 MB', this)">
-                        <img id="thumb-zelda" alt="Zelda">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Zelda: Minish Cap</span>
-                            <span class="game-card-sub">GBA • 16.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Mario Kart Circuit', 'gba', 'mario_kart.gba', 'mario-kart-circuit.webp', '4.00 MB', this)">
-                        <img id="thumb-mariokart" alt="Mario Kart">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Mario Kart Circuit</span>
-                            <span class="game-card-sub">GBA • 4.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Fire Emblem', 'gba', 'fire-emblem.gba', 'fire-emblem.webp', '16.00 MB', this)">
-                        <img id="thumb-fire-emblem" alt="Fire Emblem">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Fire Emblem</span>
-                            <span class="game-card-sub">GBA • 16.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Cartoon Network Speedway / Block Party', 'gba', 'cartoon-network-speedway-blockparty.gba', 'cartoon-network-speedway-blockparty.webp', '8.00 MB', this)">
-                        <img id="thumb-cn-speedway" alt="CN Speedway">
-                        <div class="game-card-info">
-                            <span class="game-card-title">CN Speedway / Block Party</span>
-                            <span class="game-card-sub">GBA • 8.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Mario & Luigi: Superstar Saga', 'gba', 'mario-y-luigi-superstar-saga.gba', 'mario-y-luigi-superstar-saga.webp', '16.00 MB', this)">
-                        <img id="thumb-mario-luigi" alt="Mario & Luigi">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Mario & Luigi: Superstar Saga</span>
-                            <span class="game-card-sub">GBA • 16.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Metroid Fusion', 'gba', 'metroid-fusion.gba', 'metroid-fusion.webp', '8.00 MB', this)">
-                        <img id="thumb-metroid-fusion" alt="Metroid Fusion">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Metroid Fusion</span>
-                            <span class="game-card-sub">GBA • 8.00 MB</span>
-                        </div>
-                    </div>
-
-                    <div class="game-card" onclick="changeGame('Tony Hawk\'s Pro Skater', 'gba', 'tony-hawks-pro-skater.gba', 'tony-hawks-pro-skater.webp', '8.00 MB', this)">
-                        <img id="thumb-tony-hawk" alt="Tony Hawk">
-                        <div class="game-card-info">
-                            <span class="game-card-title">Tony Hawk's Pro Skater</span>
-                            <span class="game-card-sub">GBA • 8.00 MB</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- COLUMNA DERECHA: ESPACIO PUBLICITARIO -->
-        <aside class="sidebar-right">
             <div class="ad-skyscraper">
                 <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
-                    <p>Espacio Publicitario Vertical</p>
+                    <p>Espacio Publicitario</p>
                 </div>
             </div>
-        </aside>
-
+        </main>
     </div>
 
     <div id="toast-container"></div>
@@ -883,6 +832,7 @@
         let currentSize = "4.00 MB";
         let activeIframeWindow = null;
 
+        // Función auxiliar para remapear 'e' / 'KeyE' a 'c' / 'KeyC'
         function mapKeyData(eKey, eCode, eKeyCode) {
             let key = eKey || '';
             let code = eCode || '';
@@ -897,6 +847,7 @@
             return { key, code, keyCode };
         }
 
+        // Capturar eventos de teclado globales y prevenirlos si corresponden a teclas de juego
         window.addEventListener('keydown', function(e) {
             const gameCodes = ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyZ', 'KeyX', 'KeyS', 'Enter', 'ShiftLeft', 'ShiftRight', 'KeyQ', 'KeyC', 'KeyE'];
             const gameKeys = [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'z', 'x', 's', 'Enter', 'Shift', 'q', 'c', 'e', 'E'];
@@ -962,6 +913,7 @@
             setupTouchEvents();
         });
 
+        // Controles Táctiles
         function setupTouchEvents() {
             const touchBtns = document.querySelectorAll('.touch-btn');
             touchBtns.forEach(btn => {
@@ -1022,7 +974,7 @@
         function changeGame(title, core, romName, imgFileName, size, element) {
             stopAndCleanupEmulator();
 
-            document.querySelectorAll('.game-card').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
             if (element) element.classList.add('active');
 
             currentTitle = title;
@@ -1075,7 +1027,7 @@
                         <svg class="loading-hoz-animation" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                             <path d="M 32 78 L 22 88 C 19 91, 13 91, 10 88 C 7 85, 7 79, 10 76 L 20 66 Z" fill="#2d3748"/>
                             <path d="M 28 72 L 24 76" stroke="#ff0055" stroke-width="3" stroke-linecap="round"/>
-                            <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 48 72, 22 68 Z" fill="#00f0ff"/>
+                            <path class="hoz-blade" d="M 22 68 C 35 55, 55 52, 70 32 C 85 12, 78 4, 78 4 C 78 4, 88 20, 80 40 C 72 60, 48 72, 22 68 Z" fill="#00f0ff"/>
                             <path d="M 30 63 C 42 54, 58 48, 70 32 C 66 38, 54 55, 30 63 Z" fill="#ffffff" opacity="0.4"/>
                         </svg>
                     </div>
@@ -1130,6 +1082,7 @@
                                 }
                             };
 
+                            // Despacho de eventos de teclado dentro del emulador con objeto completo
                             window.addEventListener('message', function(e) {
                                 if (e.data && e.data.type === 'EMU_KEY_EVENT') {
                                     const evtProps = {
