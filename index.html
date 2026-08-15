@@ -617,13 +617,14 @@
             justify-content: flex-start;
             padding: 15px;
             height: 100%;
-            overflow-y: auto;
+            overflow: hidden;
             gap: 15px;
         }
 
         /* --- ESTILOS DE ACORDEÓN DESPLEGABLE SEO --- */
         .seo-accordion-container {
             width: 100%;
+            flex-shrink: 0;
         }
 
         .seo-details {
@@ -694,7 +695,7 @@
         .ad-skyscraper {
             width: 100%;
             flex: 1;
-            min-height: 250px;
+            min-height: 200px;
             background-color: #090a10;
             border: 1px dashed rgba(0, 240, 255, 0.25);
             border-radius: 12px;
@@ -793,7 +794,7 @@
             .main-layout { display: flex; flex-direction: column; height: auto; overflow: visible; }
             .sidebar { width: 100%; order: 2; height: auto; border-right: none; }
             .game-zone { order: 1; height: 75vh; padding: 10px; }
-            .sidebar-right-ad { order: 3; width: 100%; height: auto; border-left: none; border-top: 1px solid rgba(0,240,255,0.2); }
+            .sidebar-right-ad { order: 3; width: 100%; height: auto; border-left: none; border-top: 1px solid rgba(0,240,255,0.2); overflow: visible; }
             .mobile-controls { display: block; }
             .desktop-controls-info { display: none; }
             #toast-container { right: 20px; }
@@ -1082,12 +1083,12 @@
             </div>
         </main>
 
-        <!-- COLUMNA 3: DESPLEGABLES SEO SOBRE EL ANUNCIO -->
+        <!-- COLUMNA 3: DESPLEGABLE SEO Y ESPACIO PUBLICITARIO EXPANDIDO -->
         <aside class="sidebar-right-ad">
             
-            <!-- ACORDEÓN 1: GUÍA Y PREGUNTAS FRECUENTES -->
+            <!-- ACORDEÓN ÚNICO SEO: GUÍA Y PREGUNTAS FRECUENTES (CERRADO POR DEFECTO PARA MAXIMIZAR EL ANUNCIO) -->
             <div class="seo-accordion-container">
-                <details class="seo-details" open>
+                <details class="seo-details">
                     <summary class="seo-summary">❓ ¿Cómo jugar GBA Online? / FAQ</summary>
                     <div class="seo-content">
                         <h2>Emulador de Game Boy Advance Gratis</h2>
@@ -1102,17 +1103,7 @@
                 </details>
             </div>
 
-            <!-- ACORDEÓN 2: PALABRAS CLAVE Y POPULARES -->
-            <div class="seo-accordion-container">
-                <details class="seo-details">
-                    <summary class="seo-summary">🔥 Juegos GBA Más Populares</summary>
-                    <div class="seo-content">
-                        <p>Juega gratis a <strong>Pokémon Rojo Fuego</strong>, <strong>Super Mario Advance</strong>, <strong>Zelda: Minish Cap</strong>, <strong>Metroid Fusion</strong>, <strong>Sonic Advance</strong> y <strong>Mario Kart Circuit</strong> sin instalar emuladores.</p>
-                    </div>
-                </details>
-            </div>
-
-            <!-- ESPACIO PUBLICITARIO -->
+            <!-- ESPACIO PUBLICITARIO AMPLIADO Y VISIBLE DIRECTAMENTE -->
             <div class="ad-skyscraper">
                 <div style="color: #3f3f5a; font-size: 13px; font-weight: 600; text-align: center;">
                     <p>Espacio Publicitario</p>
@@ -1135,7 +1126,7 @@
             'fire-emblem': { id: 'fireemblem', title: 'Fire Emblem', core: 'gba', rom: 'fire-emblem.gba', img: 'fire-emblem.webp', size: '16.00 MB' },
             'cn-speedway': { id: 'cnspeedway', title: 'CN Speedway / Block Party', core: 'gba', rom: 'cartoon-network-speedway-blockparty.gba', img: 'cartoon-network-speedway-blockparty.webp', size: '8.00 MB' },
             'mario-luigi-superstar': { id: 'marioluigi', title: 'Mario & Luigi: Superstar Saga', core: 'gba', rom: 'mario-y-luigi-superstar-saga.gba', img: 'mario-y-luigi-superstar-saga.webp', size: '16.00 MB' },
-            'metroid-fusion': { id: 'metroid', title: 'Metroid Fusion', core: 'gba', rom: 'metroid-fusion.gba', img: 'metroid-fusion.webp', size: '8.00 MB' },
+            'metroid-fusion': { id: 'metroid', title: 'Metroid Fusion', core: 'gba', rom: 'metroid-fusion.gba', img: 'metroid-fusion.webp', size: '16.00 MB' },
             'tony-hawks-pro-skater': { id: 'tonyhawk', title: 'Tony Hawk\'s Pro Skater', core: 'gba', rom: 'tony-hawks-pro-skater.gba', img: 'tony-hawks-pro-skater.webp', size: '8.00 MB' }
         };
 
