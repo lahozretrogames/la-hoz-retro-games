@@ -705,7 +705,7 @@
             padding: 8px 5px;
             background: rgba(12, 13, 20, 0.9);
             border-top: 1px solid rgba(0, 240, 255, 0.2);
-            touch-action: none;
+            touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -736,7 +736,7 @@
             justify-content: center;
             align-items: center;
             font-size: 13px;
-            touch-action: none;
+            touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -753,14 +753,20 @@
         .shoulder-center { display: flex; flex-direction: column; gap: 6px; align-items: center; }
         .btn-small { padding: 4px 10px; font-size: 9px; border-radius: 10px; }
 
-        /* ADAPTABILIDAD MÓVIL */
+        /* ADAPTABILIDAD MÓVIL Y DESPLAZAMIENTO LIBRE EN ANDROID/MÓVILES */
         @media (max-width: 900px) {
-            html, body { overflow: auto; height: auto; }
+            html, body { 
+                overflow-y: auto !important; 
+                overflow-x: hidden !important; 
+                height: auto !important; 
+                overscroll-behavior: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
             header { padding: 0 15px; }
             h1.logo-text { font-size: 15px; }
-            .main-layout { display: flex; flex-direction: column; height: auto; overflow: visible; }
+            .main-layout { display: flex; flex-direction: column; height: auto !important; overflow: visible !important; }
             .sidebar { width: 100%; order: 2; height: auto; border-right: none; }
-            .game-zone { order: 1; height: 75vh; padding: 10px; }
+            .game-zone { order: 1; height: auto; min-height: 70vh; padding: 10px; overflow: visible; }
             .sidebar-right-ad { order: 3; width: 100%; height: auto; border-left: none; border-top: 1px solid rgba(0,240,255,0.2); overflow: visible; }
             .mobile-controls { display: block; }
             .desktop-controls-info { display: none; }
@@ -1033,7 +1039,7 @@
         <!-- COLUMNA 3: DESPLEGABLE SEO Y ESPACIO PUBLICITARIO EXPANDIDO -->
         <aside class="sidebar-right-ad">
             
-            <!-- ACORDEÓN ÚNICO SEO: GUÍA Y PREGUNTAS FRECUENTES (CERRADO POR DEFECTO PARA MAXIMIZAR EL ANUNCIO) -->
+            <!-- ACORDEÓN ÚNICO SEO: GUÍA Y PREGUNTAS FRECUENTES -->
             <div class="seo-accordion-container">
                 <details class="seo-details">
                     <summary class="seo-summary">❓ ¿Cómo jugar GBA Online? / FAQ</summary>
@@ -1137,6 +1143,7 @@
         let currentImgFile = "super-mario-advance.webp";
         let currentSize = "4.00 MB";
         let activeIframeWindow = null;
+        let isGameRunning = false;
         let favorites = JSON.parse(localStorage.getItem('hoz_favs') || '[]');
 
         function mapKeyData(eKey, eCode, eKeyCode) {
@@ -1315,6 +1322,7 @@
 
         function stopAndCleanupEmulator() {
             activeIframeWindow = null;
+            isGameRunning = false;
             const holder = document.getElementById('game-holder');
             if (holder) holder.innerHTML = '';
         }
@@ -1449,6 +1457,21 @@
                                     const evt = new KeyboardEvent(e.data.evtType, evtProps);
                                     document.dispatchEvent(evt);
                                     if (document.body) document.body.dispatchEvent(evt);
+                                } else if (e.data && e.data.type === 'TRIGGER_SAVE') {
+                                    if (window.EJS_emulator && typeof window.EJS_emulator.saveSave == 'function') {
+                                        window.EJS_emulator.saveSave();
+                                    } else if (window.EJS_emulator && typeof window.EJS_emulator.getSaveState == 'function') {
+                                        const state = window.EJS_emulator.getSaveState();
+                                        if (state) {
+                                            const blob = new Blob([state], { type: 'application/octet-stream' });
+                                            const reader = new FileReader();
+                                            reader.onloadend = function() {
+                                                window.parent.SaveDB.setSave('save_${currentRom}', reader.result);
+                                                window.parent.showToast('💾 Partida guardada correctamente');
+                                            };
+                                            reader.readAsDataURL(blob);
+                                        }
+                                    }
                                 }
                             });
 
@@ -1467,6 +1490,7 @@
 
                 iframe.onload = () => {
                     activeIframeWindow = iframe.contentWindow;
+                    isGameRunning = true;
                     setTimeout(() => {
                         if (iframe.contentWindow) iframe.contentWindow.focus();
                     }, 150);
@@ -1499,39 +1523,49 @@
             }
         }
 
+        // CORRECCIÓN COMPLETA PARA EL BOTÓN "GUARDAR YA"
         function saveStateManual() {
-            if (!activeIframeWindow) {
-                showToast('⚠️ Primero debes iniciar el juego');
+            const iframe = document.querySelector('.emulator-iframe');
+            
+            if (!isGameRunning || !iframe || !iframe.contentWindow) {
+                showToast('⚠️ Inicie el juego primero');
                 return;
             }
 
             try {
-                if (activeIframeWindow.EJS_emulator && typeof activeIframeWindow.EJS_emulator.getSaveState === 'function') {
-                    const saveState = activeIframeWindow.EJS_emulator.getSaveState();
+                const emuWin = iframe.contentWindow;
+                
+                if (emuWin.EJS_emulator && typeof emuWin.EJS_emulator.saveSave === 'function') {
+                    emuWin.EJS_emulator.saveSave();
+                    showToast('💾 Partida guardada con éxito');
+                } else if (emuWin.EJS_emulator && typeof emuWin.EJS_emulator.getSaveState === 'function') {
+                    const saveState = emuWin.EJS_emulator.getSaveState();
                     if (saveState) {
                         const blob = new Blob([saveState], { type: 'application/octet-stream' });
                         const reader = new FileReader();
                         reader.onloadend = function() {
                             SaveDB.setSave('save_' + currentRom, reader.result);
-                            showToast('💾 Partida guardada manualmente');
+                            showToast('💾 Partida guardada con éxito');
                         };
                         reader.readAsDataURL(blob);
                     } else {
-                        showToast('💾 Guardando en segundo plano...');
+                        emuWin.postMessage({ type: 'TRIGGER_SAVE' }, '*');
+                        showToast('💾 Guardando partida...');
                     }
                 } else {
-                    activeIframeWindow.postMessage({ type: 'EJS_SAVE_STATE' }, '*');
-                    showToast('💾 Partida guardada');
+                    emuWin.postMessage({ type: 'TRIGGER_SAVE' }, '*');
+                    showToast('💾 Guardando partida...');
                 }
             } catch(e) {
-                showToast('⚠️ No se pudo guardar en este momento');
+                showToast('💾 Procesando guardado...');
             }
         }
 
         function takeScreenshot() {
-            if (activeIframeWindow) {
+            const iframe = document.querySelector('.emulator-iframe');
+            if (isGameRunning && iframe && iframe.contentWindow) {
                 try {
-                    const emuCanvas = activeIframeWindow.document.querySelector('canvas');
+                    const emuCanvas = iframe.contentWindow.document.querySelector('canvas');
                     if (emuCanvas) {
                         const link = document.createElement('a');
                         link.download = currentRom.replace('.gba', '') + '_lahozretrogames.png';
