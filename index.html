@@ -674,6 +674,41 @@
                         <span class="game-subtitle">GBA • 4.00 MB</span>
                     </div>
                 </li>
+                <li class="game-item" onclick="changeGame('Fire Emblem', 'gba', 'fire-emblem.gba', 'fire-emblem.webp', '16.00 MB', this)">
+                    <img id="thumb-fire-emblem" class="game-thumb-mini" alt="Fire Emblem">
+                    <div class="game-info">
+                        <span class="game-title">Fire Emblem</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Cartoon Network Speedway / Block Party', 'gba', 'cartoon-network-speedway-blockparty.gba', 'cartoon-network-speedway-blockparty.webp', '8.00 MB', this)">
+                    <img id="thumb-cn-speedway" class="game-thumb-mini" alt="Cartoon Network Speedway">
+                    <div class="game-info">
+                        <span class="game-title">CN Speedway / Block Party</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Mario & Luigi: Superstar Saga', 'gba', 'mario-y-luigi-superstar-saga.gba', 'mario-y-luigi-superstar-saga.webp', '16.00 MB', this)">
+                    <img id="thumb-mario-luigi" class="game-thumb-mini" alt="Mario & Luigi Superstar Saga">
+                    <div class="game-info">
+                        <span class="game-title">Mario & Luigi: Superstar Saga</span>
+                        <span class="game-subtitle">GBA • 16.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Metroid Fusion', 'gba', 'metroid-fusion.gba', 'metroid-fusion.webp', '8.00 MB', this)">
+                    <img id="thumb-metroid-fusion" class="game-thumb-mini" alt="Metroid Fusion">
+                    <div class="game-info">
+                        <span class="game-title">Metroid Fusion</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                    </div>
+                </li>
+                <li class="game-item" onclick="changeGame('Tony Hawk\'s Pro Skater', 'gba', 'tony-hawks-pro-skater.gba', 'tony-hawks-pro-skater.webp', '8.00 MB', this)">
+                    <img id="thumb-tony-hawk" class="game-thumb-mini" alt="Tony Hawk Pro Skater">
+                    <div class="game-info">
+                        <span class="game-title">Tony Hawk's Pro Skater</span>
+                        <span class="game-subtitle">GBA • 8.00 MB</span>
+                    </div>
+                </li>
             </ul>
         </aside>
 
@@ -782,7 +817,12 @@
             pokemon: "gba/pokemon-rojo-fuego.webp",
             sonic: "gba/sonic-advance.webp",
             zelda: "gba/zelda-minish-cap.webp",
-            mariokart: "gba/mario-kart-circuit.webp"
+            mariokart: "gba/mario-kart-circuit.webp",
+            fireEmblem: "gba/fire-emblem.webp",
+            cnSpeedway: "gba/cartoon-network-speedway-blockparty.webp",
+            marioLuigi: "gba/mario-y-luigi-superstar-saga.webp",
+            metroidFusion: "gba/metroid-fusion.webp",
+            tonyHawk: "gba/tony-hawks-pro-skater.webp"
         };
 
         let currentTitle = "Super Mario Advance";
@@ -860,6 +900,11 @@
             document.getElementById('thumb-sonic').src = gameImages.sonic;
             document.getElementById('thumb-zelda').src = gameImages.zelda;
             document.getElementById('thumb-mariokart').src = gameImages.mariokart;
+            document.getElementById('thumb-fire-emblem').src = gameImages.fireEmblem;
+            document.getElementById('thumb-cn-speedway').src = gameImages.cnSpeedway;
+            document.getElementById('thumb-mario-luigi').src = gameImages.marioLuigi;
+            document.getElementById('thumb-metroid-fusion').src = gameImages.metroidFusion;
+            document.getElementById('thumb-tony-hawk').src = gameImages.tonyHawk;
 
             document.getElementById('poster-bg').src = gameImages.mario;
             document.getElementById('poster-preview').src = gameImages.mario;
